@@ -168,28 +168,32 @@ export default function Hero({ onSplineReady }) {
   }
 
   useEffect(() => {
-    const onScroll = () => {
-      if (window.scrollY > 40 && timerRef.current) {
+    const cancelTimer = () => {
+      if (timerRef.current) {
         clearTimeout(timerRef.current)
         timerRef.current = null
       }
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true })
+    const onScroll = () => {
+      if (window.scrollY > 30) cancelTimer()
+    }
 
-    // After 5 seconds, initiate a slow, buttery smooth glide to the next section
-    // if the user is still at the top
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('wheel', cancelTimer, { passive: true })
+    window.addEventListener('touchstart', cancelTimer, { passive: true })
+
     timerRef.current = setTimeout(() => {
-      if (window.scrollY < 40) {
+      if (window.scrollY < 30) {
         scrollToNext()
       }
-    }, 5000)
+    }, 8000)
 
     return () => {
       window.removeEventListener('scroll', onScroll)
-      if (timerRef.current) {
-        clearTimeout(timerRef.current)
-      }
+      window.removeEventListener('wheel', cancelTimer)
+      window.removeEventListener('touchstart', cancelTimer)
+      cancelTimer()
     }
   }, [])
 

@@ -7,6 +7,8 @@
 .lhf-wrap {
   position: absolute;
   inset: 0;
+  padding: 10px 18px 12px;
+  box-sizing: border-box;
   pointer-events: none;
   user-select: none;
 }

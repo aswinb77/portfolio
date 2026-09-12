@@ -108,6 +108,14 @@
   color: #111111;
 }
 
+.pdm-topbar__nav-icon {
+  display: none;
+}
+
+.pdm-topbar__nav-text {
+  display: inline;
+}
+
 .pdm-topbar__divider {
   color: #d8d2ca;
   font-size: 13px;
@@ -870,55 +878,317 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
-/* ── Responsive Refinements ── */
+/* ── Mobile Rework (Optimized Editorial Sheet) ── */
 @media (max-width: 768px) {
   .pdm-backdrop {
-    padding: 10px;
+    padding: 0;
+    align-items: flex-end;
   }
 
   .pdm-container {
-    height: 95vh;
-    border-radius: 16px;
+    width: 100%;
+    height: 100dvh;
+    height: 100vh;
+    max-height: 100dvh;
+    border-radius: 20px 20px 0 0;
+    margin: 0;
   }
 
   .pdm-topbar {
-    padding: 0 20px;
-    height: 56px;
+    padding: 0 16px;
+    height: 54px;
+  }
+
+  .pdm-topbar__title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .pdm-topbar__actions {
+    gap: 6px;
+  }
+
+  .pdm-topbar__github-btn {
+    padding: 6px 10px;
+    border-radius: 999px;
+  }
+
+  .pdm-topbar__github-text,
+  .pdm-topbar__arrow,
+  .pdm-topbar__divider--gh {
+    display: none !important;
+  }
+
+  .pdm-topbar__nav-text {
+    display: none !important;
+  }
+
+  .pdm-topbar__nav-icon {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 500;
+    width: 24px;
+    height: 24px;
+  }
+
+  .pdm-topbar__nav-btn {
+    padding: 4px 6px;
+  }
+
+  .pdm-topbar__close-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    margin-left: 4px;
   }
 
   .pdm-content-scroll {
-    padding: 28px 20px 48px 20px;
+    padding: 24px 18px calc(env(safe-area-inset-bottom, 16px) + 36px) 18px;
+    -webkit-overflow-scrolling: touch;
   }
 
+  /* Hero Section */
   .pdm-hero-block {
+    margin-bottom: 32px;
+  }
+
+  .pdm-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    margin-bottom: 8px;
+  }
+
+  .pdm-hero-title {
+    font-size: clamp(2rem, 8vw, 2.6rem);
+    line-height: 1.08;
+    margin-bottom: 12px;
+  }
+
+  .pdm-hero-subtitle {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: #4b4b4b;
+    margin-bottom: 20px;
+  }
+
+  .pdm-hero-links {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .pdm-action-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 11px 18px;
+    font-size: 13.5px;
+    box-sizing: border-box;
+  }
+
+  /* Showcase Section */
+  .pdm-showcase-wrapper {
+    padding: 20px 12px;
+    border-radius: 16px;
+    margin-top: 8px;
+    gap: 18px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .pdm-showcase-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    max-width: 100%;
+    padding: 4px 2px 8px 2px;
+    justify-content: flex-start;
+    gap: 8px;
+    scrollbar-width: none;
+    box-sizing: border-box;
+  }
+
+  .pdm-showcase-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pdm-showcase-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+
+  .pdm-device-display {
+    width: 100%;
+  }
+
+  .pdm-device-frame {
+    width: min(270px, 78vw);
+    height: auto;
+    aspect-ratio: 9 / 18;
+    max-height: 520px;
+    border-radius: 28px;
+  }
+
+  .pdm-device-frame--wide {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+  }
+
+  .pdm-device-caption {
+    font-size: 12px;
+    text-align: center;
+    padding: 0 10px;
+    margin-top: 4px;
+  }
+
+  /* Problem & Approach */
+  .pdm-problem-approach {
     margin-bottom: 40px;
+    gap: 24px;
+  }
+
+  .pdm-narrative-statement {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  .pdm-narrative-body {
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+
+  /* Metrics: clean 2x2 grid */
+  .pdm-metrics-strip {
+    margin-bottom: 44px;
+    padding: 20px 0;
+  }
+
+  .pdm-metrics-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 14px;
+  }
+
+  .pdm-metric-num {
+    font-size: 28px;
+  }
+
+  .pdm-metric-text {
+    font-size: 12px;
+  }
+
+  /* Design Decisions */
+  .pdm-decisions-block {
+    margin-bottom: 40px;
+  }
+
+  .pdm-section-divider {
+    padding-top: 24px;
+    margin-bottom: 28px;
   }
 
   .pdm-decision-row {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 14px;
+    margin-bottom: 40px;
   }
 
-  .pdm-showcase-wrapper {
-    padding: 20px 12px;
+  .pdm-decision-num {
+    font-size: 12px;
   }
 
-  .pdm-device-frame,
+  .pdm-decision-heading {
+    font-size: 18px;
+    line-height: 1.35;
+  }
+
+  .pdm-decision-text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
   .pdm-decision-phone {
-    width: 200px;
-    height: 400px;
+    width: min(270px, 78vw);
+    height: auto;
+    aspect-ratio: 9 / 18;
+    max-height: 520px;
+    border-radius: 28px;
+    margin: 0 auto;
+  }
+
+  .pdm-decision-phone--wide {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+  }
+
+  .pdm-decision-trio {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    width: 100%;
+    padding: 6px 4px 12px;
+    scrollbar-width: none;
+    box-sizing: border-box;
+  }
+
+  .pdm-decision-trio::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pdm-decision-trio__card {
+    flex: 0 0 min(210px, 64vw);
+    width: min(210px, 64vw);
+  }
+
+  .pdm-decision-trio .pdm-decision-phone {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 18;
+    border-radius: 22px;
+  }
+
+  /* Tech Stack & Bottom Nav */
+  .pdm-footer-section {
+    padding-top: 28px;
+    gap: 28px;
+  }
+
+  .pdm-pill {
+    font-size: 11px;
+    padding: 4px 10px;
   }
 
   .pdm-bottom-nav {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
+    width: 100%;
+    padding-top: 10px;
   }
 
   .pdm-bottom-btn,
   .pdm-bottom-close-btn,
   .pdm-bottom-github-btn {
     width: 100%;
+    padding: 12px 18px;
+    font-size: 13.5px;
     text-align: center;
     box-sizing: border-box;
+    border-radius: 10px;
   }
 }

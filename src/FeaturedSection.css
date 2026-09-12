@@ -1180,23 +1180,54 @@
     width: min(280px, 78vw);
   }
 
+  /* ── Mobile Plain Cards (Remove hover fan-out & transforms) ── */
+  .colin-fan-stack {
+    display: none !important;
+  }
+
+  .colin-card,
+  .colin-card:hover,
+  .colin-card:active,
+  .colin-card:focus {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .colin-card__front,
+  .colin-card:hover .colin-card__front,
+  .colin-card:active .colin-card__front {
+    transform: none !important;
+    box-shadow: 0 4px 18px rgba(45, 25, 15, 0.08) !important;
+    border-color: rgba(26, 18, 15, 0.08) !important;
+    transition: none !important;
+  }
+
+  .colin-card:hover .finmate-art-phone--back,
+  .colin-card:hover .finmate-art-phone--front,
+  .colin-card:hover .finmate-art-mascot-badge,
+  .colin-card:hover .moviecc-art-phone--back,
+  .colin-card:hover .moviecc-art-phone--front,
+  .colin-card:hover .moviecc-art-badge,
+  .colin-card:hover .pmse-unicare-lockup,
+  .colin-card:hover .pmse-unicare-ring,
+  .colin-card:hover .kalavasta-art-icon-wrap,
+  .colin-card:hover .colin-card__title {
+    transform: none !important;
+    color: inherit !important;
+    transition: none !important;
+  }
+
   .colin-card__body {
-    padding: 14px 18px;
+    padding: 16px 18px 18px;
   }
 
   .colin-card__title {
     font-size: 1.15rem;
   }
 
+  /* Remove 'view case study ↗' on mobile */
   .colin-card__tap-hint {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.68rem;
-    font-weight: 600;
-    color: #a04d26;
-    margin-top: 5px;
-    letter-spacing: 0.04em;
+    display: none !important;
   }
 
   .colin-work-desc {

@@ -10,8 +10,29 @@ const TYPEWRITER_PHRASES = [
 
 export default function UserSection() {
   const craneRef = useRef(null)
+  const duoVideoRef = useRef(null)
   const [duoStreak, setDuoStreak] = useState(null)
   const [learningLang, setLearningLang] = useState('German')
+
+  // Lazy-play Duolingo video only when widget enters viewport
+  useEffect(() => {
+    const video = duoVideoRef.current
+    if (!video) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
 
   // Live Duolingo Streak
   // ─ Dev:        Vite proxy forwards /api/duo-streak → Duolingo (server-side, no CORS)
@@ -187,6 +208,7 @@ export default function UserSection() {
 
   // ─── Crane scroll fly-away ─────────────────────────────────────────────
   useEffect(() => {
+    let animId = null
     const onScroll = () => {
       if (!craneRef.current) return
       const parent = craneRef.current.parentElement
@@ -213,9 +235,17 @@ export default function UserSection() {
       }
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
+    const handleScroll = () => {
+      if (animId) cancelAnimationFrame(animId)
+      animId = requestAnimationFrame(onScroll)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (animId) cancelAnimationFrame(animId)
+    }
   }, [])
 
   const bioTextRef = useRef(null)
@@ -223,18 +253,20 @@ export default function UserSection() {
   // ─── Progressive text fill ─────────────────────────────────────────────
   useEffect(() => {
     let animId = null
+    const words = bioTextRef.current
+      ? Array.from(bioTextRef.current.querySelectorAll('.progressive-word'))
+      : []
+    const totalWords = words.length
+    if (totalWords === 0) return
+
     const updateTextFill = () => {
       if (!bioTextRef.current) return
-      const words = bioTextRef.current.querySelectorAll('.progressive-word')
-      if (!words || words.length === 0) return
-
       const rect = bioTextRef.current.getBoundingClientRect()
       const windowH = window.innerHeight
       const fillStart = windowH * 0.80
       const fillRange = windowH * 0.65
       const totalProgress = Math.max(0, Math.min(1, (fillStart - rect.top) / fillRange))
 
-      const totalWords = words.length
       words.forEach((word, idx) => {
         const wordStart = idx / totalWords
         const wordEnd = (idx + 1) / totalWords
@@ -353,21 +385,28 @@ export default function UserSection() {
     setTimeout(() => { card.style.transition = '' }, 600)
   }, [])
 
-  // ─── Scroll progress line through section ─────────────────────────────
-  const [sectionProgress, setSectionProgress] = useState(0)
+  // ─── Scroll progress line through section (direct DOM update without re-rendering) ─
+  const progressLineRef = useRef(null)
 
   useEffect(() => {
+    let animId = null
     const onScroll = () => {
-      const section = userSectionRef.current
-      if (!section) return
-      const rect = section.getBoundingClientRect()
-      const wh = window.innerHeight
-      const progress = Math.max(0, Math.min(1, (-rect.top) / (rect.height - wh)))
-      setSectionProgress(progress)
+      if (animId) cancelAnimationFrame(animId)
+      animId = requestAnimationFrame(() => {
+        const section = userSectionRef.current
+        if (!section || !progressLineRef.current) return
+        const rect = section.getBoundingClientRect()
+        const wh = window.innerHeight
+        const progress = Math.max(0, Math.min(1, (-rect.top) / (rect.height - wh)))
+        progressLineRef.current.style.setProperty('--progress', progress)
+      })
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (animId) cancelAnimationFrame(animId)
+    }
   }, [])
 
   const bioTokens = [
@@ -418,8 +457,8 @@ export default function UserSection() {
     <section className="user-section" id="about" ref={userSectionRef}>
       {/* Cinematic scroll progress line */}
       <div
+        ref={progressLineRef}
         className="user-section__progress-line"
-        style={{ '--progress': sectionProgress }}
         aria-hidden="true"
       />
 
@@ -429,13 +468,13 @@ export default function UserSection() {
       {/* ── Background Blend Illustrations Across Section ── */}
       <div className="user-section__illustrations" aria-hidden="true">
         <div className="user-ill user-ill--1" ref={ill1Ref}>
-          <img src="/illustration-1-trans.png" alt="Botanical engraving" />
+          <img src="/illustration-1-trans.webp" alt="Botanical engraving" loading="lazy" decoding="async" />
         </div>
         <div className="user-ill user-ill--2" ref={ill2Ref}>
-          <img src="/illustration2-trans.png" alt="Tarot clock artwork" />
+          <img src="/illustration2-trans.webp" alt="Tarot clock artwork" loading="lazy" decoding="async" />
         </div>
         <div className="user-ill user-ill--3" ref={ill3Ref}>
-          <img src="/illustration3-trans.png" alt="Linocut warhorse" />
+          <img src="/illustration3-trans.webp" alt="Linocut warhorse" loading="lazy" decoding="async" />
         </div>
       </div>
 
@@ -464,9 +503,11 @@ export default function UserSection() {
 
             <div className="user-section__img-box">
               <img
-                src="/user.png"
+                src="/user.webp"
                 alt="Aswin Biju"
                 className="user-section__img"
+                loading="lazy"
+                decoding="async"
               />
               <div className="user-section__img-overlay" />
 
@@ -606,14 +647,15 @@ export default function UserSection() {
 
                   <div className="duo-widget-card__avatar-wrap">
                     <video
+                      ref={duoVideoRef}
                       className="duo-widget-card__avatar-video"
-                      autoPlay
                       loop
                       muted
                       playsInline
+                      preload="none"
                     >
-                      <source src="/characterduo-alpha.mov" type='video/mp4; codecs="hvc1"' />
                       <source src="/characterduo-alpha.webm" type="video/webm" />
+                      <source src="/characterduo-alpha.mov" type='video/mp4; codecs="hvc1"' />
                       <source src="/characterduo.mp4" type="video/mp4" />
                     </video>
                     <div className="duo-widget-card__badge-box">

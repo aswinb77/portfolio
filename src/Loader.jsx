@@ -2,12 +2,9 @@ import { useEffect, useState, useRef } from 'react'
 import './Loader.css'
 
 const CRITICAL_IMAGES = [
-  '/bg1.png',
-  '/sun.png',
-  '/stamp.png',
-  '/cave_bg.jpg',
-  '/user.png',
-  '/clover.jpg',
+  '/bg1.webp',
+  '/user.webp',
+  '/stamp.webp',
 ]
 
 export default function Loader({ onLoaded, isSplineReady = false }) {
@@ -16,7 +13,7 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
   const [isMounted, setIsMounted] = useState(true)
 
   const progressRef = useRef(0)
-  const targetProgressRef = useRef(15)
+  const targetProgressRef = useRef(20)
   const isSplineReadyRef = useRef(isSplineReady)
 
   useEffect(() => {
@@ -47,7 +44,7 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
 
     const checkAssetIncrement = () => {
       assetsLoaded += 1
-      const calculated = Math.min(94, Math.round((assetsLoaded / totalAssets) * 92))
+      const calculated = Math.min(95, Math.round((assetsLoaded / totalAssets) * 94))
       if (calculated > targetProgressRef.current) {
         targetProgressRef.current = calculated
       }
@@ -79,29 +76,26 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
     }
 
     const startTime = Date.now()
-    const MIN_LOAD_TIME = 1300
-    const MAX_LOAD_TIME = 6500 // Generous safeguard so Spline has time on 3D mobile/desktop
+    const MIN_LOAD_TIME = 600
+    const MAX_LOAD_TIME = 2200
 
     const updateInterval = setInterval(() => {
       const elapsed = Date.now() - startTime
       const timeRatio = Math.min(1, elapsed / MIN_LOAD_TIME)
-      const artificialBaseline = Math.round(timeRatio * 85)
+      const artificialBaseline = Math.round(timeRatio * 90)
       
       let currentTarget = Math.max(targetProgressRef.current, artificialBaseline)
 
-      // Hold at ~88% until Spline 3D iframe reports ready
-      if (!isSplineReadyRef.current && elapsed < MAX_LOAD_TIME) {
-        currentTarget = Math.min(88, currentTarget)
-      } else if (isSplineReadyRef.current) {
+      if (isSplineReadyRef.current) {
         currentTarget = 100
       }
 
       if (progressRef.current < currentTarget) {
-        const step = Math.max(1, Math.ceil((currentTarget - progressRef.current) * 0.16))
+        const step = Math.max(1, Math.ceil((currentTarget - progressRef.current) * 0.22))
         progressRef.current = Math.min(currentTarget, progressRef.current + step)
       }
 
-      if (elapsed >= MIN_LOAD_TIME && assetsLoaded >= totalAssets - 1 && isSplineReadyRef.current) {
+      if (elapsed >= MIN_LOAD_TIME && assetsLoaded >= totalAssets - 1) {
         targetProgressRef.current = 100
         progressRef.current = 100
       }
@@ -115,18 +109,18 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
 
       if (progressRef.current >= 100) {
         clearInterval(updateInterval)
+        window.removeEventListener('wheel', preventScroll)
+        window.removeEventListener('touchmove', preventScroll)
         setTimeout(() => {
           if (isCancelled) return
           setIsExiting(true)
-          window.removeEventListener('wheel', preventScroll)
-          window.removeEventListener('touchmove', preventScroll)
           if (onLoaded) onLoaded()
           setTimeout(() => {
             if (!isCancelled) setIsMounted(false)
           }, 800)
-        }, 300)
+        }, 200)
       }
-    }, 30)
+    }, 25)
 
     return () => {
       isCancelled = true

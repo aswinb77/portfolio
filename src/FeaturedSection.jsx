@@ -10,6 +10,20 @@ export default function FeaturedSection() {
   const featuredCraneRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [selectedProject, setSelectedProject] = useState(null)
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 768 || window.matchMedia('(hover: none)').matches
+    }
+    return false
+  })
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768 || window.matchMedia('(hover: none)').matches)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const projects = [
     {
@@ -594,7 +608,7 @@ export default function FeaturedSection() {
         <div
           style={{
             position: 'absolute',
-            bottom: 0,
+            bottom: '12px',
             left: 0,
             width: '100%',
             height: '200px',
@@ -662,7 +676,7 @@ export default function FeaturedSection() {
                       }
                     }}
                     className="colin-card colin-card--interactive"
-                    title={`View detailed overview for ${project.client} — ${project.title}`}
+                    title={isMobile ? undefined : `View detailed overview for ${project.client} — ${project.title}`}
                   >
                     
                     {/* ── Behind Fanning Screens / Mockup Layers (fan out on hover) ── */}
