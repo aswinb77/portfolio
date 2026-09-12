@@ -1403,6 +1403,69 @@
 @media (max-width: 768px) {
   .bento-collab-card { flex-direction: column; }
   .bento-collab__preview-side { padding-top: 0; }
+
+  /* ── Mobile Animation Removal (Keep desktop 100% intact) ── */
+  /* 1. Disable scroll-reveal fade & slide effects */
+  .scroll-reveal-item,
+  .scroll-reveal--fade,
+  .scroll-reveal--slide-left,
+  .scroll-reveal--slide-right,
+  .scroll-reveal--cinematic,
+  .fade-and-rise {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  /* 2. Disable quote word reveal animation */
+  .quote-line {
+    overflow: visible !important;
+  }
+
+  .quote-word {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+    display: inline !important;
+  }
+
+  /* 3. Disable progressive text fill: render bio words crisp and fully visible immediately */
+  .progressive-word {
+    color: rgba(245, 232, 216, 0.96) !important;
+  }
+
+  .progressive-word .base-layer {
+    opacity: 1 !important;
+    color: rgba(245, 232, 216, 0.96) !important;
+  }
+
+  .progressive-word .fill-layer {
+    display: none !important;
+  }
+
+  .pen-marked-name .base-layer {
+    color: #ffffff !important;
+    text-shadow: 0 0 12px rgba(255, 138, 76, 0.4) !important;
+  }
+
+  .pen-sketch-path {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+    opacity: 0.85 !important;
+  }
+
+  /* 4. Disable heavy scroll progress line & crane scroll jump */
+  .user-section__progress-line {
+    display: none !important;
+  }
+
+  .user-section__crane {
+    transition: none !important;
+  }
 }
 
 /* Actions & Buttons */

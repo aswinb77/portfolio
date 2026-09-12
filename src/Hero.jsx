@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import './Hero.css'
 import introVideo from './assets/intro.mp4'
 
@@ -82,6 +82,8 @@ const LANGUAGES = [
 
 export default function Hero({ onSplineReady }) {
   const timerRef = useRef(null)
+  const videoRef = useRef(null)
+  const isReadyCalledRef = useRef(false)
   const [splineLoaded, setSplineLoaded] = useState(false)
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -89,6 +91,13 @@ export default function Hero({ onSplineReady }) {
     }
     return false
   })
+
+  const triggerReady = useCallback(() => {
+    if (isReadyCalledRef.current) return
+    isReadyCalledRef.current = true
+    setSplineLoaded(true)
+    if (onSplineReady) onSplineReady()
+  }, [onSplineReady])
 
   useEffect(() => {
     const handleResize = () => {
@@ -98,14 +107,34 @@ export default function Hero({ onSplineReady }) {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // ─── Genuinely wait for mobile video to be buffered & ready to play ───
   useEffect(() => {
-    if (isMobile) {
-      const t = setTimeout(() => {
-        if (onSplineReady) onSplineReady()
-      }, 300)
-      return () => clearTimeout(t)
+    if (!isMobile) return
+
+    const video = videoRef.current
+    if (!video) return
+
+    // If video has already buffered enough data to start playback smoothly
+    if (video.readyState >= 3) {
+      triggerReady()
+      return
     }
-  }, [isMobile, onSplineReady])
+
+    const handleVideoReady = () => triggerReady()
+    video.addEventListener('canplay', handleVideoReady, { once: true })
+    video.addEventListener('loadeddata', handleVideoReady, { once: true })
+
+    // Safety fallback: if connection is completely offline or stalled, proceed after 6s
+    const fallbackTimer = setTimeout(() => {
+      triggerReady()
+    }, 6000)
+
+    return () => {
+      video.removeEventListener('canplay', handleVideoReady)
+      video.removeEventListener('loadeddata', handleVideoReady)
+      clearTimeout(fallbackTimer)
+    }
+  }, [isMobile, triggerReady])
 
   const smoothSlowScrollTo = (targetY, duration = 2000) => {
     const startY = window.scrollY
@@ -204,6 +233,7 @@ export default function Hero({ onSplineReady }) {
         {isMobile ? (
           <>
             <video
+              ref={videoRef}
               className="hero__mobile-video"
               src={introVideo}
               autoPlay
@@ -211,14 +241,8 @@ export default function Hero({ onSplineReady }) {
               muted
               playsInline
               preload="auto"
-              onLoadedData={() => {
-                setSplineLoaded(true)
-                if (onSplineReady) onSplineReady()
-              }}
-              onCanPlay={() => {
-                setSplineLoaded(true)
-                if (onSplineReady) onSplineReady()
-              }}
+              onLoadedData={triggerReady}
+              onCanPlay={triggerReady}
             />
             {/* Mobile Hero Viewport Layout inspired by editorial luxury portfolios */}
             <div className="hero__mobile-overlay">
@@ -261,10 +285,7 @@ export default function Hero({ onSplineReady }) {
             className={`hero__spline-iframe ${splineLoaded ? 'is-loaded' : ''}`}
             loading="eager"
             allow="autoplay; fullscreen"
-            onLoad={() => {
-              setSplineLoaded(true)
-              if (onSplineReady) onSplineReady()
-            }}
+            onLoad={triggerReady}
           />
         )}
       </div>

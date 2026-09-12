@@ -189,6 +189,13 @@ export default function UserSection() {
 
   // ─── Scroll reveal with cinematic stagger delays ───────────────────────
   useEffect(() => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
+    const items = userSectionRef.current?.querySelectorAll('.scroll-reveal-item')
+    if (isMobile) {
+      items?.forEach((item) => item.classList.add('is-revealed'))
+      return
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -200,7 +207,6 @@ export default function UserSection() {
       { threshold: 0.06, rootMargin: '0px 0px -30px 0px' }
     )
 
-    const items = userSectionRef.current?.querySelectorAll('.scroll-reveal-item')
     items?.forEach((item) => observer.observe(item))
 
     return () => observer.disconnect()
@@ -208,6 +214,8 @@ export default function UserSection() {
 
   // ─── Crane scroll fly-away ─────────────────────────────────────────────
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
+
     let animId = null
     const onScroll = () => {
       if (!craneRef.current) return
@@ -252,6 +260,8 @@ export default function UserSection() {
 
   // ─── Progressive text fill ─────────────────────────────────────────────
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
+
     let animId = null
     const words = bioTextRef.current
       ? Array.from(bioTextRef.current.querySelectorAll('.progressive-word'))
@@ -299,6 +309,8 @@ export default function UserSection() {
   const smoothMouse = useRef({ x: 0.5, y: 0.5 })
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
+
     const section = userSectionRef.current
     if (!section) return
 
@@ -365,6 +377,7 @@ export default function UserSection() {
 
   // ─── 3D tilt on side quest cards ──────────────────────────────────────
   const handleCardTilt = useCallback((e) => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
     const card = e.currentTarget
     const rect = card.getBoundingClientRect()
     const x = e.clientX - rect.left
@@ -378,6 +391,7 @@ export default function UserSection() {
   }, [])
 
   const handleCardReset = useCallback((e) => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
     const card = e.currentTarget
     card.style.transform = ''
     card.style.boxShadow = ''
@@ -389,6 +403,8 @@ export default function UserSection() {
   const progressLineRef = useRef(null)
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
+
     let animId = null
     const onScroll = () => {
       if (animId) cancelAnimationFrame(animId)
@@ -506,7 +522,8 @@ export default function UserSection() {
                 src="/user.webp"
                 alt="Aswin Biju"
                 className="user-section__img"
-                loading="lazy"
+                loading="eager"
+                fetchPriority="high"
                 decoding="async"
               />
               <div className="user-section__img-overlay" />

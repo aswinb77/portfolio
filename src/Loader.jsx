@@ -4,7 +4,9 @@ import './Loader.css'
 const CRITICAL_IMAGES = [
   '/bg1.webp',
   '/user.webp',
-  '/stamp.webp',
+  '/catlook.png',
+  '/papercrane.png',
+  '/telegram.webp',
 ]
 
 export default function Loader({ onLoaded, isSplineReady = false }) {
@@ -13,14 +15,11 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
   const [isMounted, setIsMounted] = useState(true)
 
   const progressRef = useRef(0)
-  const targetProgressRef = useRef(20)
+  const targetProgressRef = useRef(15)
   const isSplineReadyRef = useRef(isSplineReady)
 
   useEffect(() => {
     isSplineReadyRef.current = isSplineReady
-    if (isSplineReady) {
-      targetProgressRef.current = 100
-    }
   }, [isSplineReady])
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
         if (initialFallback && initialFallback.parentNode) {
           initialFallback.parentNode.removeChild(initialFallback)
         }
-      }, 300)
+      }, 350)
     }
 
     const preventScroll = (e) => e.preventDefault()
@@ -39,70 +38,132 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
     window.addEventListener('touchmove', preventScroll, { passive: false })
 
     let isCancelled = false
-    let assetsLoaded = 0
-    const totalAssets = CRITICAL_IMAGES.length + 2
+    let imagesDecoded = 0
+    let fontsReady = false
+    let docReady = document.readyState === 'complete'
+    const totalImages = CRITICAL_IMAGES.length
 
-    const checkAssetIncrement = () => {
-      assetsLoaded += 1
-      const calculated = Math.min(95, Math.round((assetsLoaded / totalAssets) * 94))
-      if (calculated > targetProgressRef.current) {
-        targetProgressRef.current = calculated
+    const recalculateTarget = () => {
+      if (isCancelled) return
+      // Images contribute up to 55%
+      const imagePct = (imagesDecoded / totalImages) * 55
+      // Fonts contribute up to 20%
+      const fontPct = fontsReady ? 20 : 0
+      // Document complete contributes 10%
+      const docPct = docReady ? 10 : 0
+
+      let base = Math.min(85, Math.round(imagePct + fontPct + docPct))
+
+      // If the hero element (mobile video or desktop Spline) is ready:
+      if (isSplineReadyRef.current) {
+        // If critical images and fonts are also in place, go to 100%
+        if (imagesDecoded >= totalImages - 1 && fontsReady) {
+          base = 100
+        } else {
+          base = Math.max(base, 90)
+        }
+      }
+
+      if (base > targetProgressRef.current) {
+        targetProgressRef.current = base
       }
     }
 
+    // Preload & off-thread decode critical images so they don't stutter upon unmask
     CRITICAL_IMAGES.forEach((src) => {
       const img = new Image()
       img.src = src
+
+      const onImageReady = () => {
+        if (isCancelled) return
+        if ('decode' in img) {
+          img.decode()
+            .then(() => {
+              if (isCancelled) return
+              imagesDecoded += 1
+              recalculateTarget()
+            })
+            .catch(() => {
+              if (isCancelled) return
+              imagesDecoded += 1
+              recalculateTarget()
+            })
+        } else {
+          imagesDecoded += 1
+          recalculateTarget()
+        }
+      }
+
       if (img.complete) {
-        checkAssetIncrement()
+        onImageReady()
       } else {
-        img.onload = () => { if (!isCancelled) checkAssetIncrement() }
-        img.onerror = () => { if (!isCancelled) checkAssetIncrement() }
+        img.onload = onImageReady
+        img.onerror = () => {
+          if (isCancelled) return
+          imagesDecoded += 1
+          recalculateTarget()
+        }
       }
     })
 
+    // Verify Google Fonts readiness
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready
-        .then(() => { if (!isCancelled) checkAssetIncrement() })
-        .catch(() => { if (!isCancelled) checkAssetIncrement() })
+        .then(() => {
+          if (isCancelled) return
+          fontsReady = true
+          recalculateTarget()
+        })
+        .catch(() => {
+          if (isCancelled) return
+          fontsReady = true
+          recalculateTarget()
+        })
     } else {
-      checkAssetIncrement()
+      fontsReady = true
+      recalculateTarget()
     }
 
-    if (document.readyState === 'complete') {
-      checkAssetIncrement()
+    // Window loaded verification
+    if (docReady) {
+      recalculateTarget()
     } else {
-      window.addEventListener('load', () => { if (!isCancelled) checkAssetIncrement() }, { once: true })
+      window.addEventListener(
+        'load',
+        () => {
+          if (isCancelled) return
+          docReady = true
+          recalculateTarget()
+        },
+        { once: true }
+      )
     }
 
     const startTime = Date.now()
-    const MIN_LOAD_TIME = 600
-    const MAX_LOAD_TIME = 2200
+    const MIN_LOAD_TIME = 450 // Ensure clean 0 -> 100 sweep even on instantaneous cached reload
+    const MAX_LOAD_TIME = 6500 // Safety cap in case of severe network stalling
 
     const updateInterval = setInterval(() => {
       const elapsed = Date.now() - startTime
-      const timeRatio = Math.min(1, elapsed / MIN_LOAD_TIME)
-      const artificialBaseline = Math.round(timeRatio * 90)
-      
-      let currentTarget = Math.max(targetProgressRef.current, artificialBaseline)
 
-      if (isSplineReadyRef.current) {
-        currentTarget = 100
+      // If Spline / mobile video becomes ready during interval:
+      if (isSplineReadyRef.current && elapsed >= MIN_LOAD_TIME) {
+        if (imagesDecoded >= totalImages - 1 && fontsReady) {
+          targetProgressRef.current = 100
+        } else {
+          targetProgressRef.current = Math.max(targetProgressRef.current, 92)
+        }
       }
 
-      if (progressRef.current < currentTarget) {
-        const step = Math.max(1, Math.ceil((currentTarget - progressRef.current) * 0.22))
-        progressRef.current = Math.min(currentTarget, progressRef.current + step)
-      }
-
-      if (elapsed >= MIN_LOAD_TIME && assetsLoaded >= totalAssets - 1) {
-        targetProgressRef.current = 100
-        progressRef.current = 100
-      }
-
+      // Safety timeout: don't lock the user forever if network blocks fonts or 3D
       if (elapsed >= MAX_LOAD_TIME) {
         targetProgressRef.current = 100
-        progressRef.current = 100
+      }
+
+      if (progressRef.current < targetProgressRef.current) {
+        const diff = targetProgressRef.current - progressRef.current
+        const step = Math.max(1, Math.ceil(diff * 0.18))
+        progressRef.current = Math.min(targetProgressRef.current, progressRef.current + step)
       }
 
       setProgress(progressRef.current)
@@ -118,9 +179,9 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
           setTimeout(() => {
             if (!isCancelled) setIsMounted(false)
           }, 800)
-        }, 200)
+        }, 150)
       }
-    }, 25)
+    }, 20)
 
     return () => {
       isCancelled = true
