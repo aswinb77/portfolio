@@ -1,0 +1,194 @@
+/* ══════════════════════════════════════════════════════════════════════
+   LIGHTHOUSE FEATURE — SVG-based, all in one coordinate space.
+   Container: 200px tall at bottom of FeaturedSection.
+   SVG viewBox 0 0 1000 220, lighthouse drawn at left, beam & icons exact.
+══════════════════════════════════════════════════════════════════════ */
+
+.lhf-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Main SVG canvas ── */
+.lhf-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: auto;
+  overflow: visible;
+}
+
+/* ─── BEAM ────────────────────────────────────────────────── */
+.lhf-beam-cone {
+  opacity: 0.82;
+  filter: blur(14px);
+  animation: lhf-breathe 4s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.lhf-beam-spine {
+  opacity: 0.9;
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+@keyframes lhf-breathe {
+  from { opacity: 0.75; }
+  to   { opacity: 0.92; }
+}
+
+/* ─── LIGHTHOUSE SVG SHAPES ──────────────────────────────── */
+.lhf-tower-svg {
+  transition: filter 0.3s ease;
+}
+
+.lhf-tower-svg:hover {
+  filter: drop-shadow(0 0 16px rgba(255, 220, 100, 0.42));
+}
+
+.lhf-lantern-flare-circle {
+  animation: lhf-flare 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes lhf-flare {
+  0%, 100% { opacity: 0.35; r: 26; }
+  50%       { opacity: 0.55; r: 32; }
+}
+
+.lhf-lantern-glow {
+  animation: lhf-glow 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes lhf-glow {
+  0%, 100% { opacity: 0.88; r: 16; }
+  50%       { opacity: 1;    r: 20;
+              filter: drop-shadow(0 0 8px #ffe566); }
+}
+
+.lhf-lantern-core-circle {
+  animation: lhf-core 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes lhf-core {
+  0%, 100% { r: 6; opacity: 0.92; }
+  50%       { r: 7; opacity: 1; }
+}
+
+/* Surge: lantern & beam flare up */
+.lhf-svg--surge .lhf-lantern-glow        { r: 28 !important; opacity: 1 !important; }
+.lhf-svg--surge .lhf-lantern-core-circle { r: 10 !important; }
+.lhf-svg--surge .lhf-beam-cone           { opacity: 1 !important; filter: blur(18px) brightness(1.3) !important; }
+
+/* ─── TOOL ICON GROUPS ──────────────────────────────────── */
+.lhf-orb-g {
+  /* Default: invisible (firefly not lit) */
+  opacity: 0.08;
+  filter: grayscale(1) brightness(0.3);
+  transition:
+    opacity 0.22s ease,
+    filter 0.22s ease;
+  animation: lhf-drift 4.5s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+@keyframes lhf-drift {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-4px); }
+}
+
+/* LIT — beam illuminates the icon */
+.lhf-orb-g--lit {
+  opacity: 1;
+  filter: grayscale(0) brightness(1.08) drop-shadow(0 0 7px var(--g));
+  animation-play-state: running;
+}
+
+/* Active / hover */
+.lhf-orb-g--lit:hover,
+.lhf-orb-g--active {
+  opacity: 1;
+  filter: grayscale(0) brightness(1.22) drop-shadow(0 0 14px var(--g));
+}
+
+/* Allow partial reveal on unlit hover */
+.lhf-orb-g:not(.lhf-orb-g--lit):hover {
+  opacity: 0.45;
+  filter: grayscale(0.4) brightness(0.75);
+}
+
+/* Click burst */
+.lhf-orb-g--burst {
+  animation: lhf-burst 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes lhf-burst {
+  0%   { transform: scale(1); }
+  42%  { transform: scale(1.4);
+         filter: grayscale(0) brightness(1.5) drop-shadow(0 0 18px var(--g)); }
+  100% { transform: scale(1.2) translateY(-4px); }
+}
+
+.lhf-orb-img {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lhf-orb-g--lit:hover .lhf-orb-img,
+.lhf-orb-g--active .lhf-orb-img {
+  transform: scale(1.22);
+}
+
+/* ─── PURE SVG TOOLTIP ──────────────────────────────────── */
+.lhf-tooltip-svg {
+  pointer-events: none;
+  animation: lhf-tip-appear 0.16s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes lhf-tip-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.lhf-tip-name {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.lhf-tip-role {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 9.5px;
+  font-weight: 500;
+  color: #e5a47e;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* ─── CAPTION ─────────────────────────────────────────────── */
+.lhf-caption-svg {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 10px;
+  font-style: italic;
+  fill: #8c6a4a;
+  opacity: 0.78;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .lhf-caption-svg { display: none; }
+}

@@ -1,0 +1,310 @@
+/* ══════════════════════════════════════════════════
+   MINIMAL FOOTER  —  Inspired by vinland full-bleed
+   ══════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,700&family=Rubik:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap');
+
+/* ── 1. Reveal Container (Fixed Curtain Effect) ── */
+.footer-reveal-container {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  z-index: 1;
+}
+
+/* ── 2. Fixed Footer Panel ── */
+.footer.reveal {
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+/* ── 3. Background ── */
+.f-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* vinland.jpg — bright, airy, centered */
+.f-bg__img {
+  position: absolute;
+  inset: 0;
+  background: url('/vinland.jpg') center 40% / cover no-repeat;
+  transform: scale(1.03);
+  transition: transform 10s linear;
+  animation: bgDrift 18s ease-in-out infinite alternate;
+}
+
+@keyframes bgDrift {
+  from {
+    transform: scale(1.03) translateY(0);
+  }
+
+  to {
+    transform: scale(1.06) translateY(-1.5%);
+  }
+}
+
+/* Gradient scrim — heavy dark from bottom up, transparent top so image breathes */
+.f-bg__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.08) 0%,
+      rgba(0, 0, 0, 0.12) 35%,
+      rgba(0, 0, 0, 0.52) 62%,
+      rgba(0, 0, 0, 0.85) 85%,
+      rgba(0, 0, 0, 0.96) 100%);
+}
+
+/* Firefly canvas — full bleed */
+.f-firefly-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── 4. Hero Block — centred vertically in the full card ── */
+.f-hero {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 24px;
+  gap: 0;
+}
+
+
+
+/* ── CTA lines ── */
+.f-hero__line1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.4rem, 3.2vw, 2.8rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0 0 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.f-hero__line2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(3rem, 8vw, 7.5rem);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  margin: 0 0 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  /* warm white with subtle glow */
+  color: #fff;
+  text-shadow:
+    0 2px 40px rgba(255, 255, 255, 0.25),
+    0 0 80px rgba(180, 240, 160, 0.12);
+}
+
+/* Per-character entrance */
+@keyframes charIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.f-cta-char {
+  display: inline-block;
+  opacity: 0;
+  animation: charIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ── Actions row ── */
+.f-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.f-email-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 22px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Rubic', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  outline: none;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.f-email-pill:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.f-email-pill.is-copied {
+  border-color: rgba(74, 222, 128, 0.6);
+  background: rgba(74, 222, 128, 0.12);
+  color: #a7f3d0;
+}
+
+.f-email-pill__badge {
+  font-size: 0.78rem;
+  opacity: 0.7;
+}
+
+
+
+/* ── 5. Bottom bar ── */
+.f-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 40px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.f-bar__nav,
+.f-bar__socials {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.f-bar__link {
+  font-family: 'Rubik', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 20px;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.f-bar__link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.f-bar__meta {
+  font-family: 'Rubik', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+}
+
+/* ── 6. Responsive ── */
+@media (max-width: 768px) {
+  .f-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 24px 20px;
+  }
+
+  .f-bar__meta {
+    order: -1;
+    font-size: 0.58rem;
+  }
+
+  .f-hero__line2 {
+    font-size: clamp(2.4rem, 13vw, 5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .f-hero {
+    padding: 0 16px;
+  }
+
+  .f-hero__line1 {
+    font-size: 0.95rem;
+    letter-spacing: 0.16em;
+  }
+
+  .f-hero__line2 {
+    font-size: clamp(2rem, 11vw, 3.2rem);
+  }
+
+  .f-hero__actions {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .f-email-pill {
+    min-height: 46px;
+    padding: 12px 20px;
+    font-size: 0.76rem;
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .f-bar {
+    padding: 14px 16px 22px;
+    gap: 14px;
+  }
+
+  .f-bar__nav,
+  .f-bar__socials {
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+
+  .f-bar__link {
+    padding: 6px 8px;
+    font-size: 0.7rem;
+  }
+}

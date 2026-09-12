@@ -1,0 +1,41 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #0e0502;
+  overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ── Prevent accidental blue selection boxes, ghost drag, and long-press callouts on media ── */
+img, svg, video, picture, canvas {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+/* Interactive elements: remove default blue outline / tap overlay */
+button, a, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid rgba(255, 138, 76, 0.6);
+  outline-offset: 2px;
+}
