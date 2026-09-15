@@ -39,6 +39,21 @@ const COLUMNS_DATA = [
   {
     direction: 'up',
     images: [
+      g1,
+      g4,
+      g7,
+      g10,
+      g13,
+      g16,
+      g19,
+      g22,
+      g25,
+      g28,
+    ],
+  },
+  {
+    direction: 'down',
+    images: [
       g1, // replaces d3624c29
       g2, // replaces c4f186ea
       'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/b2/01/ac/b201ac0a-d696-7e94-9133-5d0160adb847/075596059527.jpg/600x600bb.jpg',
@@ -49,21 +64,6 @@ const COLUMNS_DATA = [
       g6, // replaces 8813c795
       g7, // replaces 8648e899
       'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/7e/de/d1/7eded170-9703-ae08-90c0-dd7c19c2bcac/00602537945665.rgb.jpg/600x600bb.jpg',
-    ],
-  },
-  {
-    direction: 'down',
-    images: [
-      'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/f3/22/7f/f3227fd3-758e-2728-7db2-25b29373c8ae/18UMGIM35635.rgb.jpg/600x600bb.jpg',
-      'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/cc/86/10/cc861044-0537-0de4-4389-dceec0c13b96/06UMGIM44799.rgb.jpg/600x600bb.jpg',
-      g8,  // replaces 938fb30c
-      g9,  // replaces 7710bdd0
-      g10, // replaces 68d31343
-      g11, // replaces 6499090c
-      g12, // replaces 635d3043
-      g13, // replaces f10c873d
-      'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/f0/c7/c8/f0c7c8f4-4319-d357-ddaf-566ef8e2194e/081227979379.jpg/600x600bb.jpg',
-      g14, // replaces deb4760b
     ],
   },
   {
@@ -99,16 +99,16 @@ const COLUMNS_DATA = [
   {
     direction: 'up',
     images: [
-      g1,
-      g4,
-      g7,
-      g10,
-      g13,
-      g16,
-      g19,
-      g22,
-      g25,
-      g28,
+      'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/f3/22/7f/f3227fd3-758e-2728-7db2-25b29373c8ae/18UMGIM35635.rgb.jpg/600x600bb.jpg',
+      'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/cc/86/10/cc861044-0537-0de4-4389-dceec0c13b96/06UMGIM44799.rgb.jpg/600x600bb.jpg',
+      g8,  // replaces 938fb30c
+      g9,  // replaces 7710bdd0
+      g10, // replaces 68d31343
+      g11, // replaces 6499090c
+      g12, // replaces 635d3043
+      g13, // replaces f10c873d
+      'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/f0/c7/c8/f0c7c8f4-4319-d357-ddaf-566ef8e2194e/081227979379.jpg/600x600bb.jpg',
+      g14, // replaces deb4760b
     ],
   },
 ]
