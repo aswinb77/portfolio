@@ -211,7 +211,7 @@
 
 .hero__name {
   font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(1.35rem, 2.1vw, 1.8rem);
+  font-size: clamp(1.75rem, 2.7vw, 2.45rem);
   font-weight: 500;
   line-height: 1.1;
   color: #ffffff;
@@ -396,7 +396,7 @@
   }
 
   .hero__name {
-    font-size: clamp(1.3rem, 5.4vw, 1.65rem);
+    font-size: clamp(1.65rem, 6.5vw, 2.15rem);
   }
 
   .hero__role {
@@ -446,7 +446,7 @@
   }
 
   .hero__name {
-    font-size: clamp(1.2rem, 5.4vw, 1.45rem);
+    font-size: clamp(1.55rem, 6.2vw, 1.95rem);
   }
 
   .hero__role {
