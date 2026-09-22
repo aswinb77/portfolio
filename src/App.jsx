@@ -2,9 +2,10 @@ import { useState } from 'react'
 import './App.css'
 import Loader from './Loader'
 import Hero from './Hero'
+import StickyNav from './StickyNav'
+import FeaturedSection from './FeaturedSection'
 import UserSection from './UserSection'
 import UserSectionV2 from './UserSectionV2'
-import FeaturedSection from './FeaturedSection'
 import GallerySection from './GallerySection'
 import CreativeSection from './CreativeSection'
 import Footer from './Footer'
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <div className="page">
+      <StickyNav />
       <Loader isSplineReady={isSplineReady} />
       <Hero onSplineReady={() => setIsSplineReady(true)} />
       <FeaturedSection />

@@ -1,0 +1,155 @@
+/* ═════════════════════════════════════════════════════════════
+   STICKY NAV — "Aswin Biju" Editorial Header
+   ═════════════════════════════════════════════════════════════ */
+
+.stickynav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(247, 245, 238, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  user-select: none;
+}
+
+.stickynav.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.stickynav__container {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Brand Name on Left */
+.stickynav__logo {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(20px, 2.6vw, 25px);
+  font-weight: 500;
+  color: #111111;
+  letter-spacing: -0.015em;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.stickynav__logo:hover {
+  opacity: 0.75;
+}
+
+/* Hamburger Toggle Button on Right */
+.stickynav__toggle {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 7px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  position: relative;
+  z-index: 10001;
+}
+
+.stickynav__bar {
+  display: block;
+  height: 1.8px;
+  background-color: #111111;
+  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease, opacity 0.2s ease;
+}
+
+.stickynav__bar--1 {
+  width: 22px;
+}
+
+.stickynav__bar--2 {
+  width: 16px;
+}
+
+.stickynav__toggle:hover .stickynav__bar--2 {
+  width: 22px;
+}
+
+.stickynav__toggle.is-open .stickynav__bar--1 {
+  width: 22px;
+  transform: translateY(4.4px) rotate(45deg);
+}
+
+.stickynav__toggle.is-open .stickynav__bar--2 {
+  width: 22px;
+  transform: translateY(-4.4px) rotate(-45deg);
+}
+
+/* ── Menu Backdrop & Panel ── */
+.stickynav__menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 14, 11, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.stickynav__menu-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.stickynav__menu-panel {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  padding: 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.stickynav__menu-backdrop.is-open .stickynav__menu-panel {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.stickynav__menu-link {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: #1a1a1a;
+  text-decoration: none;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.stickynav__menu-link:hover {
+  color: #ff8a4c;
+  transform: translateX(4px);
+}

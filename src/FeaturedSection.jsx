@@ -12,8 +12,13 @@ export default function FeaturedSection() {
       id: 'finmate',
       client: 'Finmate',
       title: 'Finmate',
-      subtitle: 'Your Budget Mate',
+      subtitle: 'A personal finance companion that tracks every rupee with Finny.',
       description: 'A personal finance companion that tracks every rupee with Finny, your friendly finance dragon.',
+      bullets: [
+        '10k+ transactions tracked with Finny AI',
+        '84% positive in-product habit retention',
+        '3.2x faster expense logging vs manual spreadsheets',
+      ],
       category: 'Mobile · Product Design',
       link: '#',
       github: 'https://github.com/aswinb77/finmate',
@@ -27,8 +32,13 @@ export default function FeaturedSection() {
       id: 'moviecc',
       client: 'Movie.cc',
       title: 'Movie.cc',
-      subtitle: 'Discover Every Frame',
+      subtitle: 'Discover every frame with real-time cinema intelligence and live chat.',
       description: 'A global movie discovery platform powered by real-time web scraping, refreshed every 6 hours. Hosts a clustered live chatroom.',
+      bullets: [
+        '6h auto-scraping cycle across global movie feeds',
+        'Clustered live chatroom with active viewer rooms',
+        '100% real-time streaming link & trailer updates',
+      ],
       category: 'Full-Stack · Real-time Platform',
       link: '#',
       github: 'https://github.com/aswinb77/Anapp',
@@ -42,8 +52,13 @@ export default function FeaturedSection() {
       id: 'pmse',
       client: 'PMSE',
       title: 'PMSE',
-      subtitle: 'Predictive EV Maintenance',
+      subtitle: 'Predictive EV maintenance on-device before mechanical failure occurs.',
       description: 'On-device TinyML inference on ESP32 paired with a cross-platform Flutter app to predict EV motor faults and anomalies in real time.',
+      bullets: [
+        'On-device TinyML inference running on ESP32',
+        '60FPS native Flutter dashboard telemetry',
+        'Real-time fault anomaly detection & alerts',
+      ],
       category: 'Embedded AI · Mobile',
       link: '#',
       github: 'https://github.com/aswinb77/ev-sensor',
@@ -57,8 +72,13 @@ export default function FeaturedSection() {
       id: 'merchant-wallet',
       client: 'Merchant Wallet',
       title: 'Merchant Wallet',
-      subtitle: 'Mobile E-Wallet App',
+      subtitle: 'Dual-panel mobile e-wallet engineered for high-volume transactions.',
       description: 'A dual-panel mobile-web e-wallet with user wallet & merchant dashboard, AJAX-powered transactions, and Telegram-bot payout approvals.',
+      bullets: [
+        'Instant merchant payout workflows & balance ledger',
+        'Automated Telegram bot approval & notification pipeline',
+        'Dual-role security architecture with audit trails',
+      ],
       category: 'Full-Stack · Mobile Web',
       link: '#',
       github: 'https://github.com/aswinb77/e-wallet',
@@ -91,7 +111,7 @@ export default function FeaturedSection() {
     setSelectedProject(projects[prevIndex])
   }
 
-  // Active project when hovered, or null when idle
+  // Active project on desktop when hovered
   const activeProject = hoveredProjectId
     ? projects.find((p) => p.id === hoveredProjectId)
     : null
@@ -122,18 +142,25 @@ export default function FeaturedSection() {
       </div>
 
       <div className="featured-container">
+        
+        {/* ── Smaller Heading for Selected Work (Image 1) ── */}
+        <div className="featured-small-heading-wrap">
+          <span className="featured-eyebrow-tag">SELECTED WORK</span>
+          <div className="featured-divider-line" />
+        </div>
 
         {/* ── Subtitle: "Recent work." (Image 2) ── */}
         <div className="featured-recent-header">
           <h3 className="featured-recent-title">Recent work.</h3>
         </div>
 
-        {/* ── Interactive Stage: List Left + Floating Tilted Card on Right (Image 3) ── */}
+        {/* ══════════════════════════════════════════════════
+            DESKTOP LAYOUT: List Left + Floating Tilted Card Right
+           ══════════════════════════════════════════════════ */}
         <div
-          className="featured-interactive-stage"
+          className="featured-interactive-stage desktop-only"
           onMouseLeave={() => setHoveredProjectId(null)}
         >
-          
           {/* Left Column: Big Typography Project List */}
           <div className="featured-list-col">
             {projects.map((project) => {
@@ -154,15 +181,12 @@ export default function FeaturedSection() {
                   }}
                 >
                   <div className="featured-title-line">
-                    {/* Arrow Indicator on Left */}
                     <span className="featured-row-arrow" aria-hidden="true">
                       →
                     </span>
 
-                    {/* Big Serif Project Title */}
                     <h2 className="featured-row-title">{project.title}</h2>
 
-                    {/* "Know more →" Button */}
                     <button
                       type="button"
                       className="featured-know-more-btn"
@@ -177,7 +201,6 @@ export default function FeaturedSection() {
                     </button>
                   </div>
 
-                  {/* One-Line Project Description underneath */}
                   <div className="featured-row-desc-wrap">
                     <p className="featured-row-desc">{project.description}</p>
                   </div>
@@ -186,7 +209,7 @@ export default function FeaturedSection() {
             })}
           </div>
 
-          {/* Right Column: Tilted Preview Card (Appears only on hover) */}
+          {/* Right Column: Tilted Preview Card */}
           <div className="featured-preview-col">
             <div
               className={`featured-preview-card ${activeProject ? 'is-visible' : 'is-hidden'}`}
@@ -197,7 +220,6 @@ export default function FeaturedSection() {
             >
               {activeProject && (
                 <>
-                  {/* Card Browser Bar / Mac Header */}
                   <div className="featured-card-topbar">
                     <div className="featured-topbar-dots">
                       <span className="dot dot--red" />
@@ -208,7 +230,6 @@ export default function FeaturedSection() {
                     <span className="featured-topbar-badge">{activeProject.category}</span>
                   </div>
 
-                  {/* Card Media Graphic (Video for Finmate & Movie.cc, Image for others) */}
                   <div className="featured-card-img-wrap">
                     {activeProject.video ? (
                       <video
@@ -231,7 +252,6 @@ export default function FeaturedSection() {
                     )}
                   </div>
 
-                  {/* Card Bottom Meta */}
                   <div className="featured-card-footer">
                     <div className="featured-footer-info">
                       <span className="featured-footer-client">{activeProject.client}</span>
@@ -243,7 +263,77 @@ export default function FeaturedSection() {
               )}
             </div>
           </div>
+        </div>
 
+        {/* ══════════════════════════════════════════════════
+            MOBILE LAYOUT: Editorial Cards Stack (Matches Screenshots)
+           ══════════════════════════════════════════════════ */}
+        <div className="featured-mobile-stack mobile-only">
+          {projects.map((project) => (
+            <div
+              key={project.id}
+              className="featured-mobile-card"
+              onClick={() => handleOpenProject(project)}
+            >
+              {/* Top Visual Box with Starry/Cosmic Backdrop + Centered Phone Frame */}
+              <div className="featured-mobile-visual">
+                <div className="featured-phone-mockup">
+                  {/* Dynamic Island Pill */}
+                  <div className="featured-phone-island" aria-hidden="true" />
+                  
+                  {/* Screen Content: Video or Screenshot */}
+                  <div className="featured-phone-screen">
+                    {project.video ? (
+                      <video
+                        src={project.video}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="featured-phone-media"
+                      />
+                    ) : (
+                      <img
+                        src={project.previewImg}
+                        alt={project.title}
+                        className="featured-phone-media"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Bottom Body */}
+              <div className="featured-mobile-body">
+                <h3 className="featured-mobile-title">{project.title}</h3>
+                <p className="featured-mobile-subtitle">{project.subtitle}</p>
+
+                {/* 3 Square Bullet Points (■) */}
+                <ul className="featured-mobile-bullets">
+                  {project.bullets.map((bullet, i) => (
+                    <li key={i} className="featured-mobile-bullet">
+                      <span className="bullet-sq" aria-hidden="true">■</span>
+                      <span className="bullet-text">{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Black "Know more →" Pill Button */}
+                <button
+                  type="button"
+                  className="featured-mobile-btn"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleOpenProject(project)
+                  }}
+                >
+                  <span>Know more</span>
+                  <span className="btn-arrow">→</span>
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
 
       </div>
