@@ -1,7 +1,7 @@
 /* ══════════════════════════════════════════════════
-   MINIMAL ARCHITECTURAL SITE LOADER
-   Pure field · scan line · quiet counter
-   Dark canvas, monospace, zero noise
+   MINIMAL EDITORIAL SITE LOADER
+   Centered Name + 120px Sleek Progress Line
+   Matches reference loader design
    ══════════════════════════════════════════════════ */
 
 /* ── Root shell ── */
@@ -13,290 +13,79 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #080706;
+  background-color: #000000;
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
   opacity: 1;
   visibility: visible;
-  transition:
-    opacity 0.75s cubic-bezier(0.77, 0, 0.175, 1),
-    filter 0.75s cubic-bezier(0.77, 0, 0.175, 1);
-  will-change: opacity, filter;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
 }
 
 .ldr--exit {
   opacity: 0;
-  filter: blur(3px);
   pointer-events: none;
 }
 
-/* ── Pure dark textured field ── */
+/* ── Subtle tactile grain / film noise ── */
 .ldr__field {
   position: absolute;
   inset: 0;
-  /* Very subtle grain texture via SVG noise */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
   pointer-events: none;
 }
 
-/* ── Horizontal scanning line ── */
-.ldr__scanline {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(245, 232, 216, 0.06) 18%,
-    rgba(245, 232, 216, 0.22) 50%,
-    rgba(245, 232, 216, 0.06) 82%,
-    transparent 100%
-  );
-  animation: scanSweep 2.8s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-  pointer-events: none;
-}
-
-@keyframes scanSweep {
-  0%   { top: 15%; opacity: 0; }
-  8%   { opacity: 1; }
-  92%  { opacity: 1; }
-  100% { top: 85%; opacity: 0; }
-}
-
-/* ── Central geometry ── */
-.ldr__center {
-  position: relative;
-  width: 96px;
-  height: 96px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 52px;
-}
-
-/* Cross-hair — four thin lines radiating from center */
-.ldr__cross {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.ldr__cross-h {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(245, 232, 216, 0.12) 15%,
-    rgba(245, 232, 216, 0.45) 50%,
-    rgba(245, 232, 216, 0.12) 85%,
-    transparent 100%
-  );
-  transform: translateY(-0.5px);
-}
-
-.ldr__cross-v {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(245, 232, 216, 0.12) 15%,
-    rgba(245, 232, 216, 0.45) 50%,
-    rgba(245, 232, 216, 0.12) 85%,
-    transparent 100%
-  );
-  transform: translateX(-0.5px);
-}
-
-/* The morphing square — breathes slowly */
-.ldr__square {
-  width: 28px;
-  height: 28px;
-  border: 1px solid rgba(245, 232, 216, 0.55);
+/* ── Centered Content (Name + Progress Track) ── */
+.ldr__content {
   position: relative;
   z-index: 2;
-  animation: squareMorph 3.2s ease-in-out infinite;
-  transform-origin: center;
-}
-
-/* Four corner L-brackets that appear to 'frame' the square */
-.ldr__square::before,
-.ldr__square::after {
-  content: '';
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-color: rgba(245, 232, 216, 0.9);
-  border-style: solid;
-  animation: cornerPulse 3.2s ease-in-out infinite;
-}
-
-.ldr__square::before {
-  top: -5px;
-  left: -5px;
-  border-width: 1px 0 0 1px;
-}
-
-.ldr__square::after {
-  bottom: -5px;
-  right: -5px;
-  border-width: 0 1px 1px 0;
-}
-
-@keyframes squareMorph {
-  0%   { transform: scale(1) rotate(0deg);   opacity: 0.5; }
-  25%  { transform: scale(1.18) rotate(45deg); opacity: 1; }
-  50%  { transform: scale(1) rotate(90deg);  opacity: 0.55; }
-  75%  { transform: scale(1.12) rotate(135deg); opacity: 1; }
-  100% { transform: scale(1) rotate(180deg); opacity: 0.5; }
-}
-
-@keyframes cornerPulse {
-  0%   { opacity: 0.4; }
-  50%  { opacity: 1; }
-  100% { opacity: 0.4; }
-}
-
-/* ── Name label ── */
-.ldr__label-wrap {
-  position: relative;
-  margin-bottom: 0;
-}
-
-.ldr__name {
-  display: block;
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: 13px;
-  font-weight: 300;
-  letter-spacing: 0.52em;
-  text-transform: lowercase;
-  color: rgba(245, 232, 216, 0.65);
-  padding-left: 0.52em; /* compensate letter-spacing shift */
-  animation: nameFade 4s ease-in-out infinite alternate;
-}
-
-@keyframes nameFade {
-  0%   { opacity: 0.35; }
-  100% { opacity: 0.9; }
-}
-
-/* ── Bottom progress strip ── */
-.ldr__foot {
-  position: absolute;
-  bottom: 36px;
-  left: 40px;
-  right: 40px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
 }
 
-/* Thin 1px track */
-.ldr__track {
-  position: relative;
-  width: 100%;
-  height: 1px;
-  background: rgba(245, 232, 216, 0.08);
-  overflow: hidden;
-}
-
-.ldr__fill {
-  position: absolute;
-  inset: 0 auto 0 0;
-  background: rgba(245, 232, 216, 0.65);
-  transition: width 0.2s ease-out;
-}
-
-/* Shimmer bead on fill edge */
-.ldr__fill::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: -1px;
-  width: 4px;
-  height: 3px;
-  background: #ffffff;
-  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  animation: beadPulse 0.8s ease-in-out infinite alternate;
-}
-
-@keyframes beadPulse {
-  0%   { opacity: 0.55; transform: scaleX(0.7); }
-  100% { opacity: 1;    transform: scaleX(1.4); }
-}
-
-/* Counter row */
-.ldr__count-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-}
-
-.ldr__role {
-  font-family: 'SF Mono', 'Roboto Mono', Menlo, monospace;
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  text-transform: lowercase;
-  color: rgba(245, 232, 216, 0.28);
-}
-
-/* Large digit counter */
-.ldr__num {
-  display: flex;
-  align-items: baseline;
-  gap: 0;
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: 0.04em;
-  color: rgba(245, 232, 216, 0.35);
+/* Name: Elegant display serif */
+.ldr__name {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(28px, 4.6vw, 42px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: #f5f3ee;
+  margin: 0;
   line-height: 1;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.7);
+  animation: ldrFadeIn 0.35s ease forwards;
 }
 
-.ldr__num-digit {
-  display: inline-block;
-  transition: opacity 0.15s ease;
+/* ── Minimal 120px Progress Track ── */
+.ldr__track {
+  width: 120px;
+  height: 2px;
+  background: rgba(245, 243, 238, 0.14);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
 }
 
-/* The last/changing digit is crisper */
-.ldr__num-digit--active {
-  color: rgba(245, 232, 216, 0.85);
-  animation: digitFlick 0.12s ease-out;
+/* Real-time progress fill beam */
+.ldr__fill {
+  height: 100%;
+  background: rgba(245, 243, 238, 0.88);
+  border-radius: 2px;
+  transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 8px rgba(245, 243, 238, 0.4);
 }
 
-@keyframes digitFlick {
-  0%  { opacity: 0.3; transform: translateY(-3px); }
-  100%{ opacity: 1;   transform: translateY(0); }
-}
-
-/* ── Responsive ── */
-@media (max-width: 600px) {
-  .ldr__center {
-    width: 76px;
-    height: 76px;
-    margin-bottom: 40px;
+@keyframes ldrFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
   }
-  .ldr__square {
-    width: 22px;
-    height: 22px;
-  }
-  .ldr__name {
-    font-size: 11px;
-    letter-spacing: 0.44em;
-  }
-  .ldr__foot {
-    bottom: 28px;
-    left: 28px;
-    right: 28px;
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

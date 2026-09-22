@@ -8,6 +8,105 @@ const TYPEWRITER_PHRASES = [
   'modern engineering.',
 ]
 
+const CERTIFICATIONS_DATA = [
+  {
+    id: 'openai-api',
+    brand: 'OpenAI',
+    shortLabel: 'OpenAI',
+    badge: '/bd6.svg',
+    tag: 'OpenAI Academy',
+    title: 'Pathway Completion: OpenAI API',
+    issuer: 'OpenAI Academy',
+    credentialId: '194395106',
+    verifyUrl: 'https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/194395106',
+    previewImg: '/certs/openai1.png',
+  },
+  {
+    id: 'openai-work',
+    brand: 'OpenAI',
+    shortLabel: 'OpenAI',
+    badge: '/bd6.svg',
+    tag: 'OpenAI Academy',
+    title: 'Apply AI at Work',
+    issuer: 'OpenAI Academy',
+    credentialId: '194361475',
+    verifyUrl: 'https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/194361475',
+    previewImg: '/certs/openai2.png',
+  },
+  {
+    id: 'anthropic',
+    brand: 'Anthropic',
+    shortLabel: 'Anthropic',
+    badge: '/bd1.webp',
+    tag: 'Anthropic',
+    title: 'Claude Platform 101',
+    issuer: 'Anthropic (Skilljar)',
+    credentialId: 'tswfgouzuyc2',
+    verifyUrl: 'https://verify.skilljar.com/c/tswfgouzuyc2',
+    previewImg: '/certs/skilljar.png',
+  },
+  {
+    id: 'cisco',
+    brand: 'Cisco',
+    shortLabel: 'Cisco',
+    badge: '/bd2.svg.webp',
+    tag: 'Cisco & OpenEDG',
+    title: 'Python Essentials 1',
+    issuer: 'Cisco (Credly)',
+    credentialId: '4d2d05ba',
+    verifyUrl: 'https://www.credly.com/badges/4d2d05ba-5f75-4ca3-919b-bda36b80ec06/linked_in_profile',
+    previewImg: '/certs/cisco.png',
+  },
+  {
+    id: 'ibm',
+    brand: 'IBM',
+    shortLabel: 'IBM',
+    badge: '/bd5.svg',
+    tag: 'IBM SkillsBuild',
+    title: 'Cloud Computing Fundamentals',
+    issuer: 'IBM (Credly)',
+    credentialId: '25c987cf',
+    verifyUrl: 'https://www.credly.com/earner/earned/badge/25c987cf-2584-4ddf-8ffd-754de839e6c4',
+    previewImg: '/certs/ibm.png',
+  },
+  {
+    id: 'hackerrank',
+    brand: 'HackerRank',
+    shortLabel: 'HackerRank',
+    badge: '/bd4.png',
+    tag: 'HackerRank',
+    title: 'JavaScript (Basic)',
+    issuer: 'HackerRank',
+    credentialId: '0d1ad430259d',
+    verifyUrl: 'https://www.hackerrank.com/certificates/iframe/0d1ad430259d',
+    previewImg: '/certs/hackerrank.png',
+  },
+  {
+    id: 'coursera',
+    brand: 'Coursera',
+    shortLabel: 'Coursera',
+    badge: '/bd3.svg.webp',
+    tag: 'Google & Coursera',
+    title: 'Foundations of UX Design',
+    issuer: 'Google (Coursera)',
+    credentialId: 'GQN2NIQA2D47',
+    verifyUrl: 'https://www.coursera.org/account/accomplishments/verify/GQN2NIQA2D47',
+    previewImg: '/certs/coursera.png',
+  },
+  {
+    id: 'semrush',
+    brand: 'Semrush',
+    shortLabel: 'Semrush',
+    badge: '/bd7.png',
+    tag: 'Semrush Academy',
+    title: 'Mobile SEO',
+    issuer: 'Semrush Academy',
+    credentialId: 'aca9f9e32c',
+    verifyUrl: 'https://static.semrush.com/academy/certificates/aca9f9e32c/aswin-biju_15.pdf',
+    previewImg: '/certs/semrush.png',
+  },
+]
+
 export default function UserSection() {
   const craneRef = useRef(null)
   const duoVideoRef = useRef(null)
@@ -106,7 +205,40 @@ export default function UserSection() {
   }
 
   const [copiedKey, setCopiedKey] = useState(null)
-  const [hoveredCard, setHoveredCard] = useState(null)
+  const [hoveredCertId, setHoveredCertId] = useState(null)
+  const [shiningCertId, setShiningCertId] = useState(null)
+
+  // Auto-cycle shine through cert icons — one at a time, random order, random interval
+  useEffect(() => {
+    const ids = CERTIFICATIONS_DATA.map(c => c.id)
+    let timeoutId = null
+    const SHINE_DURATION = 1600 // ms — must match animation duration in CSS
+
+    // Shuffle so consecutive runs don't repeat the same icon
+    let queue = []
+    const refill = () => {
+      const shuffled = [...ids].sort(() => Math.random() - 0.5)
+      queue = shuffled
+    }
+    refill()
+
+    const runNext = () => {
+      if (queue.length === 0) refill()
+      const nextId = queue.shift()
+      setShiningCertId(nextId)
+      // Clear shine after animation completes
+      timeoutId = setTimeout(() => {
+        setShiningCertId(null)
+        // Wait a random pause (1.8s – 4s) before shining the next one
+        const pause = 1800 + Math.random() * 2200
+        timeoutId = setTimeout(runNext, pause)
+      }, SHINE_DURATION)
+    }
+
+    // Start after a short initial delay
+    timeoutId = setTimeout(runNext, 1200)
+    return () => clearTimeout(timeoutId)
+  }, [])
 
   const handleCopy = (e, text, key) => {
     e.preventDefault()
@@ -861,104 +993,81 @@ export default function UserSection() {
               })}
             </p>
 
-            {/* Real-time Collaboration Bento Card */}
-            <div
-              className="bento-collab-card"
-              onMouseEnter={() => setHoveredCard(3)}
-              onMouseLeave={() => setHoveredCard(null)}
-              onClick={() => setHoveredCard((prev) => (prev === 3 ? null : 3))}
-            >
-              <div className="bento-collab__info">
-                <h3 className="bento-collab__title">
-                  Real-time collaboration{' '}
-                  <svg className="bento-collab__users-icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            {/* Certifications Section */}
+            <div className="certs-section">
+              {/* Section header — tells every visitor what this is */}
+              <div className="certs-section__header">
+                <span className="certs-section__icon" aria-hidden="true">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 1L15.09 8.26L23 9.27L17.5 14.64L18.9 22.54L12 18.77L5.1 22.54L6.5 14.64L1 9.27L8.91 8.26L12 1Z" />
                   </svg>
-                </h3>
-                <p className="bento-collab__desc">
-                  Work together with your team in real-time. See cursors, leave
-                  comments, and ship faster.
-                </p>
-                <a
-                  href="mailto:contact@aswinbiju.com"
-                  className="bento-collab__btn"
-                >
-                  Get in touch ↗
-                </a>
+                </span>
+                <span className="certs-section__label">Verified Credentials</span>
+                <span className="certs-section__count">{CERTIFICATIONS_DATA.length}</span>
               </div>
 
-              <div className="bento-collab__preview-side">
-                {/* Animated Group Wrapper */}
-                <div className="bento-collab__group-wrap">
-                  {/* Mockup UI */}
-                  <div className="bento-collab__mockup-ui">
-                    {/* Mock Document Content */}
-                    <div 
-                      className="bento-collab__bar bento-collab__bar--title" 
-                      style={{
-                        width: hoveredCard === 3 ? '80%' : '75%',
-                        transition: 'width 0.7s ease-out',
-                      }}
-                    />
-                    <div 
-                      className="bento-collab__bar bento-collab__bar--line" 
-                      style={{
-                        width: hoveredCard === 3 ? '95%' : '100%',
-                        transition: 'width 0.7s ease-out 0.075s',
-                      }}
-                    />
-                    <div 
-                      className="bento-collab__bar bento-collab__bar--line" 
-                      style={{
-                        width: hoveredCard === 3 ? '85%' : '83.333333%',
-                        transition: 'width 0.7s ease-out 0.1s',
-                      }}
-                    />
-
-                    {/* Cursor 1 */}
-                    <div 
-                      className="bento-collab__cursor bento-collab__cursor--you"
-                      style={{
-                        transform: hoveredCard === 3 ? 'translate(32px, 12px)' : 'translate(0px, 0px)',
-                        transition: 'transform 0.7s ease-out',
-                      }}
+              {/* Orbital Badge Grid */}
+              <div className="certs-grid" role="region" aria-label="Verified Certifications">
+                {CERTIFICATIONS_DATA.map((cert, index) => {
+                  const isHovered = hoveredCertId === cert.id
+                  const col = index % 4
+                  const popoverAlign = col === 0 ? 'left' : col === 3 ? 'right' : 'center'
+                  return (
+                    <div
+                      key={cert.id}
+                      className="cert-grid-slot"
+                      onMouseEnter={() => setHoveredCertId(cert.id)}
+                      onMouseLeave={() => setHoveredCertId(null)}
                     >
-                      <svg className="bento-collab__cursor-svg bento-collab__cursor-svg--rose" viewBox="0 0 24 24" width="16" height="16">
-                        <path d="m4.037 4.688 15.358 6.425a.5.5 0 0 1-.06.945l-6.423 1.848-1.848 6.423a.5.5 0 0 1-.945.06L3.694 5.031a.5.5 0 0 1 .343-.343z" fill="currentColor" stroke="currentColor" strokeWidth="1.5" />
-                      </svg>
-                      <div className="bento-collab__cursor-label bento-collab__cursor-label--rose">
-                        You
-                      </div>
-                    </div>
+                      {/* Logo link — no bubble, just the glowing icon */}
+                      <a
+                        href={cert.verifyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`cert-icon-wrap${shiningCertId === cert.id ? ' cert-icon-wrap--shining' : ''}`}
+                        aria-label={`${cert.title} — ${cert.issuer}`}
+                      >
+                        <img
+                          src={cert.badge}
+                          alt={`${cert.brand} logo`}
+                          className={`cert-icon cert-icon--${cert.id}`}
+                        />
+                      </a>
 
-                    <div 
-                      className="bento-collab__bar bento-collab__bar--line" 
-                      style={{
-                        width: hoveredCard === 3 ? '90%' : '91.666667%',
-                        transition: 'width 0.7s ease-out 0.2s',
-                      }}
-                    />
+                      {/* Brand label */}
+                      <span className="cert-icon__label">{cert.shortLabel}</span>
 
-                    {/* Cursor 2 */}
-                    <div 
-                      className="bento-collab__cursor bento-collab__cursor--aswin"
-                      style={{
-                        transform: hoveredCard === 3 ? 'translate(-24px, -16px)' : 'translate(0px, 0px)',
-                        transition: 'transform 0.7s ease-out',
-                      }}
-                    >
-                      <svg className="bento-collab__cursor-svg bento-collab__cursor-svg--blue" viewBox="0 0 24 24" width="16" height="16">
-                        <path d="m4.037 4.688 15.358 6.425a.5.5 0 0 1-.06.945l-6.423 1.848-1.848 6.423a.5.5 0 0 1-.945.06L3.694 5.031a.5.5 0 0 1 .343-.343z" fill="currentColor" stroke="currentColor" strokeWidth="1.5" />
-                      </svg>
-                      <div className="bento-collab__cursor-label bento-collab__cursor-label--blue">
-                        Aswin
-                      </div>
+                      {/* Hover Preview Card */}
+                      {isHovered && (
+                        <div className={`cert-hover-preview cert-hover-preview--${popoverAlign}`}>
+                          <div className="cert-hover-preview__img-box">
+                            <img
+                              src={cert.previewImg}
+                              alt={cert.title}
+                              className="cert-hover-preview__img"
+                            />
+                          </div>
+                          <div className="cert-hover-preview__info">
+                            <div className="cert-hover-preview__header">
+                              <span className="cert-hover-preview__tag">{cert.tag}</span>
+                              <span className="cert-hover-preview__id">ID: {cert.credentialId}</span>
+                            </div>
+                            <h5 className="cert-hover-preview__title">{cert.title}</h5>
+                            <p className="cert-hover-preview__issuer">Issued by {cert.issuer}</p>
+                            <a
+                              href={cert.verifyUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="cert-hover-preview__btn"
+                            >
+                              Verify Credential ↗
+                            </a>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </div>
+                  )
+                })}
               </div>
             </div>
 

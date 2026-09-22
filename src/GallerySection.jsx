@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './GallerySection.css'
 
 // User Gallery Images (1-32)
@@ -115,12 +115,12 @@ const COLUMNS_DATA = [
 
 export default function GallerySection() {
   const [isPaused, setIsPaused] = useState(false)
-  const [isTouchDevice, setIsTouchDevice] = useState(false)
-
-  useEffect(() => {
-    const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches || window.innerWidth <= 768
-    setIsTouchDevice(isTouch)
-  }, [])
+  const [isTouchDevice] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(hover: none) and (pointer: coarse)').matches || window.innerWidth <= 768
+    }
+    return false
+  })
 
   const handleTogglePause = () => {
     setIsPaused((prev) => !prev)

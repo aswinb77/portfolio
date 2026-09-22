@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import './ProjectDetailModal.css'
 
 export default function ProjectDetailModal({
@@ -10,15 +10,25 @@ export default function ProjectDetailModal({
 }) {
   const [activePreviewTab, setActivePreviewTab] = useState(0)
   const [isVideoMuted, setIsVideoMuted] = useState(false)
+  const scrollContentRef = useRef(null)
 
   // Reset preview tab when project changes
   useEffect(() => {
     setActivePreviewTab(0)
+    if (scrollContentRef.current) {
+      scrollContentRef.current.scrollTop = 0
+    }
   }, [project])
 
-  // Keyboard navigation & body scroll lock
+  // Bulletproof body & background site scroll lock with boundary trap
   useEffect(() => {
     if (!isOpen) return
+
+    const originalBodyOverflow = document.body.style.overflow
+    const originalHtmlOverflow = document.documentElement.style.overflow
+
+    document.body.style.overflow = 'hidden'
+    document.documentElement.style.overflow = 'hidden'
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose()
@@ -26,12 +36,58 @@ export default function ProjectDetailModal({
       if (e.key === 'ArrowLeft' && onPrevProject) onPrevProject()
     }
 
+    // Wheel boundary trap: stops momentum scroll from passing to the background site
+    const handleWheel = (e) => {
+      const el = scrollContentRef.current
+      if (!el) {
+        e.preventDefault()
+        return
+      }
+
+      // If wheel event happens outside the scrollable area (e.g. on backdrop or header)
+      if (!el.contains(e.target)) {
+        e.preventDefault()
+        return
+      }
+
+      const { scrollTop, scrollHeight, clientHeight } = el
+      const isScrollingDown = e.deltaY > 0
+      const isScrollingUp = e.deltaY < 0
+
+      // If content is not scrollable at all, prevent window scroll
+      if (scrollHeight <= clientHeight) {
+        e.preventDefault()
+        return
+      }
+
+      // At bottom boundary and scrolling down
+      if (isScrollingDown && scrollTop + clientHeight >= scrollHeight - 1) {
+        e.preventDefault()
+      }
+      // At top boundary and scrolling up
+      if (isScrollingUp && scrollTop <= 0) {
+        e.preventDefault()
+      }
+    }
+
+    // Touch boundary trap for touch devices
+    const handleTouchMove = (e) => {
+      const el = scrollContentRef.current
+      if (!el || !el.contains(e.target)) {
+        e.preventDefault()
+      }
+    }
+
     document.addEventListener('keydown', handleKeyDown)
-    document.body.style.overflow = 'hidden'
+    window.addEventListener('wheel', handleWheel, { passive: false })
+    window.addEventListener('touchmove', handleTouchMove, { passive: false })
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
-      document.body.style.overflow = ''
+      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('touchmove', handleTouchMove)
+      document.body.style.overflow = originalBodyOverflow
+      document.documentElement.style.overflow = originalHtmlOverflow
     }
   }, [isOpen, onClose, onNextProject, onPrevProject])
 
@@ -426,7 +482,7 @@ export default function ProjectDetailModal({
         </header>
 
         {/* ── Scrollable Case Study Content ── */}
-        <div className="pdm-content-scroll">
+        <div className="pdm-content-scroll" ref={scrollContentRef}>
 
           {/* ── 1. Hero Section ── */}
           <section className="pdm-hero-block">

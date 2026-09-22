@@ -1159,250 +1159,494 @@
   animation-delay: var(--delay, 0s);
 }
 
-/* ── Real-time Collaboration Bento Card ───────────── */
-.bento-collab-card {
-  min-height: 280px;
-  background: rgba(22, 14, 10, 0.75);
-  border: none;
-  border-radius: 20px;
-  box-shadow: 0 14px 36px -12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: 16px;
-  margin-top: 24px;
-  margin-bottom: 24px;
-  overflow: hidden;
-  position: relative;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  animation: catCardPull 6s ease-in-out infinite;
-  will-change: transform;
-  transition: box-shadow 0.4s ease;
+/* ── Certifications Section ─────────────────────────────── */
+.certs-section {
+  margin: 20px 0 8px;
+  width: 100%;
 }
 
-/* Subtle glow border that breathes */
-.bento-collab-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 138, 76, 0);
-  transition: border-color 0.4s ease;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.bento-collab-card:hover::before {
-  border-color: rgba(255, 138, 76, 0.18);
-}
-
-.bento-collab-card:hover {
-  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* Page-pull effect on card – synced to catSuckLoop (6 s) */
-@keyframes catCardPull {
-  0%,  27% { transform: translate(0,     0)     skewY(0deg);     }
-  55%       { transform: translate(3.5px, 2px)   skewY(-0.55deg); }
-  62%       { transform: translate(-2px, -1px)   skewY(0.25deg);  }
-  72%       { transform: translate(0.5px, 0.3px) skewY(-0.1deg);  }
-  80%, 100% { transform: translate(0,     0)     skewY(0deg);     }
-}
-
-.bento-collab__info {
-  position: relative;
-  z-index: 10;
-  flex: 1.1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 28px 24px;
-}
-
-.bento-collab__title {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 1.32rem;
-  font-weight: 600;
-  color: #f5ede4;
+/* Section header — tells every visitor this is certifications */
+.certs-section__header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0;
-  letter-spacing: -0.01em;
+  gap: 7px;
+  margin-bottom: 14px;
 }
 
-.bento-collab__users-icon {
-  width: 22px;
-  height: 22px;
-  color: #3b82f6;
-  fill: rgba(59, 130, 246, 0.2);
+.certs-section__icon {
+  color: rgba(205, 175, 120, 0.75);
+  display: flex;
+  align-items: center;
   flex-shrink: 0;
 }
 
-.bento-collab__desc {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 0.86rem;
-  line-height: 1.55;
-  color: rgba(245, 232, 216, 0.62);
-  margin: 0;
-  max-width: 320px;
-}
-
-.bento-collab__btn {
-  background: #f5ede4;
-  color: #140d09;
-  margin-top: 10px;
-  border-radius: 8px;
-  padding: 8px 18px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 0.84rem;
-  font-weight: 600;
-  border: none;
-  text-decoration: none;
-  cursor: pointer;
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 1), 0 1px 3px rgba(0, 0, 0, 0.15);
-  transition: opacity 0.2s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  display: inline-flex;
-  align-items: center;
-}
-
-.bento-collab__btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.bento-collab__btn:active {
-  transform: scale(0.96);
-}
-
-.bento-collab__preview-side {
-  position: relative;
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  overflow: visible;
-  padding-top: 24px;
-}
-
-.bento-collab__group-wrap {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 105%;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.bento-collab__avatar-stack {
-  position: relative;
-  z-index: 20;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  padding-left: 8px;
-}
-
-.bento-collab__avatar-img {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid #160f0c;
-  object-fit: cover;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  margin-left: -10px;
-  transition: transform 0.3s ease;
-}
-
-.bento-collab__avatar-img:first-child { margin-left: 0; }
-.bento-collab__avatar-img:hover       { transform: scale(1.12); z-index: 25; }
-
-.bento-collab__avatar-count {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid #160f0c;
-  background: rgba(245, 232, 216, 0.12);
-  color: rgba(245, 232, 216, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.certs-section__label {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  margin-left: -10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(245, 232, 216, 0.5);
 }
 
-.bento-collab__mockup-ui {
-  background: #0f0a07;
-  border-top: 1px solid rgba(245, 232, 216, 0.12);
-  border-left: 1px solid rgba(245, 232, 216, 0.12);
-  border-top-left-radius: 16px;
+.certs-section__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 6px;
+  background: rgba(205, 175, 120, 0.12);
+  border: 1px solid rgba(205, 175, 120, 0.22);
+  border-radius: 9999px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: rgba(205, 175, 120, 0.82);
+  margin-left: 2px;
+}
+
+/* ── Badge Grid ─────────────────────────────────────────── */
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 8px;
+  width: 100%;
+}
+
+/* Each slot stacks icon + label vertically, centered */
+.cert-grid-slot {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-height: 190px;
-  width: 100%;
-  padding: 24px 20px 20px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  align-items: center;
+  gap: 7px;
+}
+
+.cert-grid-slot:hover {
+  z-index: 80;
+}
+
+/* ── Icon wrapper: transparent, no bubble ────────────────── */
+.cert-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  text-decoration: none;
+  flex-shrink: 0;
+  position: relative;
+  /* Clip the flash streak to exactly this box */
   overflow: hidden;
+  /* Prevent mix-blend-mode from bleeding outside */
+  isolation: isolate;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.bento-collab__bar {
-  border-radius: 6px;
+.cert-icon-wrap:hover {
+  transform: translateY(-5px) scale(1.1);
 }
 
-.bento-collab__bar--title {
-  height: 18px;
-  background: rgba(245, 232, 216, 0.16);
-  margin-bottom: 4px;
-}
-
-.bento-collab__bar--line {
-  height: 10px;
-  background: rgba(245, 232, 216, 0.08);
-}
-
-.bento-collab__cursor {
+/* ── Diagonal specular flash ─────────────────────────────── */
+/* 3× the parent size so the diagonal stripe looks clean at any angle.
+   overflow:hidden on parent clips it to exactly the icon area.
+   mix-blend-mode:overlay → only visible on logo pixels, transparent
+   areas of the PNG/SVG produce no visible effect. */
+.cert-icon-wrap::after {
+  content: '';
   position: absolute;
-  z-index: 20;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(
+    135deg,
+    transparent       35%,
+    rgba(255,255,255,0) 44%,
+    rgba(255,255,255,0.9) 50%,
+    rgba(255,255,255,0) 56%,
+    transparent       65%
+  );
+  /* Parked far left — overflow:hidden makes it invisible at rest */
+  transform: translateX(-120%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Hover: play the sweep once */
+.cert-icon-wrap:hover::after {
+  animation: certIconFlash 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* JS-class: auto-shine on one icon at a time, no overlap */
+.cert-icon-wrap--shining::after {
+  animation: certIconFlash 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Sweep left → right within the clipped overflow:hidden box */
+@keyframes certIconFlash {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(120%);  }
+}
+
+/* ── Base icon style — warm glowing floating logo ────────── */
+/* Reference style: icons appear to glow warmly from their edges,
+   desaturated slightly and tinted with a warm amber cast */
+.cert-icon {
+  position: relative;
+  z-index: 1;
+  max-width: 48px;
+  max-height: 48px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  /* Warm amber base glow — matches reference image aesthetic */
+  filter:
+    brightness(0.85)
+    sepia(0.35)
+    saturate(1.6)
+    drop-shadow(0 0 7px rgba(210, 158, 58, 0.38))
+    drop-shadow(0 0 2px rgba(235, 185, 80, 0.22));
+  transition:
+    filter 0.3s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cert-icon-wrap:hover .cert-icon {
+  filter:
+    brightness(1.1)
+    sepia(0.2)
+    saturate(1.4)
+    drop-shadow(0 0 14px rgba(225, 175, 65, 0.65))
+    drop-shadow(0 0 5px rgba(255, 215, 100, 0.45))
+    drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* ── Per-brand tuning on top of the base warm treatment ─── */
+
+/* OpenAI SVG — very dark/transparent, need to make it white first */
+.cert-icon--openai-api,
+.cert-icon--openai-work {
+  max-width: 40px;
+  max-height: 40px;
+  filter:
+    brightness(0) invert(1)
+    sepia(0.3) saturate(1.2)
+    drop-shadow(0 0 8px rgba(220, 175, 70, 0.45))
+    drop-shadow(0 0 3px rgba(255, 210, 90, 0.3));
+  opacity: 0.85;
+}
+.cert-icon-wrap:hover .cert-icon--openai-api,
+.cert-icon-wrap:hover .cert-icon--openai-work {
+  filter:
+    brightness(0) invert(1)
+    sepia(0.2) saturate(1.1)
+    drop-shadow(0 0 16px rgba(230, 185, 70, 0.75))
+    drop-shadow(0 0 5px rgba(255, 220, 100, 0.5));
+  opacity: 1;
+}
+
+/* Anthropic — has its own warm coral tones, enhance them */
+.cert-icon--anthropic {
+  max-width: 42px;
+  max-height: 42px;
+  filter:
+    brightness(0.95) saturate(1.3)
+    drop-shadow(0 0 9px rgba(215, 140, 80, 0.5))
+    drop-shadow(0 0 3px rgba(240, 170, 90, 0.35));
+}
+.cert-icon-wrap:hover .cert-icon--anthropic {
+  filter:
+    brightness(1.15) saturate(1.4)
+    drop-shadow(0 0 16px rgba(230, 150, 80, 0.75))
+    drop-shadow(0 0 5px rgba(255, 185, 100, 0.55));
+}
+
+/* Cisco — blue/dark badge image */
+.cert-icon--cisco {
+  max-width: 48px;
+  max-height: 48px;
+  filter:
+    brightness(1.0) saturate(1.2)
+    drop-shadow(0 0 8px rgba(200, 155, 65, 0.4))
+    drop-shadow(0 0 2px rgba(225, 180, 80, 0.25));
+}
+.cert-icon-wrap:hover .cert-icon--cisco {
+  filter:
+    brightness(1.2) saturate(1.3)
+    drop-shadow(0 0 15px rgba(210, 165, 70, 0.65))
+    drop-shadow(0 0 5px rgba(245, 200, 95, 0.45));
+}
+
+/* IBM — dark navy wordmark → invert to white then warm glow */
+.cert-icon--ibm {
+  max-width: 46px;
+  max-height: 22px;
+  filter:
+    invert(1) brightness(0.92) sepia(0.25) saturate(1.3)
+    drop-shadow(0 0 8px rgba(215, 170, 65, 0.48))
+    drop-shadow(0 0 3px rgba(245, 200, 85, 0.3));
+}
+.cert-icon-wrap:hover .cert-icon--ibm {
+  filter:
+    invert(1) brightness(1.1) sepia(0.15) saturate(1.2)
+    drop-shadow(0 0 16px rgba(225, 180, 70, 0.72))
+    drop-shadow(0 0 5px rgba(255, 215, 95, 0.5));
+}
+
+/* HackerRank — bd4.png has a solid dark background (not transparent like others).
+   mix-blend-mode:screen: dark bg pixels become invisible against the dark page,
+   leaving only the green mark + white text floating as a clean icon. */
+.cert-icon--hackerrank {
+  max-width: 44px;
+  max-height: 44px;
+  /* Screen blend: dark (bg) × dark (page) → near-black = invisible.
+     Bright logo pixels (green, white) stay fully visible. */
+  mix-blend-mode: screen;
+  filter:
+    brightness(1.1) saturate(1.2)
+    sepia(0.15)
+    drop-shadow(0 0 7px rgba(205, 162, 60, 0.38))
+    drop-shadow(0 0 2px rgba(230, 188, 75, 0.22));
+}
+.cert-icon-wrap:hover .cert-icon--hackerrank {
+  mix-blend-mode: screen;
+  filter:
+    brightness(1.3) saturate(1.3)
+    sepia(0.1)
+    drop-shadow(0 0 14px rgba(215, 172, 65, 0.62))
+    drop-shadow(0 0 5px rgba(250, 205, 88, 0.42));
+}
+
+/* Coursera — blue circular badge */
+.cert-icon--coursera {
+  max-width: 46px;
+  max-height: 46px;
+  filter:
+    brightness(1.05) saturate(1.25)
+    drop-shadow(0 0 7px rgba(200, 158, 60, 0.38))
+    drop-shadow(0 0 2px rgba(225, 182, 75, 0.24));
+}
+.cert-icon-wrap:hover .cert-icon--coursera {
+  filter:
+    brightness(1.2) saturate(1.35)
+    drop-shadow(0 0 14px rgba(210, 168, 65, 0.65))
+    drop-shadow(0 0 5px rgba(245, 198, 88, 0.45));
+}
+
+/* Semrush — orange logo, reduce sepia for true color */
+.cert-icon--semrush {
+  max-width: 44px;
+  max-height: 44px;
+  filter:
+    brightness(0.92) sepia(0.2) saturate(1.5)
+    drop-shadow(0 0 7px rgba(210, 145, 55, 0.42))
+    drop-shadow(0 0 2px rgba(240, 175, 70, 0.28));
+}
+.cert-icon-wrap:hover .cert-icon--semrush {
+  filter:
+    brightness(1.1) sepia(0.1) saturate(1.35)
+    drop-shadow(0 0 14px rgba(225, 155, 60, 0.68))
+    drop-shadow(0 0 5px rgba(255, 190, 80, 0.48));
+}
+
+/* ── Brand label under icon ──────────────────────────────── */
+.cert-icon__label {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: rgba(245, 232, 216, 0.38);
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.cert-grid-slot:hover .cert-icon__label {
+  color: rgba(245, 232, 216, 0.72);
+}
+
+/* ── Hover Preview Popover ──────────────────────────────── */
+.cert-hover-preview {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  width: 262px;
+  background: rgba(14, 9, 6, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(245, 232, 216, 0.1);
+  border-radius: 14px;
+  padding: 11px;
+  box-shadow:
+    0 20px 50px -12px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.025),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  z-index: 120;
+  pointer-events: none;
+  animation: certPopIn 0.16s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.cert-hover-preview--left {
+  left: 0;
+  right: auto;
+}
+
+.cert-hover-preview--center {
+  left: 50%;
+  animation: certPopInCenter 0.16s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.cert-hover-preview--right {
+  right: 0;
+  left: auto;
+}
+
+@keyframes certPopIn {
+  0%   { opacity: 0; transform: translateY(6px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+@keyframes certPopInCenter {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.97); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0)   scale(1); }
+}
+
+.cert-hover-preview__img-box {
+  width: 100%;
+  height: 120px;
+  background: rgba(6, 4, 2, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 9px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 9px;
+}
+
+.cert-hover-preview__img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  padding: 8px;
+}
+
+.cert-hover-preview__info {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
-  pointer-events: none;
 }
 
-.bento-collab__cursor--you   { top: 48px;    left: 20%; }
-.bento-collab__cursor--aswin { bottom: 34px; right: 25%; }
+.cert-hover-preview__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 6px;
+}
 
-.bento-collab__cursor-svg { transform: rotate(-12deg); }
-.bento-collab__cursor-svg--rose { fill: #f43f5e; color: #f43f5e; }
-.bento-collab__cursor-svg--blue { fill: #3b82f6; color: #3b82f6; }
-
-.bento-collab__cursor-label {
-  margin-top: 3px;
-  margin-left: 6px;
-  border-radius: 5px;
-  border-top-left-radius: 0;
-  padding: 2px 6px;
+.cert-hover-preview__tag {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.2;
+  font-size: 0.67rem;
+  font-weight: 600;
+  color: rgba(210, 175, 110, 0.9);
+  background: rgba(210, 175, 110, 0.1);
+  border: 1px solid rgba(210, 175, 110, 0.2);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.025em;
 }
 
-.bento-collab__cursor-label--rose { background: #f43f5e; }
-.bento-collab__cursor-label--blue { background: #3b82f6; }
+.cert-hover-preview__id {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.62rem;
+  color: rgba(245, 232, 216, 0.32);
+  white-space: nowrap;
+}
+
+.cert-hover-preview__title {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #f5ede4;
+  margin: 0 0 3px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.cert-hover-preview__issuer {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.71rem;
+  color: rgba(245, 232, 216, 0.5);
+  margin: 0 0 9px;
+}
+
+.cert-hover-preview__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  padding: 6px 12px;
+  background: rgba(210, 175, 110, 0.1);
+  border: 1px solid rgba(210, 175, 110, 0.22);
+  border-radius: 7px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: rgba(220, 185, 125, 0.92);
+  text-decoration: none;
+  pointer-events: auto;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.cert-hover-preview__btn:hover {
+  background: rgba(210, 175, 110, 0.18);
+  border-color: rgba(210, 175, 110, 0.38);
+}
 
 @media (max-width: 768px) {
-  .bento-collab-card { flex-direction: column; }
-  .bento-collab__preview-side { padding-top: 0; }
+  .certs-section {
+    margin: 16px 0 6px;
+  }
+
+  .certs-section__header {
+    margin-bottom: 12px;
+  }
+
+  .certs-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px 6px;
+  }
+
+  .cert-icon-wrap {
+    width: 48px;
+    height: 48px;
+  }
+
+  .cert-icon {
+    max-width: 38px;
+    max-height: 38px;
+  }
+
+  .cert-icon__label {
+    font-size: 0.56rem;
+  }
+
+  .cert-hover-preview {
+    width: 230px;
+    padding: 10px;
+  }
+
+  .cert-hover-preview__img-box {
+    height: 100px;
+  }
+
 
   /* ── Mobile Animation Removal (Keep desktop 100% intact) ── */
   /* 1. Disable scroll-reveal fade & slide effects */
@@ -1491,7 +1735,6 @@
 
 /* ──────────────────────────────────────────────
    CAT SUCTION LOOP
-   Beat map (total 6 s):
      0  – 1.2 s  → lazy idle float
      1.2– 1.8 s  → inhale / wind-up lean back
      1.8– 3.6 s  → suction lunge (leans left, squash-stretch, tremble)
@@ -1817,68 +2060,30 @@
     line-height: 1.6;
   }
 
-  /* Bento card compact mobile box sizing */
-  .bento-collab-card {
-    padding: 16px 14px 12px;
-    gap: 12px;
-    border-radius: 14px;
-    margin-top: 14px;
-    margin-bottom: 10px;
-  }
-
-  .bento-collab__info {
-    padding: 0;
+  /* Compact mobile certs grid */
+  .certs-grid {
+    grid-template-columns: repeat(4, 1fr);
     gap: 6px;
+    margin: 12px 0 8px;
   }
 
-  .bento-collab__title {
-    font-size: 1.12rem;
+  .cert-bubble {
+    width: 52px;
+    height: 52px;
   }
 
-  .bento-collab__desc {
-    font-size: 0.8rem;
-    line-height: 1.45;
-    max-width: 100%;
+  .cert-bubble__img {
+    max-width: 26px;
+    max-height: 26px;
   }
 
-  .bento-collab__btn {
-    margin-top: 4px;
-    padding: 5px 14px;
-    font-size: 0.76rem;
+  .cert-hover-preview {
+    width: 210px;
+    padding: 8px;
   }
 
-  .bento-collab__preview-side {
-    padding-top: 0;
-    width: 100%;
-  }
-
-  .bento-collab__group-wrap {
-    width: 100%;
-  }
-
-  .bento-collab__avatar-stack {
-    margin-bottom: 6px;
-  }
-
-  .bento-collab__avatar-img,
-  .bento-collab__avatar-count {
-    width: 26px;
-    height: 26px;
-  }
-
-  .bento-collab__mockup-ui {
-    min-height: 105px;
-    padding: 12px 10px 10px;
-    gap: 7px;
-    border-radius: 10px;
-  }
-
-  .bento-collab__bar {
-    height: 5px;
-  }
-
-  .bento-collab__bar--title {
-    height: 8px;
+  .cert-hover-preview__img-box {
+    height: 90px;
   }
 
   /* Cat anchored at bottom edge above torn paper */

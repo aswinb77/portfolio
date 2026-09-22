@@ -23,6 +23,7 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
   }, [isSplineReady])
 
   useEffect(() => {
+    // Dismiss initial HTML static loader immediately once React takes control
     const initialFallback = document.getElementById('initial-loader')
     if (initialFallback) {
       initialFallback.style.opacity = '0'
@@ -30,7 +31,7 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
         if (initialFallback && initialFallback.parentNode) {
           initialFallback.parentNode.removeChild(initialFallback)
         }
-      }, 350)
+      }, 300)
     }
 
     const preventScroll = (e) => e.preventDefault()
@@ -45,22 +46,17 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
 
     const recalculateTarget = () => {
       if (isCancelled) return
-      // Images contribute up to 55%
-      const imagePct = (imagesDecoded / totalImages) * 55
-      // Fonts contribute up to 20%
-      const fontPct = fontsReady ? 20 : 0
-      // Document complete contributes 10%
-      const docPct = docReady ? 10 : 0
+      const imagePct = (imagesDecoded / totalImages) * 50
+      const fontPct = fontsReady ? 25 : 0
+      const docPct = docReady ? 15 : 0
 
       let base = Math.min(85, Math.round(imagePct + fontPct + docPct))
 
-      // If the hero element (mobile video or desktop Spline) is ready:
       if (isSplineReadyRef.current) {
-        // If critical images and fonts are also in place, go to 100%
         if (imagesDecoded >= totalImages - 1 && fontsReady) {
           base = 100
         } else {
-          base = Math.max(base, 90)
+          base = Math.max(base, 92)
         }
       }
 
@@ -69,7 +65,7 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
       }
     }
 
-    // Preload & off-thread decode critical images so they don't stutter upon unmask
+    // Preload critical images
     CRITICAL_IMAGES.forEach((src) => {
       const img = new Image()
       img.src = src
@@ -106,7 +102,7 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
       }
     })
 
-    // Verify Google Fonts readiness
+    // Check fonts
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready
         .then(() => {
@@ -124,7 +120,7 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
       recalculateTarget()
     }
 
-    // Window loaded verification
+    // Window loaded
     if (docReady) {
       recalculateTarget()
     } else {
@@ -140,29 +136,27 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
     }
 
     const startTime = Date.now()
-    const MIN_LOAD_TIME = 450 // Ensure clean 0 -> 100 sweep even on instantaneous cached reload
-    const MAX_LOAD_TIME = 6500 // Safety cap in case of severe network stalling
+    const MIN_LOAD_TIME = 400
+    const MAX_LOAD_TIME = 4500
 
     const updateInterval = setInterval(() => {
       const elapsed = Date.now() - startTime
 
-      // If Spline / mobile video becomes ready during interval:
       if (isSplineReadyRef.current && elapsed >= MIN_LOAD_TIME) {
         if (imagesDecoded >= totalImages - 1 && fontsReady) {
           targetProgressRef.current = 100
         } else {
-          targetProgressRef.current = Math.max(targetProgressRef.current, 92)
+          targetProgressRef.current = Math.max(targetProgressRef.current, 95)
         }
       }
 
-      // Safety timeout: don't lock the user forever if network blocks fonts or 3D
       if (elapsed >= MAX_LOAD_TIME) {
         targetProgressRef.current = 100
       }
 
       if (progressRef.current < targetProgressRef.current) {
         const diff = targetProgressRef.current - progressRef.current
-        const step = Math.max(1, Math.ceil(diff * 0.18))
+        const step = Math.max(1, Math.ceil(diff * 0.22))
         progressRef.current = Math.min(targetProgressRef.current, progressRef.current + step)
       }
 
@@ -178,8 +172,8 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
           if (onLoaded) onLoaded()
           setTimeout(() => {
             if (!isCancelled) setIsMounted(false)
-          }, 800)
-        }, 150)
+          }, 650)
+        }, 180)
       }
     }, 20)
 
@@ -193,56 +187,23 @@ export default function Loader({ onLoaded, isSplineReady = false }) {
 
   if (!isMounted) return null
 
-  // Format as 3-digit string: 001, 042, 100
-  const padded = String(progress).padStart(3, '0')
-
   return (
     <div
       className={`ldr ${isExiting ? 'ldr--exit' : ''}`}
-      aria-label="Loading…"
+      aria-label="Loading portfolio..."
       role="status"
     >
-      {/* Pure dark canvas */}
+      {/* Subtle textured dark field */}
       <div className="ldr__field" />
 
-      {/* Scanning line that sweeps once then waits */}
-      <div className="ldr__scanline" aria-hidden="true" />
-
-      {/* Central minimal mark */}
-      <div className="ldr__center" aria-hidden="true">
-        {/* Cross-hair intersection */}
-        <div className="ldr__cross">
-          <div className="ldr__cross-h" />
-          <div className="ldr__cross-v" />
-        </div>
-
-        {/* Morphing square that breathes */}
-        <div className="ldr__square" />
-      </div>
-
-      {/* Name — faint, spaced, lowercase */}
-      <div className="ldr__label-wrap">
-        <span className="ldr__name">aswin biju</span>
-      </div>
-
-      {/* Bottom bar: progress line + counter */}
-      <div className="ldr__foot">
-        {/* Thin progress track */}
+      {/* Centered Name & Minimal Progress Bar (like reference) */}
+      <div className="ldr__content">
+        <h1 className="ldr__name">Aswin Biju</h1>
         <div className="ldr__track">
           <div
             className="ldr__fill"
-            style={{ width: `${progress}%` }}
+            style={{ width: `${Math.max(12, progress)}%` }}
           />
-        </div>
-
-        {/* Counter row */}
-        <div className="ldr__count-row">
-          <span className="ldr__role">portfolio</span>
-          <span className="ldr__num">
-            <span className="ldr__num-digit">{padded[0]}</span>
-            <span className="ldr__num-digit">{padded[1]}</span>
-            <span className="ldr__num-digit ldr__num-digit--active">{padded[2]}</span>
-          </span>
         </div>
       </div>
     </div>
