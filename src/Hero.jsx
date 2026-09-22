@@ -82,8 +82,9 @@ export default function Hero({ onSplineReady }) {
           {/* Top Row: Left Headline + Right Navigation */}
           <div className="hero__top">
             <h1 className="hero__headline">
-              <span className="hero__headline-line">I make things that</span>
-              <span className="hero__headline-line">Make people Wonder.</span>
+              <span className="hero__headline-line">I make</span>
+              <span className="hero__headline-line">things that make</span>
+              <span className="hero__headline-line">people Wonder.</span>
             </h1>
 
             {/* Desktop Navigation Links */}
