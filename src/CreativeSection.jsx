@@ -1,3 +1,4 @@
+import { getMedia } from './assets/media'
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import './CreativeSection.css'
 
@@ -456,7 +457,7 @@ export default function CreativeSection() {
 
                       {/* Slot UI: Empty Slot by default, Filled Slot when claimed or hovered */}
                       <image
-                        href={isClaimed || isHovered ? '/vettu-slot-filled.png' : '/vettu-slot-empty.png'}
+                        href={isClaimed || isHovered ? getMedia('/vettu-slot-filled.png') : getMedia('/vettu-slot-empty.png')}
                         x={x - 18}
                         y={y - 18}
                         width="36"
@@ -468,7 +469,7 @@ export default function CreativeSection() {
                       {/* Ghost preview of active player on hover */}
                       {!isClaimed && isHovered && (
                         <image
-                          href={curPlayer === 0 ? '/vettu-x-red.png' : '/vettu-x-blue.png'}
+                          href={curPlayer === 0 ? getMedia('/vettu-x-red.png') : getMedia('/vettu-x-blue.png')}
                           x={x - 16}
                           y={y - 16}
                           width="32"
@@ -493,7 +494,7 @@ export default function CreativeSection() {
                   return (
                     <image
                       key={`mark_${r}_${c}`}
-                      href={owner === 0 ? '/vettu-x-red.png' : '/vettu-x-blue.png'}
+                      href={owner === 0 ? getMedia('/vettu-x-red.png') : getMedia('/vettu-x-blue.png')}
                       x={x - 17}
                       y={y - 17}
                       width="34"
@@ -532,12 +533,12 @@ export default function CreativeSection() {
                 <h3 className="duo-modal-title">{gameResult.title}</h3>
                 <div className="duo-modal-scores">
                   <div className="duo-modal-team is-you">
-                    <img src="/vettu-x-red.png" alt="You" />
+                    <img src={getMedia('/vettu-x-red.png')} alt="You" />
                     <span>{scores[0]} pts</span>
                   </div>
                   <span className="duo-modal-divider">:</span>
                   <div className="duo-modal-team is-bot">
-                    <img src="/vettu-x-blue.png" alt="Bot" />
+                    <img src={getMedia('/vettu-x-blue.png')} alt="Bot" />
                     <span>{scores[1]} pts</span>
                   </div>
                 </div>
@@ -561,7 +562,7 @@ export default function CreativeSection() {
           {hearts.map((h) => (
             <img
               key={h.id}
-              src="/minecraft-heart.svg"
+              src={getMedia('/minecraft-heart.svg')}
               alt=""
               className="minecraft-heart"
               style={{
@@ -580,7 +581,7 @@ export default function CreativeSection() {
         </div>
 
         <img
-          src="/aswin-duo.png"
+          src={getMedia('/aswin-duo.png')}
           alt="Aswin"
           className="duo-aswin-img"
           draggable="false"

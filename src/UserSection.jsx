@@ -1,3 +1,4 @@
+import { getMedia } from './assets/media'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import './UserSection.css'
 
@@ -140,17 +141,17 @@ export default function UserSection() {
         <div className="personality-showcase-stage">
           {/* Floating Sticker: Chess Board (Top-Left) */}
           <div className="floating-sticker floating-sticker--chess" ref={chessRef} aria-hidden="true">
-            <img src="/chess.avif" alt="Chess board" className="sticker-img" />
+            <img src={getMedia('/chess.avif')} alt="Chess board" className="sticker-img" />
           </div>
 
           {/* Floating Sticker: Football on Grass (Top-Right) */}
           <div className="floating-sticker floating-sticker--badminton" ref={badmintonRef} aria-hidden="true">
-            <img src="/footballongras.png" alt="Football on grass" className="sticker-img" />
+            <img src={getMedia('/footballongras.png')} alt="Football on grass" className="sticker-img" />
           </div>
 
           {/* Floating Sticker: Movie (Far-Right) */}
           <div className="floating-sticker floating-sticker--skates" ref={skatesRef} aria-hidden="true">
-            <img src="/movie.png" alt="Movie" className="sticker-img" />
+            <img src={getMedia('/movie.png')} alt="Movie" className="sticker-img" />
           </div>
 
           {/* Centerpiece: The Electric Blue Speech Bubble */}
@@ -209,12 +210,12 @@ export default function UserSection() {
                     aria-label={`Duolingo profile aswin.rar with ${duoStreak} day streak`}
                   >
                     <div className="brand-squircle__icon-box duo-box">
-                      <img src="/duodead.avif" alt="Duolingo" className="duodead-img" />
+                      <img src={getMedia('/duodead.avif')} alt="Duolingo" className="duodead-img" />
                     </div>
 
                     {/* Streak Flame and Number without white background */}
                     <div className="brand-squircle__streak">
-                      <img src="/duolingo-fire.svg" alt="Flame streak" className="duo-flame-icon" />
+                      <img src={getMedia('/duolingo-fire.svg')} alt="Flame streak" className="duo-flame-icon" />
                       <span className="duo-flame-count">{duoStreak}</span>
                     </div>
                   </a>
@@ -222,7 +223,7 @@ export default function UserSection() {
                   {/* Notion Icon */}
                   <div className="brand-squircle brand-squircle--notion" aria-label="Notion Architecture Philosophy">
                     <div className="brand-squircle__icon-box notion-box">
-                      <img src="/notion.avif" alt="Notion" className="notion-avif-img" />
+                      <img src={getMedia('/notion.avif')} alt="Notion" className="notion-avif-img" />
                     </div>
                   </div>
                 </div>
@@ -240,7 +241,7 @@ export default function UserSection() {
             <div className="personality-avatar-anchor" ref={avatarRef}>
               <div className="personality-avatar-crop">
                 <img
-                  src="/character-alpha.webp"
+                  src={getMedia('/character-alpha.webp')}
                   alt="Character avatar"
                   className="personality-avatar-video"
                   loading="eager"

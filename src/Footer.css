@@ -42,7 +42,7 @@
 .f-bg__img {
   position: absolute;
   inset: 0;
-  background: url('/ddd.jpg') center 40% / cover no-repeat;
+  background: url('./assets/media/ddd.jpg') center 40% / cover no-repeat;
   transform: scale(1.03);
   animation: fBgDrift 20s ease-in-out infinite alternate;
 }

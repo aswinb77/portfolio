@@ -1,11 +1,12 @@
+import { getMedia } from './assets/media'
 import { useEffect, useState, useRef } from 'react'
 import './Loader.css'
 
 const CRITICAL_IMAGES = [
   '/bg1.webp',
   '/user.webp',
-  '/catlook.png',
-  '/papercrane.png',
+  getMedia('/catlook.png'),
+  getMedia('/papercrane.png'),
 ]
 
 export default function Loader({ onLoaded, isSplineReady = false }) {

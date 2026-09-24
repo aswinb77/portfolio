@@ -1,3 +1,4 @@
+import { getMedia } from './assets/media'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -9,7 +10,7 @@ const TECH_ELEMENTS = [
   {
     id: 'claude-code',
     name: 'Claude Code',
-    icon: '/claude.png',
+    icon: getMedia('/claude.png'),
     animClass: 'float-anim--1',
     coords: { top: '12%', left: '16%' },
     badgeClass: 'user-v2__logo-pure--claude',
@@ -18,7 +19,7 @@ const TECH_ELEMENTS = [
   {
     id: 'typescript',
     name: 'TypeScript',
-    icon: '/typescript.svg',
+    icon: getMedia('/typescript.svg'),
     animClass: 'float-anim--2',
     coords: { top: '32%', left: '10%' },
     badgeClass: 'user-v2__logo-pure--typescript',
@@ -27,7 +28,7 @@ const TECH_ELEMENTS = [
   {
     id: 'react',
     name: 'React',
-    icon: '/react-dark.svg',
+    icon: getMedia('/react-dark.svg'),
     animClass: 'float-anim--3',
     coords: { top: '52%', left: '8%' },
     badgeClass: 'user-v2__logo-pure--react',
@@ -36,7 +37,7 @@ const TECH_ELEMENTS = [
   {
     id: 'git',
     name: 'Git',
-    icon: '/git.svg',
+    icon: getMedia('/git.svg'),
     animClass: 'float-anim--4',
     coords: { top: '74%', left: '16%' },
     badgeClass: 'user-v2__logo-pure--git',
@@ -45,7 +46,7 @@ const TECH_ELEMENTS = [
   {
     id: 'antigravity',
     name: 'Antigravity',
-    icon: '/antigravity.svg',
+    icon: getMedia('/antigravity.svg'),
     animClass: 'float-anim--5',
     coords: { top: '12%', right: '16%' },
     badgeClass: 'user-v2__logo-pure--antigravity',
@@ -54,7 +55,7 @@ const TECH_ELEMENTS = [
   {
     id: 'flutter',
     name: 'Flutter',
-    icon: '/flutter.svg',
+    icon: getMedia('/flutter.svg'),
     animClass: 'float-anim--6',
     coords: { top: '32%', right: '10%' },
     badgeClass: 'user-v2__logo-pure--flutter',
@@ -63,7 +64,7 @@ const TECH_ELEMENTS = [
   {
     id: 'postman',
     name: 'Postman',
-    icon: '/postman.svg',
+    icon: getMedia('/postman.svg'),
     animClass: 'float-anim--7',
     coords: { top: '52%', right: '8%' },
     badgeClass: 'user-v2__logo-pure--postman',
@@ -72,7 +73,7 @@ const TECH_ELEMENTS = [
   {
     id: 'github',
     name: 'GitHub',
-    icon: '/github.svg',
+    icon: getMedia('/github.svg'),
     animClass: 'float-anim--8',
     coords: { top: '74%', right: '16%' },
     badgeClass: 'user-v2__logo-pure--github',
@@ -506,10 +507,10 @@ export default function UserSectionV2({ thanosState = 'idle', onTriggerSnap }) {
           >
             <div className="user-v2__ground-shadow" aria-hidden="true" />
             <picture>
-              <source srcSet="/character-thanos.webp" type="image/webp" />
-              <source srcSet="/character-thanos.png" type="image/png" />
+              <source srcSet={getMedia('/character-thanos.webp')} type="image/webp" />
+              <source srcSet={getMedia('/character-thanos.png')} type="image/png" />
               <img
-                src="/character-thanos.jpeg"
+                src={getMedia('/character-thanos.jpeg')}
                 alt="Aswin Biju - Developer"
                 className="user-v2__character-img"
                 loading="eager"

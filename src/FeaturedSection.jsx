@@ -1,3 +1,4 @@
+import { getMedia } from './assets/media'
 import { useState, useRef, useEffect } from 'react'
 import './FeaturedSection.css'
 import ProjectDetailModal from './ProjectDetailModal'
@@ -38,8 +39,8 @@ export default function FeaturedSection() {
       github: 'https://github.com/aswinb77/finmate',
       themeColor: '#d96b4a',
       headerType: 'finmate',
-      video: '/finny_product_video.mp4',
-      previewImg: '/finmate-story.png',
+      video: getMedia('/finny_product_video.mp4'),
+      previewImg: getMedia('/finmate-story.png'),
       previewTag: 'CONVERSATIONAL EXPENSE TRACKER',
     },
     {
@@ -58,8 +59,8 @@ export default function FeaturedSection() {
       github: 'https://github.com/aswinb77/Anapp',
       themeColor: '#e11d48',
       headerType: 'moviecc',
-      video: '/moviecc_intro.mp4',
-      previewImg: '/moviecc-feed.jpg',
+      video: getMedia('/moviecc_intro.mp4'),
+      previewImg: getMedia('/moviecc-feed.jpg'),
       previewTag: 'REAL-TIME SCRAPER & LIVE CHAT',
     },
     {
@@ -78,8 +79,8 @@ export default function FeaturedSection() {
       github: 'https://github.com/aswinb77/ev-sensor',
       themeColor: '#06b6d4',
       headerType: 'pmse',
-      video: '/evhealth.mp4',
-      previewImg: '/pmse-app.jpg',
+      video: getMedia('/evhealth.mp4'),
+      previewImg: getMedia('/pmse-app.jpg'),
       previewTag: 'TINYML ON ESP32 + FLUTTER',
     },
     {
@@ -98,7 +99,7 @@ export default function FeaturedSection() {
       github: 'https://github.com/aswinb77/e-wallet',
       themeColor: '#10b981',
       headerType: 'avwallet',
-      previewImg: '/avwallet-merchant.png',
+      previewImg: getMedia('/avwallet-merchant.png'),
       previewTag: 'DUAL-PANEL E-WALLET & BOT',
     },
   ]
