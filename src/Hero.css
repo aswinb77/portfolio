@@ -404,22 +404,6 @@
     letter-spacing: 0.18em;
   }
 
-  .hero__ticker {
-    padding: 8px 0;
-  }
-
-  .hero__ticker-item {
-    font-size: 0.66rem;
-    letter-spacing: 0.16em;
-    padding: 0 12px;
-    gap: 6px;
-  }
-
-  .hero__lang-icon {
-    width: 13px;
-    height: 13px;
-  }
-
   .hero__sound-btn {
     width: 34px;
     height: 34px;

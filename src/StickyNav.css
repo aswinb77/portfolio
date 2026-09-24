@@ -2,6 +2,14 @@
    STICKY NAV — "Aswin Biju" Editorial Header
    ═════════════════════════════════════════════════════════════ */
 
+/* Hide completely on desktop screens (> 768px) */
+@media (min-width: 769px) {
+  .stickynav,
+  .stickynav__menu-backdrop {
+    display: none !important;
+  }
+}
+
 .stickynav {
   position: fixed;
   top: 0;

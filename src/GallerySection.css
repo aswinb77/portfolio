@@ -146,56 +146,42 @@
     linear-gradient(to right, #060201 0%, transparent 12%, transparent 88%, #060201 100%);
 }
 
-/* ── Header Overlay ──────────────────────────── */
-.gallery-section__header {
+/* ── Top-Right Corner Title (Styled like Hero Section) ──────────────── */
+.gallery-section__corner-title {
   position: absolute;
-  top: 32px;
-  left: 36px;
-  right: 36px;
+  top: clamp(32px, 5.5vh, 64px);
+  right: clamp(28px, 4.5vw, 64px);
+  left: auto;
   z-index: 10;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   pointer-events: none;
-}
-
-.gallery-section__tag {
+  max-width: min(560px, 85vw);
   display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
-  letter-spacing: 0.22em;
-  font-size: 0.72rem;
-  color: rgba(245, 232, 216, 0.85);
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
 }
 
-.gallery-section__tag-box {
-  display: inline-block;
-  padding: 3px 8px;
-  border: 1px solid rgba(245, 232, 216, 0.35);
-  font-size: 0.65rem;
-  color: rgba(245, 232, 216, 0.95);
-  background: rgba(10, 4, 3, 0.5);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.gallery-section__tag-text {
-  letter-spacing: 0.22em;
-}
-
-.gallery-section__hint {
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  color: rgba(245, 232, 216, 0.55);
+.gallery-section__corner-heading {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.2rem, 4.6vw, 3.8rem);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.05;
+  color: #ffffff;
   margin: 0;
-  background: rgba(10, 4, 3, 0.5);
-  padding: 5px 14px;
-  border-radius: 999px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  letter-spacing: -0.025em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  text-shadow: 0 3px 22px rgba(0, 0, 0, 0.88), 0 1px 4px rgba(0, 0, 0, 0.95);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.gallery-section__heading-line {
+  display: block;
+  white-space: nowrap;
 }
 
 /* ── Bottom Pill ── */
@@ -233,10 +219,10 @@
     top: -35%;
     transform: translateX(-48%) rotateX(42deg) rotateY(15deg) rotate(-20deg) scale(0.95);
   }
-  .gallery-section__header {
-    top: 20px;
-    left: 20px;
-    right: 20px;
+  .gallery-section__corner-title {
+    top: 24px;
+    right: 24px;
+    left: auto;
   }
 }
 
@@ -253,7 +239,9 @@
     top: -25%;
     transform: translateX(-48%) rotateX(38deg) rotateY(12deg) rotate(-18deg) scale(0.9);
   }
-  .gallery-section__hint {
-    display: none;
+  .gallery-section__corner-title {
+    top: 20px;
+    right: 20px;
+    left: auto;
   }
 }

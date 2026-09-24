@@ -11,74 +11,147 @@
   --pdm-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* ── Backdrop Overlay ── */
+/* ── Full Page Viewport Shell (Always 100% Solid Opaque White) ── */
 .pdm-backdrop {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: rgba(18, 14, 11, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #ffffff;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px 20px;
-  animation: pdmFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
   overscroll-behavior: contain;
   touch-action: none;
 }
 
-@keyframes pdmFadeIn {
-  from {
-    opacity: 0;
+/* ── Curtain & Circular Content Reveal Animations ── */
+.curtain {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  transform: translateY(0%);
+  z-index: 100000;
+  pointer-events: none;
+}
+
+.curtain.animate-out {
+  pointer-events: auto;
+  animation: curtainOut 650ms cubic-bezier(.77, 0, .18, 1) forwards;
+}
+
+.curtain.fade-out {
+  pointer-events: none;
+  animation: curtainFade 300ms ease-out forwards;
+}
+
+@keyframes curtainOut {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(0%); }
+}
+
+@keyframes curtainFade {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Circular Reveal on White Screen ── */
+.pdm-container.content-enter {
+  animation: contentReveal 900ms cubic-bezier(.65, 0, .15, 1) both !important;
+  animation-delay: 80ms !important;
+}
+
+@keyframes contentReveal {
+  0% {
+    clip-path: circle(0% at 50% 0%);
+    -webkit-clip-path: circle(0% at 50% 0%);
   }
-  to {
-    opacity: 1;
+  99.9% {
+    clip-path: circle(150% at 50% 0%);
+    -webkit-clip-path: circle(150% at 50% 0%);
+  }
+  100% {
+    clip-path: none;
+    -webkit-clip-path: none;
   }
 }
 
-/* ── Modal Container ── */
+@media (prefers-reduced-motion: reduce) {
+  .curtain,
+  .pdm-container.content-enter {
+    animation: none !important;
+  }
+}
+
+/* ── Full Page Container (Whole Page View) ── */
 .pdm-container {
   position: relative;
   width: 100%;
-  max-width: 980px;
-  height: 92vh;
+  height: 100%;
+  max-width: 100%;
   background: #ffffff;
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 24px 70px -12px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.05);
-  animation: pdmSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-shadow: none;
+  border: none;
   overscroll-behavior: contain;
 }
 
-@keyframes pdmSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ── Sticky Top Bar (matching Vibe Check top bar) ── */
+/* ── Sticky Top Bar (Full Width Editorial Header) ── */
 .pdm-topbar {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 36px;
-  height: 64px;
+  padding: 0 max(28px, calc((100% - 1180px) / 2));
+  height: 68px;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid #f0ebe4;
+  border-bottom: 1px solid #eee8df;
   flex-shrink: 0;
+}
+
+.pdm-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdm-topbar__back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f4f0ea;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  font-family: var(--pdm-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: #222222;
+  cursor: pointer;
+  padding: 5px 12px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pdm-topbar__back-btn:hover {
+  background: #111111;
+  color: #ffffff;
+  border-color: #111111;
+  transform: translateX(-2px);
+}
+
+.pdm-topbar__back-arrow {
+  font-size: 14px;
+}
+
+.pdm-topbar__divider--back {
+  color: #d8d2ca;
+  font-size: 13px;
 }
 
 .pdm-topbar__title {
@@ -181,17 +254,18 @@
   transform: rotate(90deg);
 }
 
-/* ── Scrollable Case Study Content ── */
+/* ── Scrollable Case Study Content (Full Page View) ── */
 .pdm-content-scroll {
   flex: 1;
   overflow-y: auto;
   overscroll-behavior: contain;
   overscroll-behavior-y: contain;
   touch-action: pan-y;
-  padding: 48px 48px 64px 48px;
+  padding: 56px max(28px, calc((100% - 1040px) / 2)) 120px;
   font-family: var(--pdm-sans);
   color: #222222;
   scroll-behavior: smooth;
+  background: #ffffff;
 }
 
 .pdm-content-scroll::-webkit-scrollbar {
@@ -884,11 +958,10 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
-/* ── Mobile Rework (Optimized Editorial Sheet) ── */
+/* ── Mobile Rework (Optimized Editorial Full Page) ── */
 @media (max-width: 768px) {
   .pdm-backdrop {
     padding: 0;
-    align-items: flex-end;
   }
 
   .pdm-container {
@@ -896,7 +969,7 @@
     height: 100dvh;
     height: 100vh;
     max-height: 100dvh;
-    border-radius: 20px 20px 0 0;
+    border-radius: 0;
     margin: 0;
   }
 

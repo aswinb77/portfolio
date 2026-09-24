@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import './ProjectDetailModal.css'
 
 export default function ProjectDetailModal({
@@ -7,6 +8,9 @@ export default function ProjectDetailModal({
   onClose,
   onNextProject,
   onPrevProject,
+  currentIndex,
+  totalProjects,
+  isContentEntering = false,
 }) {
   const [activePreviewTab, setActivePreviewTab] = useState(0)
   const [isVideoMuted, setIsVideoMuted] = useState(false)
@@ -102,15 +106,15 @@ export default function ProjectDetailModal({
       subtitle: 'A personal finance companion that tracks every rupee through natural conversation, backed by Finny the dragon.',
       githubUrl: 'https://github.com/aswinb77/finmate',
       previewTabs: [
-        { label: 'Product Video', video: '/finny_product_video.mp4', caption: 'Interactive Finny Onboarding & Voice Logging Demo' },
+        { label: 'Product Video', video: '/finny_product_video.mp4', caption: 'Interactive Finny Onboarding & Expense Logging Demo' },
         { label: 'Onboarding', img: '/finmate-meet.png', caption: 'Empathetic Dragon Companion Onboarding' },
-        { label: 'Voice AI Logger', img: '/finmate-chat.png', caption: 'Instant Natural Voice & Chat Expense Logging' },
+        { label: 'Chat AI Logger', img: '/finmate-chat.png', caption: 'Instant Natural Language & Chat Expense Logging' },
         { label: 'Habit Rings', img: '/finmate-story.png', caption: 'Activity-Inspired Daily Expense Rings' },
       ],
       problem:
         "How might we transform personal finance from an intimidating, spreadsheet-heavy chore into an effortless daily habit without losing tracking accuracy?",
       approach:
-        "I designed an empathetic mascot-led AI experience, owning the voice transcription UX, the instant rupee categorization model, and visual circular budget rings that reward consistency over tedious manual math.",
+        "I designed an empathetic mascot-led AI experience, owning the conversational logging UX, the instant rupee categorization model, and visual circular budget rings that reward consistency over tedious manual math.",
       metrics: [
         { value: '84%', label: 'Day-7 User Retention' },
         { value: '3.2x', label: 'Faster Logging vs Manual Forms' },
@@ -127,8 +131,8 @@ export default function ProjectDetailModal({
         },
         {
           num: '02',
-          title: 'Natural voice logging above the fold',
-          desc: 'Instead of navigating through nested category dropdowns, users simply speak or type naturally ("Spent 450 on cold brew with Maya"). Entity extraction parses amounts, merchants, and categories in sub-seconds.',
+          title: 'Natural conversational logging above the fold',
+          desc: 'Instead of navigating through nested category dropdowns, users simply type naturally ("Spent 450 on cold brew with Maya"). Entity extraction parses amounts, merchants, and categories in sub-seconds.',
           img: '/finmate-chat.png',
         },
         {
@@ -138,7 +142,7 @@ export default function ProjectDetailModal({
           img: '/finmate-story.png',
         },
       ],
-      techStack: ['React Native', 'Expo', 'Whisper AI', 'Node.js', 'Framer Motion', 'Figma', 'WatermelonDB'],
+      techStack: ['React Native', 'Expo', 'OpenAI', 'Node.js', 'Framer Motion', 'Figma', 'WatermelonDB'],
     },
     moviecc: {
       navTitle: 'Movie CC',
@@ -418,13 +422,33 @@ export default function ProjectDetailModal({
 
   const study = caseStudies[project.headerType] || caseStudies.finmate
 
-  return (
-    <div className="pdm-backdrop" onClick={onClose} aria-modal="true" role="dialog">
-      <div className="pdm-container" onClick={(e) => e.stopPropagation()}>
+  const modalMarkup = (
+    <div
+      className="pdm-backdrop"
+      onClick={onClose}
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        className={`pdm-container ${isContentEntering ? 'content-enter' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         
-        {/* ── Fixed Editorial Top Bar (matching Vibe Check inspiration) ── */}
+        {/* ── Fixed Editorial Top Bar (Full-Page Header) ── */}
         <header className="pdm-topbar">
-          <div className="pdm-topbar__title">{study.navTitle}</div>
+          <div className="pdm-topbar__left">
+            <button
+              type="button"
+              onClick={onClose}
+              className="pdm-topbar__back-btn"
+              title="Return to Selected Work (Esc)"
+            >
+              <span className="pdm-topbar__back-arrow" aria-hidden="true">←</span>
+              <span>Back</span>
+            </button>
+            <span className="pdm-topbar__divider pdm-topbar__divider--back">/</span>
+            <div className="pdm-topbar__title">{study.navTitle}</div>
+          </div>
           
           <div className="pdm-topbar__actions">
             {/* GitHub Repository Quick Link */}
@@ -805,4 +829,9 @@ export default function ProjectDetailModal({
       </div>
     </div>
   )
+
+  if (typeof document !== 'undefined') {
+    return createPortal(modalMarkup, document.body)
+  }
+  return modalMarkup
 }

@@ -1,10 +1,24 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './FeaturedSection.css'
 import ProjectDetailModal from './ProjectDetailModal'
 
 export default function FeaturedSection() {
   const [selectedProject, setSelectedProject] = useState(null)
   const [hoveredProjectId, setHoveredProjectId] = useState(null)
+  const [curtainClass, setCurtainClass] = useState('')
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [isContentEntering, setIsContentEntering] = useState(false)
+  const animTimeoutRef = useRef(null)
+  const fadeTimeoutRef = useRef(null)
+  const contentTimeoutRef = useRef(null)
+
+  useEffect(() => {
+    return () => {
+      if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current)
+      if (fadeTimeoutRef.current) clearTimeout(fadeTimeoutRef.current)
+      if (contentTimeoutRef.current) clearTimeout(contentTimeoutRef.current)
+    }
+  }, [])
 
   // Explicit user order: Finmate, Movie.cc, PMSE, Merchant Wallet
   const projects = [
@@ -26,7 +40,7 @@ export default function FeaturedSection() {
       headerType: 'finmate',
       video: '/finny_product_video.mp4',
       previewImg: '/finmate-story.png',
-      previewTag: 'NATURAL VOICE EXPENSE TRACKER',
+      previewTag: 'CONVERSATIONAL EXPENSE TRACKER',
     },
     {
       id: 'moviecc',
@@ -64,7 +78,7 @@ export default function FeaturedSection() {
       github: 'https://github.com/aswinb77/ev-sensor',
       themeColor: '#06b6d4',
       headerType: 'pmse',
-      video: '/pmse.mp4',
+      video: '/ev_health_motion_promo.mp4',
       previewImg: '/pmse-app.jpg',
       previewTag: 'TINYML ON ESP32 + FLUTTER',
     },
@@ -90,25 +104,57 @@ export default function FeaturedSection() {
   ]
 
   const handleOpenProject = (project) => {
-    setSelectedProject(project)
+    if (isAnimating) return
+    setIsAnimating(true)
+
+    // 1. Sweep white curtain up to cover the screen (650ms)
+    setCurtainClass('animate-out')
+
+    animTimeoutRef.current = setTimeout(() => {
+      // 2. Screen is completely white; mount full page on top of solid white pdm-backdrop
+      setSelectedProject(project)
+      setIsContentEntering(true)
+
+      // 3. Remove curtain as pdm-backdrop seamlessly maintains 100% solid white
+      setCurtainClass('')
+
+      contentTimeoutRef.current = setTimeout(() => {
+        setIsContentEntering(false)
+        setIsAnimating(false)
+      }, 980)
+    }, 650)
   }
 
   const handleCloseProject = () => {
+    if (animTimeoutRef.current) clearTimeout(animTimeoutRef.current)
+    if (fadeTimeoutRef.current) clearTimeout(fadeTimeoutRef.current)
+    if (contentTimeoutRef.current) clearTimeout(contentTimeoutRef.current)
+    setCurtainClass('')
+    setIsAnimating(false)
+    setIsContentEntering(false)
     setSelectedProject(null)
   }
 
   const handleNextProject = () => {
-    if (!selectedProject) return
+    if (!selectedProject || isAnimating) return
     const currentIndex = projects.findIndex((p) => p.id === selectedProject.id)
     const nextIndex = (currentIndex + 1) % projects.length
+    setIsContentEntering(false)
     setSelectedProject(projects[nextIndex])
+    setTimeout(() => {
+      setIsContentEntering(true)
+    }, 20)
   }
 
   const handlePrevProject = () => {
-    if (!selectedProject) return
+    if (!selectedProject || isAnimating) return
     const currentIndex = projects.findIndex((p) => p.id === selectedProject.id)
     const prevIndex = (currentIndex - 1 + projects.length) % projects.length
+    setIsContentEntering(false)
     setSelectedProject(projects[prevIndex])
+    setTimeout(() => {
+      setIsContentEntering(true)
+    }, 20)
   }
 
   // Active project on desktop when hovered
@@ -142,12 +188,6 @@ export default function FeaturedSection() {
       </div>
 
       <div className="featured-container">
-        
-        {/* ── Smaller Heading for Selected Work (Image 1) ── */}
-        <div className="featured-small-heading-wrap">
-          <span className="featured-eyebrow-tag">SELECTED WORK</span>
-          <div className="featured-divider-line" />
-        </div>
 
         {/* ── Subtitle: "Recent work." (Image 2) ── */}
         <div className="featured-recent-header">
@@ -239,6 +279,12 @@ export default function FeaturedSection() {
                         muted
                         loop
                         playsInline
+                        ref={(el) => {
+                          if (el) {
+                            el.muted = true
+                            el.play().catch(() => {})
+                          }
+                        }}
                         className="featured-card-screenshot featured-card-video"
                       />
                     ) : (
@@ -338,6 +384,14 @@ export default function FeaturedSection() {
 
       </div>
 
+      {/* ── Page Transition White Curtain ── */}
+      {curtainClass && (
+        <div
+          className={`curtain ${curtainClass}`}
+          aria-hidden="true"
+        />
+      )}
+
       {/* ── Project Detailed Overview Modal / Full Case Study View ── */}
       <ProjectDetailModal
         project={selectedProject}
@@ -347,6 +401,7 @@ export default function FeaturedSection() {
         onPrevProject={handlePrevProject}
         currentIndex={selectedProject ? projects.findIndex((p) => p.id === selectedProject.id) : 0}
         totalProjects={projects.length}
+        isContentEntering={isContentEntering}
       />
     </section>
   )

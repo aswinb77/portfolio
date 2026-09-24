@@ -7,6 +7,13 @@ export default function StickyNav() {
 
   useEffect(() => {
     const handleScroll = () => {
+      // Hide sticky nav on desktop screens (> 768px)
+      if (window.innerWidth > 768) {
+        setIsVisible(false)
+        setMenuOpen(false)
+        return
+      }
+
       const heroName = document.querySelector('.hero__name')
       let shouldShow = false
 
@@ -123,11 +130,11 @@ export default function StickyNav() {
             Gallery
           </a>
           <a
-            href="#curiosities"
+            href="#creative"
             className="stickynav__menu-link"
-            onClick={(e) => scrollToSection(e, 'curiosities')}
+            onClick={(e) => scrollToSection(e, 'creative')}
           >
-            Obsessions
+            Game
           </a>
           <a
             href="#contact"

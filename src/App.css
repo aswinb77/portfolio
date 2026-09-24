@@ -4,3 +4,125 @@
   min-height: 100vh;
   background-color: #060201;
 }
+
+/* ─── Thanos Screen Flash (Blinding White Glow) ─── */
+.thanos-screen-flash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #ffffff 70%, rgba(255, 255, 255, 0.96) 90%, rgba(254, 249, 230, 0.9) 100%);
+  z-index: 999999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.05s ease-out;
+}
+
+.thanos-screen-flash.active {
+  opacity: 1;
+}
+
+.thanos-screen-flash.fade-out {
+  opacity: 0;
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Thanos Ash & Dust Canvas (Smoky Atmosphere Filter) ─── */
+.thanos-dust-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  pointer-events: none;
+  filter: blur(0.04em);
+}
+
+/* ─── Pure CSS Stacking Card Scroll Effect ─── */
+.stack {
+  position: relative;
+  width: 100%;
+}
+
+.thanos-upper-sections {
+  display: contents;
+}
+
+.stack-section {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.stack-section--1 {
+  z-index: 1;
+}
+
+.stack-section--2 {
+  z-index: 2;
+  box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.4);
+}
+
+.stack-section--3 {
+  z-index: 3;
+  box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.5);
+}
+
+.stack-section--4 {
+  z-index: 4;
+  box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.35);
+}
+
+.stack-section--5 {
+  z-index: 5;
+  box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.45);
+}
+
+.stack-section--6 {
+  z-index: 6;
+  box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.35);
+}
+
+.thanos-section-wrap {
+  position: relative;
+  will-change: transform, opacity, filter;
+}
+
+/* Exact fadeblur & ease-in disintegration matching user snippet */
+.thanos-section-wrap.is-dusted {
+  animation: thanosFadeBlur 1.85s ease-in forwards !important;
+  pointer-events: none !important;
+}
+
+@keyframes thanosFadeBlur {
+  0% {
+    opacity: 1;
+    filter: blur(0px) contrast(100%);
+    transform: rotate(0) translate3d(0, 0, 0);
+  }
+  30% {
+    opacity: 0.85;
+    filter: blur(0.05em) contrast(110%) grayscale(40%);
+    transform: rotate(0.8deg) translate3d(50px, -25px, 0);
+  }
+  75% {
+    opacity: 0.25;
+    filter: blur(0.188em) contrast(130%) grayscale(80%);
+    transform: rotate(1.8deg) translate3d(140px, -70px, 0);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(0.35em) contrast(150%) grayscale(100%);
+    transform: rotate(2.5deg) translate3d(200px, -100px, 0);
+  }
+}
+
+.thanos-section-wrap.is-restoring {
+  opacity: 1 !important;
+  filter: blur(0px) contrast(100%) brightness(1) grayscale(0%) !important;
+  transform: translate3d(0, 0, 0) scale(1) rotate(0deg) !important;
+  transition: filter 1.3s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+

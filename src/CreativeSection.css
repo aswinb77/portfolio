@@ -1,630 +1,420 @@
-/* ══════════════════════════════════════════════════
-   CURIOSITIES & PRINCIPLES — In-Row Micro-Worlds
-   Clean editorial layout with bespoke in-row hover animations:
-   1. Multi-panel vintage comic page filling the row bar
-   2. Black hole gravitational singularity sucking letters
-   3. Flashy gold currency cascade & bullion
-   4. Japanese scroll hovering over neighboring cards
-   5. Accurate flowing Ryukin goldfish swimming in water
-   ══════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════
+   TRIANGLE VETTU — PURE GAME BOARD
+   Tactile 3D board, crisp white card, clean custom elements (keywords.png)
+   ══════════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800;900&display=swap');
 
-.curiosities-section {
+.duo-game-section {
   position: relative;
+  z-index: 2;
   width: 100%;
   min-height: 100vh;
-  background-color: #060201;
+  background-color: #f8fafc;
   background-image: 
-    radial-gradient(ellipse at 50% 10%, rgba(35, 14, 8, 0.35) 0%, transparent 70%),
-    radial-gradient(ellipse at 50% 90%, rgba(20, 8, 5, 0.25) 0%, transparent 60%);
-  color: #f5e8d8;
-  padding: 130px 0 140px;
-  border-top: 1px solid rgba(245, 232, 216, 0.08);
-  border-bottom: 1px solid rgba(245, 232, 216, 0.08);
-  overflow: hidden;
+    radial-gradient(circle at 20% 20%, rgba(88, 204, 2, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(28, 176, 246, 0.08) 0%, transparent 45%),
+    radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
+  background-size: 100% 100%, 100% 100%, 28px 28px;
+  padding: 60px 24px 90px;
   box-sizing: border-box;
-}
-
-.curiosities-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 40px;
-  position: relative;
-  z-index: 2;
-}
-
-/* ── Section Header ──────────────────────────── */
-.curiosities-header {
-  margin-bottom: 60px;
-}
-
-
-.curiosities-title {
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: clamp(2.6rem, 5vw, 4.4rem);
-  font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
-  color: #fbf5ed;
-  margin: 0;
-}
-
-/* ── Rows List ───────────────────────────────── */
-.curiosities-list {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  position: relative;
-}
-
-.curiosity-row {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  align-items: center;
-  gap: 48px;
-  padding: 50px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  cursor: default;
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s ease;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-/* Dim non-hovered rows for focus */
-.curiosity-row--dimmed {
-  opacity: 0.28;
-}
-
-
-
-/* ── Left Column: Number & Title ─────────────── */
-.curiosity-row__left {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: baseline;
-  gap: 32px;
-}
-
-.curiosity-row__num {
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: 1.15rem;
-  letter-spacing: 0.12em;
-  color: rgba(245, 232, 216, 0.32);
-  transition: color 0.3s ease;
-  flex-shrink: 0;
-}
-
-.curiosity-row--active .curiosity-row__num {
-  color: rgba(245, 232, 216, 0.85);
-}
-
-.curiosity-row__title {
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
-  font-size: clamp(2rem, 3.2vw, 3.1rem);
-  font-weight: 300;
-  line-height: 1.15;
-  color: rgba(245, 232, 216, 0.5);
-  margin: 0;
-  letter-spacing: -0.01em;
-  transition: color 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s ease;
-}
-
-.curiosity-row--active .curiosity-row__title {
-  color: #ffffff;
-  transform: translateX(4px);
-}
-
-/* ── Right Column: Description ───────────────── */
-.curiosity-row__right {
-  position: relative;
-  z-index: 2;
-}
-
-.curiosity-row__desc {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
-  font-size: 0.94rem;
-  line-height: 1.68;
-  color: rgba(245, 232, 216, 0.48);
-  margin: 0;
-  max-width: 480px;
-  transition: color 0.35s ease;
-}
-
-.curiosity-row--active .curiosity-row__desc {
-  color: rgba(245, 232, 216, 0.88);
-}
-
-/* ══════════════════════════════════════════════════
-   IN-ROW ANIMATION STAGES (Triggered on hover)
-   ══════════════════════════════════════════════════ */
-.row-env {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  opacity: 0;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 1;
-  border-radius: 4px;
-}
-
-.curiosity-row--craft .row-env {
-  overflow: visible !important;
-}
-
-.curiosity-row--active .row-env {
-  opacity: 1;
-}
-
-/* ──────────────────────────────────────────────────
-/* ──────────────────────────────────────────────────
-   1. COMICS: Authentic comic page filling the row bar area
-   ────────────────────────────────────────────────── */
-.curiosity-row--comic {
-  overflow: hidden !important;
-}
-
-.curiosity-row--comic.curiosity-row--active {
-  box-shadow: inset 0 0 0 1.5px rgba(225, 29, 72, 0.5), inset 0 0 35px rgba(0, 0, 0, 0.7) !important;
-  border-color: rgba(225, 29, 72, 0.35) !important;
-}
-
-.env-comics {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 4px;
-}
-
-/* Comic page art fully filling the row bar area */
-.comic-bar-fill {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.comic-fill-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 35%;
-  opacity: 0.55;
-  filter: contrast(1.18) saturate(1.25);
-  transform: scale(1.02);
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-}
-
-.curiosity-row--active .comic-fill-image {
-  transform: scale(1.0);
-  opacity: 0.62;
-}
-
-/* Scrim ensuring text on left and description on right remain completely legible */
-.comic-fill-scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(6, 2, 1, 0.92) 0%,
-    rgba(6, 2, 1, 0.78) 22%,
-    rgba(6, 2, 1, 0.32) 48%,
-    rgba(6, 2, 1, 0.76) 78%,
-    rgba(6, 2, 1, 0.92) 100%
-  );
-  pointer-events: none;
-}
-
-/* Comic bar overlay badges & captions contained within the section */
-.comic-bar-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 5;
-  overflow: hidden;
-}
-
-.comic-bar-caption {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-0.5deg);
-  background: #ffea30;
-  border: 1.5px solid #111111;
-  color: #111111;
-  padding: 3px 10px;
-  box-shadow: 2px 2px 0px #111111;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Impact', sans-serif;
-  font-size: 0.56rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-}
-
-.comic-bar-badge {
-  position: absolute;
-  top: 10px;
-  right: 18px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.badge-price {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 1.5px solid #111111;
-  color: #111111;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Fredoka', 'Arial Black', sans-serif;
-  font-size: 0.58rem;
-  font-weight: 900;
-  box-shadow: 1.5px 1.5px 0px #111111;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-.badge-code {
-  background: #ffffff;
-  border: 1.5px solid #111111;
-  color: #111111;
-  padding: 2px 5px;
-  font-family: monospace;
-  font-size: 0.5rem;
+.duo-game-container {
+  width: 100%;
+  max-width: 1040px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+  box-sizing: border-box;
+}
+
+/* ── Left Side Heading ── */
+.duo-heading-side {
+  flex: 1;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  user-select: none;
+}
+
+.duo-game-heading {
+  font-family: 'Fredoka', -apple-system, system-ui, sans-serif;
+  font-size: clamp(2.8rem, 4.4vw, 4.4rem);
   font-weight: 800;
-  letter-spacing: 0.05em;
-  box-shadow: 1.5px 1.5px 0px #111111;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #1e293b;
+  margin: 0;
 }
 
-.comic-bar-sfx {
-  position: absolute;
-  left: 48%;
-  bottom: 12px;
-  transform: translateX(-50%);
-}
-
-.sfx-bang {
+.duo-heading-accent {
   display: inline-block;
-  background: #e11d48;
-  color: #ffffff;
-  padding: 2px 8px;
-  border: 1.5px solid #111111;
-  font-family: 'Fredoka', 'Impact', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  transform: rotate(-5deg);
-  box-shadow: 2px 2px 0px #111111;
-  animation: bangWobble 1.6s ease-in-out infinite alternate;
-}
-
-@keyframes bangWobble {
-  0%   { transform: rotate(-5deg) scale(0.96); }
-  100% { transform: rotate(-2deg) scale(1.06); }
-}
-
-.comic-bar-halftone {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(#e11d48 16%, transparent 17%);
-  background-size: 8px 8px;
-  opacity: 0.14;
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-
-/* ──────────────────────────────────────────────────
-   2. SPACE: Canvas Black Hole
-   ────────────────────────────────────────────────── */
-.env-space {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.bh-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  /* Let the canvas fill the row — no pointer events on the viz itself */
-  pointer-events: none;
-}
-
-/* On hover the whole row subtly brightens — handled by curiosity-row--active */
-.curiosity-row--space.curiosity-row--active .env-space {
-  /* slight brightening via filter on the canvas */
-  filter: brightness(1.18) saturate(1.15);
-  transition: filter 0.5s ease;
-}
-
-/* Black Hole Sucking ALL Text (Number, Title & Description) */
-.curiosity-row__num--space {
-  display: inline-flex;
-}
-
-.curiosity-row__title--space {
-  display: inline-flex;
-  flex-wrap: wrap;
-}
-
-.curiosity-row__desc--space {
-  display: block;
-}
-
-.bh-letter {
-  display: inline-block;
-  transition: transform 0.45s ease, opacity 0.45s ease, filter 0.45s ease;
-  will-change: transform, opacity;
-}
-
-.bh-desc-word {
-  display: inline-block;
-}
-
-/* Left side text (number & title) sucked towards +X into the center singularity */
-.curiosity-row--space.curiosity-row--active .bh-letter--num {
-  animation: suckLeftTextToBH 0.85s cubic-bezier(0.55, 0, 0.1, 1) forwards;
-  animation-delay: calc(var(--char-idx) * 0.03s);
-}
-
-.curiosity-row--space.curiosity-row--active .bh-letter--title {
-  animation: suckLeftTextToBH 0.85s cubic-bezier(0.55, 0, 0.1, 1) forwards;
-  animation-delay: calc(0.06s + var(--char-idx) * 0.018s);
-}
-
-@keyframes suckLeftTextToBH {
-  0% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
-    opacity: 1;
-    filter: blur(0px);
-  }
-  42% {
-    transform: translate(calc(140px + var(--char-idx, 0) * 5px), calc((var(--char-idx, 0) - 15) * 2px)) scale(0.62) rotate(calc((var(--char-idx, 0) - 15) * 8deg));
-    opacity: 0.85;
-    color: #c084fc;
-    filter: blur(0.5px);
-  }
-  100% {
-    transform: translate(calc(380px + var(--char-idx, 0) * 2px), 0px) scale(0) rotate(720deg);
-    opacity: 0;
-    color: #ffd13b;
-    filter: blur(4px);
-  }
-}
-
-/* Right side text (description) sucked towards -X into the center singularity */
-.curiosity-row--space.curiosity-row--active .bh-letter--desc {
-  animation: suckRightTextToBH 0.88s cubic-bezier(0.55, 0, 0.1, 1) forwards;
-  animation-delay: calc(var(--global-idx) * 0.005s);
-}
-
-@keyframes suckRightTextToBH {
-  0% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
-    opacity: 1;
-    filter: blur(0px);
-  }
-  42% {
-    transform: translate(calc(-140px - var(--char-idx, 0) * 3px), calc((var(--char-idx, 0) - 3) * 3px)) scale(0.62) rotate(calc((var(--char-idx, 0) - 3) * -10deg));
-    opacity: 0.85;
-    color: #c084fc;
-    filter: blur(0.5px);
-  }
-  100% {
-    transform: translate(calc(-400px - var(--char-idx, 0) * 2px), 0px) scale(0) rotate(-720deg);
-    opacity: 0;
-    color: #ffd13b;
-    filter: blur(4px);
-  }
-}
-
-/* ──────────────────────────────────────────────────
-   3. JAPAN: Ukiyo-e Ocean Wave, Foam Claws & Mount Fuji
-   ────────────────────────────────────────────────── */
-.env-japan {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.curiosity-row--japan.curiosity-row--active {
-  box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.38), inset 0 0 35px rgba(11, 28, 55, 0.85) !important;
-  border-color: rgba(56, 189, 248, 0.35) !important;
-}
-
-.curiosity-row--japan.curiosity-row--active .env-japan {
-  filter: brightness(1.22) saturate(1.25);
-  transition: filter 0.5s ease;
-}
-
-/* Wave flowing text animation — undulating with ocean swell */
-.curiosity-row__title--wave {
-  display: inline-flex;
-  flex-wrap: wrap;
-}
-
-.wave-char {
-  display: inline-block;
-  transition: transform 0.35s ease, color 0.35s ease;
-}
-
-.curiosity-row--japan.curiosity-row--active .wave-char {
-  animation: textWaveFlow 2.2s ease-in-out infinite;
-  animation-delay: calc(var(--char-idx) * 0.07s);
-}
-
-@keyframes textWaveFlow {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-    color: #ffffff;
-  }
-  25% {
-    transform: translateY(-9px) rotate(-3.5deg);
-    color: #bae6fd;
-    text-shadow: 0 0 14px rgba(186, 230, 253, 0.7);
-  }
-  50% {
-    transform: translateY(0px) rotate(0deg);
-    color: #f0f9ff;
-  }
-  75% {
-    transform: translateY(8px) rotate(3deg);
-    color: #38bdf8;
-    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
-  }
-}
-
-.curiosity-row__desc--wave {
-  display: block;
-}
-
-.wave-desc-word {
-  display: inline-block;
-  transition: transform 0.35s ease, color 0.35s ease;
-}
-
-.curiosity-row--japan.curiosity-row--active .wave-desc-word {
-  animation: descWaveFlow 2.6s ease-in-out infinite;
-  animation-delay: calc(var(--word-idx) * 0.09s);
-}
-
-@keyframes descWaveFlow {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-    color: rgba(245, 232, 216, 0.88);
-  }
-  30% {
-    transform: translateY(-6px) rotate(-1.5deg);
-    color: #e0f2fe;
-  }
-  70% {
-    transform: translateY(5px) rotate(1.5deg);
-    color: #7dd3fc;
-  }
-}
-
-/* ──────────────────────────────────────────────────
-   4. CHESS: Knight's Tour
-   ────────────────────────────────────────────────── */
-.env-knight {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.curiosity-row--chess.curiosity-row--active .env-knight {
-  filter: brightness(1.2) saturate(1.1);
-  transition: filter 0.5s ease;
-}
-
-/* ──────────────────────────────────────────────────
-   5. SLOTS: 3-Reel Slot Machine, 777 Jackpot & Gold Coins
-   ────────────────────────────────────────────────── */
-.env-slots {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.curiosity-row--slots.curiosity-row--active {
-  box-shadow: inset 0 0 0 1px rgba(251, 191, 36, 0.45), inset 0 0 40px rgba(35, 12, 20, 0.85) !important;
-  border-color: rgba(251, 191, 36, 0.4) !important;
-}
-
-.curiosity-row--slots.curiosity-row--active .env-slots {
-  filter: brightness(1.2) contrast(1.08);
-  transition: filter 0.5s ease;
-}
-
-.curiosity-row--slots .curiosity-row__left,
-.curiosity-row--slots .curiosity-row__right {
+  color: #ef4444;
+  text-shadow: 0 3px 0 #dc2626;
   position: relative;
-  z-index: 5;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95), 0 0 6px rgba(0, 0, 0, 0.9);
+  letter-spacing: -0.01em;
 }
 
-.curiosity-row--slots.curiosity-row--active .curiosity-row__title {
-  color: #fffbeb;
-  text-shadow: 0 0 18px rgba(251, 191, 36, 0.45), 0 2px 12px rgba(0, 0, 0, 0.95);
+/* ── Pure Crisp White 3D Board Card ── */
+.duo-board-card {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border: 3px solid #e2e8f0;
+  border-radius: 28px;
+  padding: 22px;
+  box-shadow: 
+    0 8px 0 #cbd5e1,
+    0 20px 45px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
 }
 
-/* Shared canvas fill rule for all three new canvas sections */
-.env-canvas {
+.duo-svg {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  display: block;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Stepping Stone Slot UI (keywords.png) ── */
+.duo-slot-graphic {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease;
+  transform-origin: center;
+}
+
+.duo-dot-group.is-open:hover .duo-slot-graphic {
+  transform: scale(1.14);
+}
+
+.duo-ghost-mark {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  transform-origin: center;
+  animation: duoGhostPop 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes duoGhostPop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 0.55; }
+}
+
+/* ── Placed Crosses Animation (X Red & X Blue from keywords.png) ── */
+.duo-placed-mark {
+  animation: duoPopMark 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: center;
+}
+
+@keyframes duoPopMark {
+  0% { transform: scale(0.2); opacity: 0; }
+  70% { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Clean, Crisp Razor Slash (No Blurry Neon) ── */
+.duo-cut-clean {
+  animation: duoStrikeSlice 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: center;
+}
+
+@keyframes duoStrikeSlice {
+  0% {
+    opacity: 0;
+    stroke-width: 9;
+  }
+  60% {
+    opacity: 1;
+    stroke-width: 5.5;
+  }
+  100% {
+    opacity: 1;
+    stroke-width: 4.8;
+  }
+}
+
+/* ── Game Over Result Popup (Matching Fredoka Font) ── */
+.duo-game-overlay {
   position: absolute;
   inset: 0;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 10;
+  animation: duoOverlayFade 0.25s ease-out forwards;
+}
+
+@keyframes duoOverlayFade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.duo-game-modal {
+  background: #ffffff;
+  border: 3px solid #e2e8f0;
+  border-bottom: 7px solid #cbd5e1;
+  border-radius: 26px;
+  padding: 26px 36px 28px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   width: 100%;
-  height: 100%;
-  display: block;
-  pointer-events: none;
+  max-width: 320px;
+  box-sizing: border-box;
+  animation: duoModalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  user-select: none;
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE DESIGN
-   ══════════════════════════════════════════════════ */
-@media (max-width: 1024px) {
-  .curiosity-row {
-    grid-template-columns: 1fr;
-    gap: 14px;
-    padding: 38px 16px;
-  }
+@keyframes duoModalPop {
+  0% { transform: scale(0.65) translateY(20px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
 }
 
-@media (max-width: 768px) {
-  .curiosities-section {
-    padding: 70px 0 85px;
-  }
-  .curiosities-container {
-    padding: 0 16px;
-  }
-  .curiosities-header {
-    margin-bottom: 36px;
-  }
-  .curiosities-title {
-    font-size: clamp(2rem, 7.5vw, 2.6rem);
-  }
-  .curiosity-row {
-    padding: 28px 14px;
-    gap: 12px;
-    cursor: pointer;
-  }
-  .curiosity-row__left {
-    gap: 14px;
-  }
-  .curiosity-row__num {
-    font-size: 1rem;
-  }
-  .curiosity-row__title {
-    font-size: clamp(1.4rem, 5.5vw, 1.85rem);
-  }
-  .curiosity-row__desc {
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
+.duo-modal-emoji {
+  font-size: 3.2rem;
+  line-height: 1;
+  margin-bottom: 8px;
+  animation: duoEmojiBounce 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
 
-@media (max-width: 480px) {
-  .curiosities-section {
-    padding: 56px 0 70px;
-  }
-  .curiosity-row {
-    padding: 22px 10px;
-  }
-  .curiosity-row__left {
+@keyframes duoEmojiBounce {
+  0% { transform: scale(0.4) rotate(-15deg); }
+  60% { transform: scale(1.2) rotate(8deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.duo-modal-title {
+  font-family: 'Fredoka', -apple-system, system-ui, sans-serif;
+  font-size: 2.3rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+}
+
+.duo-game-modal.is-win .duo-modal-title {
+  color: #58cc02;
+  text-shadow: 0 2px 0 #46a302;
+}
+
+.duo-game-modal.is-lose .duo-modal-title {
+  color: #0284c7;
+  text-shadow: 0 2px 0 #0369a1;
+}
+
+.duo-game-modal.is-draw .duo-modal-title {
+  color: #ff9600;
+  text-shadow: 0 2px 0 #d97e00;
+}
+
+.duo-modal-scores {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 8px 20px;
+  margin-bottom: 20px;
+}
+
+.duo-modal-team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Fredoka', -apple-system, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.duo-modal-team img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.duo-modal-team.is-you span {
+  color: #ef4444;
+}
+
+.duo-modal-team.is-bot span {
+  color: #0284c7;
+}
+
+.duo-modal-divider {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #94a3b8;
+}
+
+.duo-modal-btn {
+  font-family: 'Fredoka', -apple-system, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 12px 32px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background: #58cc02;
+  box-shadow: 0 5px 0 #46a302;
+  transition: all 0.12s ease;
+  user-select: none;
+}
+
+.duo-modal-btn:hover {
+  background: #61e002;
+  transform: translateY(-1px);
+}
+
+.duo-modal-btn:active {
+  transform: translateY(3px) !important;
+  box-shadow: 0 2px 0 #46a302;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .duo-game-container {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
+    gap: 32px;
+    text-align: center;
+  }
+  .duo-heading-side {
+    align-items: center;
+    max-width: 100%;
+  }
+  .duo-game-heading {
+    font-size: clamp(2.4rem, 7vw, 3.4rem);
   }
 }
+
+@media (max-width: 500px) {
+  .duo-game-section {
+    padding: 40px 12px 60px;
+  }
+  .duo-board-card {
+    padding: 12px;
+    border-radius: 20px;
+  }
+  .duo-game-modal {
+    padding: 20px 24px;
+    border-radius: 20px;
+  }
+  .duo-modal-title {
+    font-size: 1.9rem;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ASWIN DUOLINGO CHARACTER & MINECRAFT AFFECTION HEARTS
+   Desktop Only, completely static subject, floating hearts
+   ══════════════════════════════════════════════════════════════════ */
+.duo-aswin-wrap {
+  position: absolute;
+  bottom: 0;
+  right: clamp(20px, 4vw, 80px);
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  pointer-events: none;
+  cursor: default;
+  transform: none !important;
+}
+
+.duo-aswin-img {
+  width: auto;
+  height: clamp(230px, 28vh, 340px);
+  max-width: 290px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.08));
+  pointer-events: none;
+  transform: none !important;
+}
+
+/* ── Minecraft Affection Hearts Emitter ── */
+.duo-hearts-emitter {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 25;
+}
+
+.minecraft-heart {
+  position: absolute;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25));
+  animation: minecraftHeartRise var(--dur, 1.8s) cubic-bezier(0.25, 0.8, 0.45, 1) var(--delay, 0s) forwards;
+}
+
+@keyframes minecraftHeartRise {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  14% {
+    transform: translate3d(calc(var(--drift) * 0.18), -18px, 0) scale(1.18) rotate(calc(var(--drift) * 0.08deg));
+    opacity: 1;
+  }
+  38% {
+    transform: translate3d(calc(var(--drift) * 0.48), -52px, 0) scale(1.0) rotate(calc(var(--drift) * -0.06deg));
+    opacity: 1;
+  }
+  72% {
+    transform: translate3d(calc(var(--drift) * 0.8), -92px, 0) scale(0.96) rotate(calc(var(--drift) * 0.04deg));
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate3d(var(--drift), calc(-1 * var(--rise)), 0) scale(0.55) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* ── Responsive: Desktop only (hide completely on tablet / mobile <= 900px) ── */
+@media (max-width: 1200px) {
+  .duo-aswin-wrap {
+    right: 18px;
+  }
+  .duo-aswin-img {
+    height: clamp(190px, 24vh, 260px);
+    max-width: 230px;
+  }
+}
+
+@media (max-width: 900px) {
+  .duo-aswin-wrap {
+    display: none !important;
+  }
+}
+
+
 

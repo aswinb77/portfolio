@@ -6,7 +6,6 @@ const CRITICAL_IMAGES = [
   '/user.webp',
   '/catlook.png',
   '/papercrane.png',
-  '/telegram.webp',
 ]
 
 export default function Loader({ onLoaded, isSplineReady = false }) {

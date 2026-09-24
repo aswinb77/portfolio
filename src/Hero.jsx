@@ -98,8 +98,8 @@ export default function Hero({ onSplineReady }) {
               <a href="#gallery" className="hero__nav-link" onClick={(e) => scrollToSection(e, 'gallery')}>
                 Gallery
               </a>
-              <a href="#curiosities" className="hero__nav-link" onClick={(e) => scrollToSection(e, 'curiosities')}>
-                Obsessions
+              <a href="#creative" className="hero__nav-link" onClick={(e) => scrollToSection(e, 'creative')}>
+                Game
               </a>
               <a href="#contact" className="hero__nav-link" onClick={(e) => scrollToSection(e, 'contact')}>
                 Contact
@@ -131,8 +131,8 @@ export default function Hero({ onSplineReady }) {
             <a href="#gallery" className="hero__mobile-link" onClick={(e) => scrollToSection(e, 'gallery')}>
               Gallery
             </a>
-            <a href="#curiosities" className="hero__mobile-link" onClick={(e) => scrollToSection(e, 'curiosities')}>
-              Obsessions
+            <a href="#creative" className="hero__mobile-link" onClick={(e) => scrollToSection(e, 'creative')}>
+              Game
             </a>
             <a href="#contact" className="hero__mobile-link" onClick={(e) => scrollToSection(e, 'contact')}>
               Contact
@@ -146,7 +146,7 @@ export default function Hero({ onSplineReady }) {
                 <h2 className="hero__name">Aswin Biju</h2>
                 <div className="hero__socials">
                   <a
-                    href="https://linkedin.com/in/aswinbiju"
+                    href="https://linkedin.com/in/aswin-biju7"
                     target="_blank"
                     rel="noreferrer"
                     className="hero__social-btn"
@@ -160,7 +160,7 @@ export default function Hero({ onSplineReady }) {
                     </svg>
                   </a>
                   <a
-                    href="https://github.com/aswinbiju"
+                    href="https://github.com/aswinb77"
                     target="_blank"
                     rel="noreferrer"
                     className="hero__social-btn"

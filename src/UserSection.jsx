@@ -1,243 +1,86 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import './UserSection.css'
 
-const TYPEWRITER_PHRASES = [
-  'thoughtful architecture.',
-  'timeless design.',
-  'creative interfaces.',
-  'modern engineering.',
-]
-
-const CERTIFICATIONS_DATA = [
-  {
-    id: 'openai-api',
-    brand: 'OpenAI',
-    shortLabel: 'OpenAI',
-    badge: '/bd6.svg',
-    tag: 'OpenAI Academy',
-    title: 'Pathway Completion: OpenAI API',
-    issuer: 'OpenAI Academy',
-    credentialId: '194395106',
-    verifyUrl: 'https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/194395106',
-    previewImg: '/certs/openai1.png',
-  },
-  {
-    id: 'openai-work',
-    brand: 'OpenAI',
-    shortLabel: 'OpenAI',
-    badge: '/bd6.svg',
-    tag: 'OpenAI Academy',
-    title: 'Apply AI at Work',
-    issuer: 'OpenAI Academy',
-    credentialId: '194361475',
-    verifyUrl: 'https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/194361475',
-    previewImg: '/certs/openai2.png',
-  },
-  {
-    id: 'anthropic',
-    brand: 'Anthropic',
-    shortLabel: 'Anthropic',
-    badge: '/bd1.webp',
-    tag: 'Anthropic',
-    title: 'Claude Platform 101',
-    issuer: 'Anthropic (Skilljar)',
-    credentialId: 'tswfgouzuyc2',
-    verifyUrl: 'https://verify.skilljar.com/c/tswfgouzuyc2',
-    previewImg: '/certs/skilljar.png',
-  },
-  {
-    id: 'cisco',
-    brand: 'Cisco',
-    shortLabel: 'Cisco',
-    badge: '/bd2.svg.webp',
-    tag: 'Cisco & OpenEDG',
-    title: 'Python Essentials 1',
-    issuer: 'Cisco (Credly)',
-    credentialId: '4d2d05ba',
-    verifyUrl: 'https://www.credly.com/badges/4d2d05ba-5f75-4ca3-919b-bda36b80ec06/linked_in_profile',
-    previewImg: '/certs/cisco.png',
-  },
-  {
-    id: 'ibm',
-    brand: 'IBM',
-    shortLabel: 'IBM',
-    badge: '/bd5.svg',
-    tag: 'IBM SkillsBuild',
-    title: 'Cloud Computing Fundamentals',
-    issuer: 'IBM (Credly)',
-    credentialId: '25c987cf',
-    verifyUrl: 'https://www.credly.com/earner/earned/badge/25c987cf-2584-4ddf-8ffd-754de839e6c4',
-    previewImg: '/certs/ibm.png',
-  },
-  {
-    id: 'hackerrank',
-    brand: 'HackerRank',
-    shortLabel: 'HackerRank',
-    badge: '/bd4.png',
-    tag: 'HackerRank',
-    title: 'JavaScript (Basic)',
-    issuer: 'HackerRank',
-    credentialId: '0d1ad430259d',
-    verifyUrl: 'https://www.hackerrank.com/certificates/iframe/0d1ad430259d',
-    previewImg: '/certs/hackerrank.png',
-  },
-  {
-    id: 'coursera',
-    brand: 'Coursera',
-    shortLabel: 'Coursera',
-    badge: '/bd3.svg.webp',
-    tag: 'Google & Coursera',
-    title: 'Foundations of UX Design',
-    issuer: 'Google (Coursera)',
-    credentialId: 'GQN2NIQA2D47',
-    verifyUrl: 'https://www.coursera.org/account/accomplishments/verify/GQN2NIQA2D47',
-    previewImg: '/certs/coursera.png',
-  },
-  {
-    id: 'semrush',
-    brand: 'Semrush',
-    shortLabel: 'Semrush',
-    badge: '/bd7.png',
-    tag: 'Semrush Academy',
-    title: 'Mobile SEO',
-    issuer: 'Semrush Academy',
-    credentialId: 'aca9f9e32c',
-    verifyUrl: 'https://static.semrush.com/academy/certificates/aca9f9e32c/aswin-biju_15.pdf',
-    previewImg: '/certs/semrush.png',
-  },
-]
+const NARRATIVE_P1 = "On weekends you’ll find me on the football court, exploring new restaurants each month, watching movies, or stuck in puzzle games that lead nowhere (and I love it)"
+const NARRATIVE_P2 = "Drawn to consistency and the subtle things that just feel right."
+const P1_WORDS = NARRATIVE_P1.split(' ')
+const P2_WORDS = NARRATIVE_P2.split(' ')
+const TOTAL_WORDS = P1_WORDS.length + P2_WORDS.length
 
 export default function UserSection() {
-  const craneRef = useRef(null)
-  const duoVideoRef = useRef(null)
-  const [duoStreak, setDuoStreak] = useState(null)
-  const [learningLang, setLearningLang] = useState('German')
-
-  // Lazy-play Duolingo video only when widget enters viewport
-  useEffect(() => {
-    const video = duoVideoRef.current
-    if (!video) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {})
-        } else {
-          video.pause()
-        }
-      },
-      { threshold: 0.1 }
-    )
-
-    observer.observe(video)
-    return () => observer.disconnect()
-  }, [])
-
-  // Live Duolingo Streak
-  // ─ Dev:        Vite proxy forwards /api/duo-streak → Duolingo (server-side, no CORS)
-  // ─ Production: Vercel serverless function at /api/duo-streak.js does the same
-  // ─ Fallback:   Shows last known verified streak so widget never stays broken
-  useEffect(() => {
-    const FALLBACK_STREAK = 588 // verified streak as of 2026-09-04
-    const FALLBACK_LANG = 'German'
-
-    const applyUserData = (user) => {
-      if (user && typeof user.streak === 'number') {
-        setDuoStreak(user.streak)
-        if (user.learningLanguage === 'de') setLearningLang('German')
-        else if (user.learningLanguage === 'ru') setLearningLang('Russian')
-        else if (user.learningLanguage === 'ja') setLearningLang('Japanese')
-        else if (user.learningLanguage === 'es') setLearningLang('Spanish')
-        else if (user.learningLanguage === 'hi') setLearningLang('Hindi')
-        else if (user.learningLanguage) setLearningLang(user.learningLanguage.toUpperCase())
-        return true
-      }
-      return false
-    }
-
-    const fetchDuoData = async () => {
-      try {
-        // Works in dev (Vite proxy) AND in production (Vercel function)
-        const res = await fetch('/api/duo-streak?username=aswin.rar', {
-          cache: 'no-store',
-          signal: AbortSignal.timeout(8000),
-        })
-        if (res.ok) {
-          const data = await res.json()
-          const user = data?.users?.[0]
-          if (applyUserData(user)) return
-        }
-      } catch {
-        // API route not available — fall through to hardcoded fallback
-      }
-
-      // All strategies failed — show last-known verified streak
-      setDuoStreak(FALLBACK_STREAK)
-      setLearningLang(FALLBACK_LANG)
-    }
-
-    fetchDuoData()
-  }, [])
-
-  const getLanguageFlag = (lang) => {
-    switch (lang?.toLowerCase()) {
-      case 'german':
-      case 'de':
-        return '🇩🇪'
-      case 'russian':
-      case 'ru':
-        return '🇷🇺'
-      case 'japanese':
-      case 'ja':
-        return '🇯🇵'
-      case 'spanish':
-      case 'es':
-        return '🇪🇸'
-      case 'french':
-      case 'fr':
-        return '🇫🇷'
-      case 'hindi':
-      case 'hi':
-        return '🇮🇳'
-      default:
-        return '🇩🇪'
-    }
-  }
-
   const [copiedKey, setCopiedKey] = useState(null)
-  const [hoveredCertId, setHoveredCertId] = useState(null)
-  const [shiningCertId, setShiningCertId] = useState(null)
+  const containerRef = useRef(null)
+  const bubbleRef = useRef(null)
+  const chessRef = useRef(null)
+  const badmintonRef = useRef(null)
+  const skatesRef = useRef(null)
+  const avatarRef = useRef(null)
+  const wordsRef = useRef([])
 
-  // Auto-cycle shine through cert icons — one at a time, random order, random interval
+  // Auto-incrementing Duolingo streak starting at 605 on 2026-09-24
+  const [duoStreak, setDuoStreak] = useState(() => {
+    const BASE_DATE = new Date('2026-09-23T00:00:00')
+    const elapsedDays = Math.max(0, Math.floor((Date.now() - BASE_DATE.getTime()) / (1000 * 60 * 60 * 24)))
+    return 605 + elapsedDays
+  })
+
   useEffect(() => {
-    const ids = CERTIFICATIONS_DATA.map(c => c.id)
-    let timeoutId = null
-    const SHINE_DURATION = 1600 // ms — must match animation duration in CSS
-
-    // Shuffle so consecutive runs don't repeat the same icon
-    let queue = []
-    const refill = () => {
-      const shuffled = [...ids].sort(() => Math.random() - 0.5)
-      queue = shuffled
+    const checkStreak = () => {
+      const BASE_DATE = new Date('2026-09-23T00:00:00')
+      const elapsedDays = Math.max(0, Math.floor((Date.now() - BASE_DATE.getTime()) / (1000 * 60 * 60 * 24)))
+      setDuoStreak(605 + elapsedDays)
     }
-    refill()
+    const timer = setInterval(checkStreak, 60000)
+    return () => clearInterval(timer)
+  }, [])
 
-    const runNext = () => {
-      if (queue.length === 0) refill()
-      const nextId = queue.shift()
-      setShiningCertId(nextId)
-      // Clear shine after animation completes
-      timeoutId = setTimeout(() => {
-        setShiningCertId(null)
-        // Wait a random pause (1.8s – 4s) before shining the next one
-        const pause = 1800 + Math.random() * 2200
-        timeoutId = setTimeout(runNext, pause)
-      }, SHINE_DURATION)
+  // Desktop on-scroll progressive reveal text effect
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const bubble = bubbleRef.current
+    if (!bubble) return
+
+    let ticking = false
+    const handleScrollReveal = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (window.innerWidth <= 768) {
+            ticking = false
+            return
+          }
+          const rect = bubble.getBoundingClientRect()
+          const winH = window.innerHeight
+
+          // Progress begins when card top enters bottom 80% and finishes when top reaches 25%
+          const startY = winH * 0.80
+          const endY = winH * 0.25
+          const rawProgress = (startY - rect.top) / (startY - endY)
+          const progress = Math.min(Math.max(rawProgress, 0), 1)
+
+          wordsRef.current.forEach((span, idx) => {
+            if (!span) return
+            const startThresh = (idx / TOTAL_WORDS) * 0.90
+            const endThresh = startThresh + 0.10
+            const alpha = Math.min(Math.max((progress - startThresh) / (endThresh - startThresh), 0), 1)
+            span.style.opacity = (0.16 + 0.84 * alpha).toFixed(3)
+            span.style.color = alpha > 0.6 ? '#1e1916' : 'rgba(30, 25, 22, 0.35)'
+            span.style.transform = `translateY(${((1 - alpha) * 2).toFixed(1)}px)`
+          })
+
+          ticking = false
+        })
+        ticking = true
+      }
     }
 
-    // Start after a short initial delay
-    timeoutId = setTimeout(runNext, 1200)
-    return () => clearTimeout(timeoutId)
+    window.addEventListener('scroll', handleScrollReveal, { passive: true })
+    window.addEventListener('resize', handleScrollReveal, { passive: true })
+    handleScrollReveal()
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollReveal)
+      window.removeEventListener('resize', handleScrollReveal)
+    }
   }, [])
 
   const handleCopy = (e, text, key) => {
@@ -247,863 +90,227 @@ export default function UserSection() {
       navigator.clipboard.writeText(text)
     }
     setCopiedKey(key)
-    setTimeout(() => setCopiedKey(null), 2000)
+    setTimeout(() => setCopiedKey(null), 2200)
   }
 
-  // Typewriter effect for editorial quote
-  const [twPhraseIdx, setTwPhraseIdx] = useState(0)
-  const [twCharIdx, setTwCharIdx] = useState(TYPEWRITER_PHRASES[0].length)
-  const [twIsDeleting, setTwIsDeleting] = useState(false)
-
-  useEffect(() => {
-    const current = TYPEWRITER_PHRASES[twPhraseIdx]
-    let timer
-
-    if (!twIsDeleting && twCharIdx < current.length) {
-      timer = setTimeout(() => setTwCharIdx((prev) => prev + 1), 80)
-    } else if (!twIsDeleting && twCharIdx === current.length) {
-      timer = setTimeout(() => setTwIsDeleting(true), 2400)
-    } else if (twIsDeleting && twCharIdx > 0) {
-      timer = setTimeout(() => setTwCharIdx((prev) => prev - 1), 40)
-    } else if (twIsDeleting && twCharIdx === 0) {
-      setTwIsDeleting(false)
-      setTwPhraseIdx((prev) => (prev + 1) % TYPEWRITER_PHRASES.length)
-    }
-
-    return () => clearTimeout(timer)
-  }, [twCharIdx, twIsDeleting, twPhraseIdx])
-
-  // Interactive Mini Paper Crane Pop Burst on Click
-  const [poppedCranes, setPoppedCranes] = useState([])
-  const popCounterRef = useRef(0)
-
-  const handleCraneClick = (e) => {
-    e.stopPropagation()
-    const rect = e.currentTarget.getBoundingClientRect()
-    const originX = rect.left + rect.width / 2
-    const originY = rect.top + rect.height / 2
-
-    // Burst 14 smaller shorter origami paper cranes
-    const count = 14
-    const newBurst = Array.from({ length: count }, (_, i) => {
-      const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4
-      const distance = 90 + Math.random() * 240
-      const tx = Math.cos(angle) * distance
-      const ty = Math.sin(angle) * distance - (50 + Math.random() * 80) // upward buoyancy
-      const scale = 0.2 + Math.random() * 0.25 // small & shorter
-      const startRot = (Math.random() - 0.5) * 45
-      const endRot = startRot + (Math.random() - 0.5) * 360
-      const duration = 0.85 + Math.random() * 0.45
-
-      return {
-        id: ++popCounterRef.current,
-        x: originX,
-        y: originY,
-        tx,
-        ty,
-        scale,
-        startRot,
-        endRot,
-        duration,
-      }
-    })
-
-    setPoppedCranes((prev) => [...prev, ...newBurst])
-
-    // Cleanup after animation completes
-    setTimeout(() => {
-      const ids = new Set(newBurst.map((c) => c.id))
-      setPoppedCranes((prev) => prev.filter((c) => !ids.has(c.id)))
-    }, 1400)
-  }
-
-  const userSectionRef = useRef(null)
-
-  // ─── Scroll reveal with cinematic stagger delays ───────────────────────
-  useEffect(() => {
-    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
-    const items = userSectionRef.current?.querySelectorAll('.scroll-reveal-item')
-    if (isMobile) {
-      items?.forEach((item) => item.classList.add('is-revealed'))
-      return
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-revealed')
-          }
-        })
-      },
-      { threshold: 0.06, rootMargin: '0px 0px -30px 0px' }
-    )
-
-    items?.forEach((item) => observer.observe(item))
-
-    return () => observer.disconnect()
-  }, [])
-
-  // ─── Crane scroll fly-away ─────────────────────────────────────────────
-  useEffect(() => {
+  // Interactive 3D tilt and floating parallax on mouse move
+  const handleMouseMove = useCallback((e) => {
     if (typeof window !== 'undefined' && window.innerWidth <= 768) return
+    const container = containerRef.current
+    if (!container) return
 
-    let animId = null
-    const onScroll = () => {
-      if (!craneRef.current) return
-      const parent = craneRef.current.parentElement
-      if (!parent) return
-      const rect = parent.getBoundingClientRect()
-      const windowHeight = window.innerHeight
-
-      const triggerPoint = windowHeight * 0.45
-      const flyDistance = 500
-      const flyProgress = Math.max(0, (triggerPoint - rect.top) / flyDistance)
-
-      if (flyProgress > 0) {
-        const flyX = -(flyProgress * 280)
-        const flyY = -(flyProgress * 460)
-        const flyRotate = -8 - flyProgress * 26
-        const flyScale = Math.min(1.25, 1 + flyProgress * 0.18)
-        const flyOpacity = Math.max(0, 1 - Math.max(0, flyProgress - 0.4) * 1.7)
-
-        craneRef.current.style.transform = `translate3d(${flyX}px, ${flyY}px, 0) rotate(${flyRotate}deg) scale(${flyScale})`
-        craneRef.current.style.opacity = `${flyOpacity}`
-      } else {
-        craneRef.current.style.transform = 'translate3d(0, 0, 0) rotate(-6deg) scale(1)'
-        craneRef.current.style.opacity = '1'
-      }
-    }
-
-    const handleScroll = () => {
-      if (animId) cancelAnimationFrame(animId)
-      animId = requestAnimationFrame(onScroll)
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      if (animId) cancelAnimationFrame(animId)
-    }
-  }, [])
-
-  const bioTextRef = useRef(null)
-
-  // ─── Progressive text fill ─────────────────────────────────────────────
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
-
-    let animId = null
-    const words = bioTextRef.current
-      ? Array.from(bioTextRef.current.querySelectorAll('.progressive-word'))
-      : []
-    const totalWords = words.length
-    if (totalWords === 0) return
-
-    const updateTextFill = () => {
-      if (!bioTextRef.current) return
-      const rect = bioTextRef.current.getBoundingClientRect()
-      const windowH = window.innerHeight
-      const fillStart = windowH * 0.80
-      const fillRange = windowH * 0.65
-      const totalProgress = Math.max(0, Math.min(1, (fillStart - rect.top) / fillRange))
-
-      words.forEach((word, idx) => {
-        const wordStart = idx / totalWords
-        const wordEnd = (idx + 1) / totalWords
-        const wordFill = Math.max(0, Math.min(1, (totalProgress - wordStart) / (wordEnd - wordStart)))
-        word.style.setProperty('--fill', wordFill.toFixed(3))
-      })
-    }
-
-    const onScrollText = () => {
-      if (animId) cancelAnimationFrame(animId)
-      animId = requestAnimationFrame(updateTextFill)
-    }
-
-    window.addEventListener('scroll', onScrollText, { passive: true })
-    updateTextFill()
-
-    return () => {
-      window.removeEventListener('scroll', onScrollText)
-      if (animId) cancelAnimationFrame(animId)
-    }
-  }, [])
-
-  // ─── Magnetic cursor: portrait + illustrations parallax ─────────────────
-  const magnetRef = useRef(null)
-  const ill1Ref = useRef(null)
-  const ill2Ref = useRef(null)
-  const ill3Ref = useRef(null)
-  const raf = useRef(null)
-  const mouse = useRef({ x: 0.5, y: 0.5 })
-  const smoothMouse = useRef({ x: 0.5, y: 0.5 })
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
-
-    const section = userSectionRef.current
-    if (!section) return
-
-    const onMouseMove = (e) => {
-      const rect = section.getBoundingClientRect()
-      mouse.current = {
-        x: (e.clientX - rect.left) / rect.width,
-        y: (e.clientY - rect.top) / rect.height,
-      }
-    }
-
-    let isVisible = false
-    const tick = () => {
-      // Lerp smoothing — cinematic lag
-      const lerpFactor = 0.055
-      smoothMouse.current.x += (mouse.current.x - smoothMouse.current.x) * lerpFactor
-      smoothMouse.current.y += (mouse.current.y - smoothMouse.current.y) * lerpFactor
-
-      const mx = (smoothMouse.current.x - 0.5) * 2  // -1 to +1
-      const my = (smoothMouse.current.y - 0.5) * 2
-
-      // Portrait — gentle tilt
-      if (magnetRef.current) {
-        const rx = -my * 4
-        const ry = mx * 6
-        magnetRef.current.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`
-      }
-
-      // Illustration parallax at different depths
-      if (ill1Ref.current) {
-        ill1Ref.current.style.transform = `rotate(-5deg) translate(${mx * -18}px, ${my * -12}px)`
-      }
-      if (ill2Ref.current) {
-        ill2Ref.current.style.transform = `rotate(4deg) translate(${mx * 22}px, ${my * 14}px)`
-      }
-      if (ill3Ref.current) {
-        ill3Ref.current.style.transform = `rotate(-2deg) translate(${mx * 10}px, ${my * 8}px)`
-      }
-
-      if (isVisible) {
-        raf.current = requestAnimationFrame(tick)
-      }
-    }
-
-    const observer = new IntersectionObserver(([entry]) => {
-      isVisible = entry.isIntersecting
-      if (isVisible) {
-        if (raf.current) cancelAnimationFrame(raf.current)
-        raf.current = requestAnimationFrame(tick)
-      } else {
-        if (raf.current) cancelAnimationFrame(raf.current)
-      }
-    }, { threshold: 0.05 })
-
-    observer.observe(section)
-    section.addEventListener('mousemove', onMouseMove, { passive: true })
-
-    return () => {
-      observer.disconnect()
-      section.removeEventListener('mousemove', onMouseMove)
-      if (raf.current) cancelAnimationFrame(raf.current)
-    }
-  }, [])
-
-  // ─── 3D tilt on side quest cards ──────────────────────────────────────
-  const handleCardTilt = useCallback((e) => {
-    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
-    const card = e.currentTarget
-    const rect = card.getBoundingClientRect()
+    const rect = container.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
     const cx = rect.width / 2
     const cy = rect.height / 2
-    const rx = ((y - cy) / cy) * -12
-    const ry = ((x - cx) / cx) * 12
-    card.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-5px) scale(1.03)`
-    card.style.boxShadow = `${-ry * 0.6}px ${rx * 0.6}px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.15) inset`
-  }, [])
+    const dx = (x - cx) / cx // -1 to 1
+    const dy = (y - cy) / cy
 
-  const handleCardReset = useCallback((e) => {
-    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
-    const card = e.currentTarget
-    card.style.transform = ''
-    card.style.boxShadow = ''
-    card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
-    setTimeout(() => { card.style.transition = '' }, 600)
-  }, [])
-
-  // ─── Scroll progress line through section (direct DOM update without re-rendering) ─
-  const progressLineRef = useRef(null)
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth <= 768) return
-
-    let animId = null
-    const onScroll = () => {
-      if (animId) cancelAnimationFrame(animId)
-      animId = requestAnimationFrame(() => {
-        const section = userSectionRef.current
-        if (!section || !progressLineRef.current) return
-        const rect = section.getBoundingClientRect()
-        const wh = window.innerHeight
-        const progress = Math.max(0, Math.min(1, (-rect.top) / (rect.height - wh)))
-        progressLineRef.current.style.setProperty('--progress', progress)
-      })
+    // Parallax on floating hobby stickers
+    if (chessRef.current) {
+      chessRef.current.style.transform = `translate(${dx * -16}px, ${dy * -14}px) rotate(${-12 + dx * 4}deg)`
     }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      if (animId) cancelAnimationFrame(animId)
+    if (badmintonRef.current) {
+      badmintonRef.current.style.transform = `translate(${dx * 20}px, ${dy * -18}px) rotate(${15 + dy * 5}deg)`
+    }
+    if (skatesRef.current) {
+      skatesRef.current.style.transform = `translate(${dx * 16}px, ${dy * 16}px) rotate(${-6 + dx * 5}deg)`
     }
   }, [])
 
-  const bioTokens = [
-    { text: 'I', type: 'word' },
-    { text: 'am', type: 'word' },
-    { text: 'Aswin Biju', type: 'name' },
-    { text: ', a', type: 'word' },
-    { text: 'full-stack', type: 'word' },
-    { text: 'engineer', type: 'word' },
-    { text: 'and', type: 'word' },
-    { text: 'digital', type: 'word' },
-    { text: 'creator', type: 'word' },
-    { text: 'based', type: 'word' },
-    { text: 'in', type: 'word' },
-    { text: 'Kerala,', type: 'word' },
-    { text: 'India.', type: 'word' },
-    { text: 'My', type: 'word' },
-    { text: 'craft', type: 'word' },
-    { text: 'spans', type: 'word' },
-    { text: 'end-to-end', type: 'word' },
-    { text: 'web', type: 'word' },
-    { text: 'architecture,', type: 'word' },
-    { text: 'performant', type: 'word' },
-    { text: 'modern', type: 'word' },
-    { text: 'interfaces,', type: 'word' },
-    { text: 'and', type: 'word' },
-    { text: 'creative', type: 'word' },
-    { text: 'digital', type: 'word' },
-    { text: 'storytelling.', type: 'word' },
-    { text: 'Every', type: 'word' },
-    { text: 'project', type: 'word' },
-    { text: 'is', type: 'word' },
-    { text: 'constructed', type: 'word' },
-    { text: 'with', type: 'word' },
-    { text: 'rigorous', type: 'word' },
-    { text: 'attention', type: 'word' },
-    { text: 'to', type: 'word' },
-    { text: 'detail,', type: 'word' },
-    { text: 'clean', type: 'word' },
-    { text: 'typography,', type: 'word' },
-    { text: 'and', type: 'word' },
-    { text: 'fluid', type: 'word' },
-    { text: 'user', type: 'word' },
-    { text: 'experience.', type: 'word' },
-  ]
+  const handleMouseLeave = useCallback(() => {
+    if (chessRef.current) chessRef.current.style.transform = ''
+    if (badmintonRef.current) badmintonRef.current.style.transform = ''
+    if (skatesRef.current) skatesRef.current.style.transform = ''
+  }, [])
 
   return (
-    <section className="user-section" id="about" ref={userSectionRef}>
-      {/* Cinematic scroll progress line */}
-      <div
-        ref={progressLineRef}
-        className="user-section__progress-line"
-        aria-hidden="true"
-      />
-
-      {/* Background ambient glow */}
-      <div className="user-section__ambient" />
-
-      {/* ── Background Blend Illustrations Across Section ── */}
-      <div className="user-section__illustrations" aria-hidden="true">
-        <div className="user-ill user-ill--1" ref={ill1Ref}>
-          <img src="/illustration-1-trans.webp" alt="Botanical engraving" loading="lazy" decoding="async" />
-        </div>
-        <div className="user-ill user-ill--2" ref={ill2Ref}>
-          <img src="/illustration2-trans.webp" alt="Tarot clock artwork" loading="lazy" decoding="async" />
-        </div>
-        <div className="user-ill user-ill--3" ref={ill3Ref}>
-          <img src="/illustration3-trans.webp" alt="Linocut warhorse" loading="lazy" decoding="async" />
-        </div>
-      </div>
-
-      {/* Vignette overlay for cinematic depth */}
-      <div className="user-section__vignette" aria-hidden="true" />
+    <section
+      className="user-section"
+      id="about"
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="user-section__ambient" aria-hidden="true" />
 
       <div className="user-section__container">
-        
-        {/* Section Header */}
-        <div className="user-section__header scroll-reveal-item scroll-reveal--fade" style={{ '--reveal-delay': '0s' }}>
-          <div className="user-section__tag">
-            <span className="user-section__tag-box">01</span>
-            <span className="user-section__tag-text">ABOUT THE DEVELOPER</span>
+        {/* Heroic Personality Showcase Stage */}
+        <div className="personality-showcase-stage">
+          {/* Floating Sticker: Chess Board (Top-Left) */}
+          <div className="floating-sticker floating-sticker--chess" ref={chessRef} aria-hidden="true">
+            <img src="/chess.avif" alt="Chess board" className="sticker-img" />
           </div>
-          <div className="user-section__coord">LAT 10.8505° N &nbsp;•&nbsp; LON 76.2711° E</div>
-        </div>
 
-        {/* Panoramic Portrait Showcase */}
-        <div className="user-section__portrait-wrapper scroll-reveal-item scroll-reveal--cinematic" style={{ '--reveal-delay': '0.1s' }}>
-          <div className="user-section__portrait-frame" ref={magnetRef}>
-            {/* Corner architectural marks */}
-            <span className="user-frame-corner user-frame-corner--tl">┌</span>
-            <span className="user-frame-corner user-frame-corner--tr">┐</span>
-            <span className="user-frame-corner user-frame-corner--bl">└</span>
-            <span className="user-frame-corner user-frame-corner--br">┘</span>
+          {/* Floating Sticker: Football on Grass (Top-Right) */}
+          <div className="floating-sticker floating-sticker--badminton" ref={badmintonRef} aria-hidden="true">
+            <img src="/footballongras.png" alt="Football on grass" className="sticker-img" />
+          </div>
 
-            <div className="user-section__img-box">
-              <img
-                src="/user.webp"
-                alt="Aswin Biju"
-                className="user-section__img"
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-              />
-              <div className="user-section__img-overlay" />
+          {/* Floating Sticker: Movie (Far-Right) */}
+          <div className="floating-sticker floating-sticker--skates" ref={skatesRef} aria-hidden="true">
+            <img src="/movie.png" alt="Movie" className="sticker-img" />
+          </div>
 
-              {/* Cinematic scan line effect */}
-              <div className="user-section__scan-line" aria-hidden="true" />
+          {/* Centerpiece: The Electric Blue Speech Bubble */}
+          <div className="personality-bubble-wrap">
+            <div className="personality-speech-bubble" ref={bubbleRef}>
+              <div className="personality-speech-bubble__inner">
+                {/* Narrative Paragraphs with Desktop On-Scroll Reveal (Hidden on Mobile) */}
+                <div className="personality-bubble-narrative">
+                  <p className="personality-bubble-text">
+                    {P1_WORDS.map((word, i) => (
+                      <span key={`p1-${i}`}>
+                        <span
+                          ref={el => (wordsRef.current[i] = el)}
+                          className="scroll-reveal-word"
+                        >
+                          {word}
+                        </span>
+                        {' '}
+                      </span>
+                    ))}
+                  </p>
 
-              {/* ── Handwritten Note on the Edge of the Portrait ── */}
-              <div className="user-portrait__handwritten-note">
-                <span className="handwritten-tape" aria-hidden="true" />
-                <span className="handwritten-text">"absolute worth hiring"</span>
-                <svg
-                  className="handwritten-doodle"
-                  viewBox="0 0 130 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path d="M4,9 C35,14 70,4 126,8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                </svg>
+                  <p className="personality-bubble-text">
+                    {P2_WORDS.map((word, i) => (
+                      <span key={`p2-${i}`}>
+                        <span
+                          ref={el => (wordsRef.current[P1_WORDS.length + i] = el)}
+                          className="scroll-reveal-word"
+                        >
+                          {word}
+                        </span>
+                        {' '}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+
+                {/* Compact Mobile Narrative (Shown only on mobile) */}
+                <p className="personality-bubble-mobile-text">
+                  Weekends on the pitch, movies, and puzzle games that go nowhere. Drawn to subtle details that just feel right.
+                </p>
+
+                {/* Subheading Anchor */}
+                <h3 className="personality-bubble-lead">
+                  Sidequest...
+                </h3>
+
+                {/* Brand Inspiration Icons */}
+                <div className="personality-brand-row">
+                  {/* Duolingo App Icon with Streak Flame & Link */}
+                  <a
+                    href="https://www.duolingo.com/profile/aswin.rar"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="brand-squircle brand-squircle--duo"
+                    aria-label={`Duolingo profile aswin.rar with ${duoStreak} day streak`}
+                  >
+                    <div className="brand-squircle__icon-box duo-box">
+                      <img src="/duodead.avif" alt="Duolingo" className="duodead-img" />
+                    </div>
+
+                    {/* Streak Flame and Number without white background */}
+                    <div className="brand-squircle__streak">
+                      <img src="/duolingo-fire.svg" alt="Flame streak" className="duo-flame-icon" />
+                      <span className="duo-flame-count">{duoStreak}</span>
+                    </div>
+                  </a>
+
+                  {/* Notion Icon */}
+                  <div className="brand-squircle brand-squircle--notion" aria-label="Notion Architecture Philosophy">
+                    <div className="brand-squircle__icon-box notion-box">
+                      <img src="/notion.avif" alt="Notion" className="notion-avif-img" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Thought Bubble Circular Tail Dots connecting Character to Thought Card */}
+              <div className="thought-bubble-tail" aria-hidden="true">
+                <span className="thought-dot thought-dot--large" />
+                <span className="thought-dot thought-dot--medium" />
+                <span className="thought-dot thought-dot--small" />
               </div>
             </div>
 
-            {/* Bottom info bar inside frame */}
-            <div className="user-section__frame-caption">
-              <span className="user-caption-badge">CREATOR PROFILE</span>
-              <span className="user-caption-meta">PORTRAIT № 01 &nbsp;•&nbsp; 35MM MONOCHROME</span>
+            {/* Character Avatar (Thinker - Corner) */}
+            <div className="personality-avatar-anchor" ref={avatarRef}>
+              <div className="personality-avatar-crop">
+                <img
+                  src="/character-alpha.webp"
+                  alt="Character avatar"
+                  className="personality-avatar-video"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
             </div>
           </div>
 
-          {/* ── Crane at the Marked Section (Click to pop mini cranes!) ── */}
-          <div
-            className="user-section__crane"
-            ref={craneRef}
-            onClick={handleCraneClick}
-            role="button"
-            tabIndex={0}
-            title="Click to release mini paper cranes"
-          >
-            <img
-              src="/papercrane.png"
-              alt="Origami Paper Crane"
-              className="user-section__crane-img"
-            />
-            <span className="crane-click-hint">✦</span>
-          </div>
-        </div>
-
-        {/* ── Popped Mini Origami Cranes Burst Layer ── */}
-        <div className="crane-pop-layer" aria-hidden="true">
-          {poppedCranes.map((crane) => (
-            <div
-              key={crane.id}
-              className="mini-crane-particle"
-              style={{
-                left: `${crane.x}px`,
-                top: `${crane.y}px`,
-                '--tx': `${crane.tx}px`,
-                '--ty': `${crane.ty}px`,
-                '--scale': crane.scale,
-                '--r0': `${crane.startRot}deg`,
-                '--r1': `${crane.endRot}deg`,
-                '--dur': `${crane.duration}s`,
-              }}
+          {/* Social Connect Dock directly below the bubble */}
+          <div className="personality-social-dock">
+            {/* Email with Copy & Interactive Multi-part Logo */}
+            <button
+              type="button"
+              className={`social-dock-pill social-dock-pill--email ${copiedKey === 'gmail' ? 'is-copied' : ''}`}
+              onClick={(e) => handleCopy(e, 'aswinbiju2004@gmail.com', 'gmail')}
+              aria-label="Copy Email address aswinbiju2004@gmail.com"
+              title={copiedKey === 'gmail' ? 'Copied to Clipboard!' : 'Click to copy email'}
             >
-              <img
-                src="/papercrane.png"
-                alt=""
-                className="mini-crane-particle__img"
-              />
-            </div>
-          ))}
-        </div>
+              {copiedKey === 'gmail' ? (
+                <svg className="dock-pill-icon-svg check-copied-svg" viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              ) : (
+                <svg className="gm-svg dock-pill-icon-svg" viewBox="52 42 88 66" width="48" height="40" xmlns="http://www.w3.org/2000/svg">
+                  <path className="gm-from-top" fill="#c5221f" d="M52 51v8l20 15V48l-5.6-4.2c-5.94-4.45-14.4-.22-14.4 7.2" />
+                  <path className="gm-from-top" fill="#ea4335" d="M72 74V48l24 18 24-18v26L96 92" />
+                  <path className="gm-from-top" fill="#fbbc04" d="M120 48v26l20-15v-8c0-7.42-8.47-11.65-14.4-7.2" />
+                  <path className="gm-from-left" fill="#4285f4" d="M58 108h14V74L52 59v43c0 3.32 2.69 6 6 6" />
+                  <path className="gm-from-right" fill="#34a853" d="M120 108h14c3.32 0 6-2.69 6-6V59l-20 15" />
+                </svg>
+              )}
+            </button>
 
-        {/* Editorial Statement & Narrative Grid */}
-        <div className="user-section__grid">
-          
-          {/* Left Column: Bold Editorial Quote & Side Quests */}
-          <div className="user-section__quote-col scroll-reveal-item scroll-reveal--slide-left" style={{ '--reveal-delay': '0.15s' }}>
-            <h2 className="user-section__quote">
-              <span className="quote-line quote-line--1">
-                <span className="quote-word" style={{ '--qi': 0 }}>
-                  <span className="user-quote-italic">Building at the</span> <span className="user-quote-reg">intersection of</span>
-                </span>
-              </span>
-              <span className="quote-line quote-line--2">
-                <span className="quote-word" style={{ '--qi': 1 }}>
-                  <span className="user-quote-italic">precision code,</span> <span className="user-quote-reg">timeless design,</span>
-                </span>
-              </span>
-              <span className="quote-line quote-line--3">
-                <span className="quote-word" style={{ '--qi': 2 }}>
-                  <span className="user-quote-italic">and</span>{' '}
-                  <span className="user-quote-typewriter">
-                    <span className="user-quote-reg-tw">{TYPEWRITER_PHRASES[twPhraseIdx].slice(0, twCharIdx)}</span>
-                    <span className="typewriter-cursor" aria-hidden="true">|</span>
-                  </span>
-                </span>
-              </span>
-            </h2>
+            {/* GitHub with Interactive Vector Drawing Logo */}
+            <a
+              href="https://github.com/aswinb77"
+              target="_blank"
+              rel="noreferrer"
+              className="social-dock-pill social-dock-pill--github"
+              aria-label="GitHub Profile"
+              title="GitHub Profile"
+            >
+              <svg className="gh-svg dock-pill-icon-svg" viewBox="0 0 24 24" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+                <path className="gh-outline" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                <path className="gh-fill" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+            </a>
 
-            {/* ── Side Quests Section in Vacant White Space ── */}
-            <div className="user-section__sidequests">
-              <div className="sidequests__header">
-                <span className="sidequests__tag">SIDE QUESTS</span>
-                <span className="sidequests__line" />
-              </div>
-
-              {/* 3-Column Layout: Big Duolingo (Left) + 3 Stacked (Middle) + 2 Stacked (Right: GitHub & LinkedIn) */}
-              <div className="sidequests__layout">
-                
-                {/* ── Column 1: Big Duolingo Card (Left) ── */}
-                <a
-                  href="https://www.duolingo.com/profile/aswin.rar"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="card duo-card--big"
-                  aria-label="Duolingo Profile aswin.rar"
-                  onMouseMove={handleCardTilt}
-                  onMouseLeave={handleCardReset}
-                >
-                  <div className="sq-tooltip" role="tooltip">
-                    <span className="sq-tooltip__text">
-                      Learning {learningLang} {getLanguageFlag(learningLang)} · {duoStreak === null ? '586' : duoStreak} day streak
-                    </span>
-                  </div>
-
-                  <div className="duo-widget-card__top">
-                    <img
-                      src="/duolingo-fire.svg"
-                      alt="Fire Streak"
-                      className="duo-widget-card__fire"
-                    />
-                    <span className={`duo-widget-card__streak-num${duoStreak === null ? ' duo-streak--loading' : ''}`}>
-                      {duoStreak === null ? '···' : duoStreak}
-                    </span>
-                  </div>
-
-                  <div className="duo-widget-card__avatar-wrap">
-                    <video
-                      ref={duoVideoRef}
-                      className="duo-widget-card__avatar-video"
-                      loop
-                      muted
-                      playsInline
-                      preload="none"
-                    >
-                      <source src="/characterduo-alpha.webm" type="video/webm" />
-                      <source src="/characterduo-alpha.mov" type='video/mp4; codecs="hvc1"' />
-                      <source src="/characterduo.mp4" type="video/mp4" />
-                    </video>
-                    <div className="duo-widget-card__badge-box">
-                      <img
-                        src="/duolingo.svg"
-                        alt="Duolingo Owl App Icon"
-                        className="duo-widget-card__duo-logo"
-                      />
-                    </div>
-                  </div>
-                </a>
-
-                {/* ── Column 2: 3 Stacked Cards (Gmail with Copy, Binance, Telegram) ── */}
-                <div className="sidequests__stack sidequests__stack--tri">
-                  
-                  {/* Card 1: Gmail (WITH COPY ICON ONLY) */}
-                  <a
-                    href="mailto:aswinbiju2004@gmail.com"
-                    className="card side-stack-card side-stack-card--gmail"
-                    aria-label="Gmail aswinbiju2004@gmail.com"
-                    onMouseMove={handleCardTilt}
-                    onMouseLeave={handleCardReset}
-                    onClick={(e) => handleCopy(e, 'aswinbiju2004@gmail.com', 'gmail')}
-                  >
-                    <div className="sq-tooltip" role="tooltip">
-                      <span className="sq-tooltip__text">
-                        {copiedKey === 'gmail' ? 'Copied to clipboard! ✓' : 'aswinbiju2004@gmail.com'}
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      className="card__copy-btn"
-                      onClick={(e) => handleCopy(e, 'aswinbiju2004@gmail.com', 'gmail')}
-                      aria-label="Copy Email"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                      </svg>
-                    </button>
-
-                    <svg className="gm-svg" viewBox="52 42 88 66" width="56" height="56" xmlns="http://www.w3.org/2000/svg">
-                      <path className="gm-from-top" fill="#c5221f" d="M52 51v8l20 15V48l-5.6-4.2c-5.94-4.45-14.4-.22-14.4 7.2" />
-                      <path className="gm-from-top" fill="#ea4335" d="M72 74V48l24 18 24-18v26L96 92" />
-                      <path className="gm-from-top" fill="#fbbc04" d="M120 48v26l20-15v-8c0-7.42-8.47-11.65-14.4-7.2" />
-                      <path className="gm-from-left" fill="#4285f4" d="M58 108h14V74L52 59v43c0 3.32 2.69 6 6 6" />
-                      <path className="gm-from-right" fill="#34a853" d="M120 108h14c3.32 0 6-2.69 6-6V59l-20 15" />
-                    </svg>
-                  </a>
-
-                  {/* Card 2: Binance (NO COPY ICON) */}
-                  <a
-                    href="https://www.binance.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="card side-stack-card side-stack-card--binance"
-                    aria-label="Binance madminer"
-                    onMouseMove={handleCardTilt}
-                    onMouseLeave={handleCardReset}
-                  >
-                    <div className="sq-tooltip" role="tooltip">
-                      <span className="sq-tooltip__text">
-                        Binance · madminer
-                      </span>
-                    </div>
-
-                    <svg className="bn-svg" viewBox="0 0 96 96" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path className="bn-top" fill="#F0B90B" d="M34.5355 42.4676l13.4647-13.4644 13.4715 13.4715 7.8346-7.835-21.3061-21.3064-21.2995 21.2995z"/>
-                      <path className="bn-left" fill="#F0B90B" d="M21.1683 40.1646l7.8347 7.8347-7.8351 7.8351-7.8346-7.8347z"/>
-                      <path className="bn-bottom" fill="#F0B90B" d="M34.5355 55.8322l13.4647 13.464 13.4712-13.4708 7.8391 7.8308-.0042.004-21.3061 21.3064-21.2998-21.2994-.0109-.0108z"/>
-                      <path className="bn-right" fill="#F0B90B" d="M82.6674 48l-7.8347 7.8346-7.8346-7.8346 7.8346-7.8347z"/>
-                      <path className="bn-center" fill="#F0B90B" d="M55.95 48l-7.95-7.95-7.95 7.95 7.95 7.95z"/>
-                    </svg>
-                  </a>
-
-                  {/* Card 3: Telegram (NO COPY ICON) */}
-                  <a
-                    href="https://t.me/immortal182"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="card side-stack-card side-stack-card--telegram"
-                    aria-label="Telegram @immortal182"
-                    onMouseMove={handleCardTilt}
-                    onMouseLeave={handleCardReset}
-                  >
-                    <div className="sq-tooltip" role="tooltip">
-                      <span className="sq-tooltip__text">
-                        Telegram · @immortal182
-                      </span>
-                    </div>
-
-                    <div className="tg-plane">
-                      <img src="/telegram.webp" alt="Telegram" className="tg-plane__img" />
-                    </div>
-                  </a>
-
-                </div>
-
-                {/* ── Column 3: 2 Stacked Cards (Right: GitHub & LinkedIn - Matching Reference Image) ── */}
-                <div className="sidequests__stack sidequests__stack--duo">
-                  
-                  {/* GitHub Square Card */}
-                  <a
-                    href="https://github.com/aswinb77"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="card side-stack-card side-stack-card--github"
-                    aria-label="GitHub aswinb77"
-                    onMouseMove={handleCardTilt}
-                    onMouseLeave={handleCardReset}
-                  >
-                    <div className="sq-tooltip" role="tooltip">
-                      <span className="sq-tooltip__text">
-                        GitHub · aswinb77
-                      </span>
-                    </div>
-
-                    <svg className="gh-svg" viewBox="0 0 24 24" width="60" height="60" xmlns="http://www.w3.org/2000/svg" style={{ '--gh-len': '300px' }}>
-                      <path className="gh-outline" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-                      <path className="gh-fill" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-                    </svg>
-                  </a>
-
-                  {/* LinkedIn Square Card */}
-                  <a
-                    href="https://www.linkedin.com/in/aswin-biju7"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="card side-stack-card side-stack-card--linkedin"
-                    aria-label="LinkedIn aswin-biju7"
-                    onMouseMove={handleCardTilt}
-                    onMouseLeave={handleCardReset}
-                  >
-                    <div className="sq-tooltip" role="tooltip">
-                      <span className="sq-tooltip__text">
-                        LinkedIn · aswin-biju7
-                      </span>
-                    </div>
-
-                    <svg className="li-svg" viewBox="0 0 24 24" width="60" height="60" xmlns="http://www.w3.org/2000/svg">
-                      <path className="li-path" style={{ '--len': 76, '--draw-dur': '0.5s', '--draw-delay': '0s' }} d="M4 2h16c1.1 0 2 .9 2 2v16c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2z" />
-                      <path className="li-path" style={{ '--len': 12, '--draw-dur': '0.3s', '--draw-delay': '0.12s' }} d="M8 11v6" />
-                      <circle className="li-dot" cx="8" cy="8" r="1.3" />
-                      <path className="li-path" style={{ '--len': 22, '--draw-dur': '0.4s', '--draw-delay': '0.2s' }} d="M12 17v-4c0-1.5 1-2.2 2.2-2.2s1.8.8 1.8 2.2v4" />
-                    </svg>
-                  </a>
-
-                </div>
-              </div>
-            </div>
-
+            {/* LinkedIn with Interactive Path Drawing & Dot Animation */}
+            <a
+              href="https://www.linkedin.com/in/aswin-biju7"
+              target="_blank"
+              rel="noreferrer"
+              className="social-dock-pill social-dock-pill--linkedin"
+              aria-label="LinkedIn Profile"
+              title="LinkedIn Profile"
+            >
+              <svg className="li-svg dock-pill-icon-svg" viewBox="0 0 24 24" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+                <path className="li-path" style={{ '--len': 76, '--draw-dur': '0.5s', '--draw-delay': '0s' }} d="M4 2h16c1.1 0 2 .9 2 2v16c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2z" />
+                <path className="li-path" style={{ '--len': 12, '--draw-dur': '0.3s', '--draw-delay': '0.12s' }} d="M8 11v6" />
+                <circle className="li-dot" cx="8" cy="8" r="1.3" />
+                <path className="li-path" style={{ '--len': 22, '--draw-dur': '0.4s', '--draw-delay': '0.2s' }} d="M12 17v-4c0-1.5 1-2.2 2.2-2.2s1.8.8 1.8 2.2v4" />
+              </svg>
+            </a>
           </div>
-
-
-          {/* Right Column: Bio & Core Disciplines */}
-          <div className="user-section__bio-col scroll-reveal-item scroll-reveal--slide-right" style={{ '--reveal-delay': '0.25s' }}>
-            <p ref={bioTextRef} className="user-section__bio-text">
-              {bioTokens.map((token, index) => {
-                if (token.type === 'name') {
-                  return (
-                    <span key={index} className="progressive-word pen-marked-name">
-                      <span className="base-layer">{token.text}</span>
-                      <span className="fill-layer" aria-hidden="true">{token.text}</span>
-                      <svg
-                        className="pen-sketch-circle"
-                        viewBox="0 0 160 48"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M18,28 C28,10 75,4 125,7 C148,8 158,16 155,26 C151,36 128,42 90,44 C45,46 8,40 5,24 C3,12 35,5 82,6 C124,7 154,14 153,28 C152,38 120,43 85,44"
-                          className="pen-sketch-path"
-                        />
-                      </svg>
-                    </span>
-                  )
-                }
-                return (
-                  <span key={index} className="progressive-word">
-                    <span className="base-layer">{token.text}</span>
-                    <span className="fill-layer" aria-hidden="true">{token.text}</span>
-                  </span>
-                )
-              })}
-            </p>
-
-            {/* Certifications Section */}
-            <div className="certs-section">
-              {/* Section header — tells every visitor what this is */}
-              <div className="certs-section__header">
-                <span className="certs-section__icon" aria-hidden="true">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 1L15.09 8.26L23 9.27L17.5 14.64L18.9 22.54L12 18.77L5.1 22.54L6.5 14.64L1 9.27L8.91 8.26L12 1Z" />
-                  </svg>
-                </span>
-                <span className="certs-section__label">Verified Credentials</span>
-                <span className="certs-section__count">{CERTIFICATIONS_DATA.length}</span>
-              </div>
-
-              {/* Orbital Badge Grid */}
-              <div className="certs-grid" role="region" aria-label="Verified Certifications">
-                {CERTIFICATIONS_DATA.map((cert, index) => {
-                  const isHovered = hoveredCertId === cert.id
-                  const col = index % 4
-                  const popoverAlign = col === 0 ? 'left' : col === 3 ? 'right' : 'center'
-                  return (
-                    <div
-                      key={cert.id}
-                      className="cert-grid-slot"
-                      onMouseEnter={() => setHoveredCertId(cert.id)}
-                      onMouseLeave={() => setHoveredCertId(null)}
-                    >
-                      {/* Logo link — no bubble, just the glowing icon */}
-                      <a
-                        href={cert.verifyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`cert-icon-wrap${shiningCertId === cert.id ? ' cert-icon-wrap--shining' : ''}`}
-                        aria-label={`${cert.title} — ${cert.issuer}`}
-                      >
-                        <img
-                          src={cert.badge}
-                          alt={`${cert.brand} logo`}
-                          className={`cert-icon cert-icon--${cert.id}`}
-                        />
-                      </a>
-
-                      {/* Brand label */}
-                      <span className="cert-icon__label">{cert.shortLabel}</span>
-
-                      {/* Hover Preview Card */}
-                      {isHovered && (
-                        <div className={`cert-hover-preview cert-hover-preview--${popoverAlign}`}>
-                          <div className="cert-hover-preview__img-box">
-                            <img
-                              src={cert.previewImg}
-                              alt={cert.title}
-                              className="cert-hover-preview__img"
-                            />
-                          </div>
-                          <div className="cert-hover-preview__info">
-                            <div className="cert-hover-preview__header">
-                              <span className="cert-hover-preview__tag">{cert.tag}</span>
-                              <span className="cert-hover-preview__id">ID: {cert.credentialId}</span>
-                            </div>
-                            <h5 className="cert-hover-preview__title">{cert.title}</h5>
-                            <p className="cert-hover-preview__issuer">Issued by {cert.issuer}</p>
-                            <a
-                              href={cert.verifyUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="cert-hover-preview__btn"
-                            >
-                              Verify Credential ↗
-                            </a>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Cat Suction Loop */}
-            <div className="user-section__actions fade-and-rise" style={{ '--delay': '0.75s' }}>
-              <div className="user-section__cat-container">
-                <div className="cat-scene">
-                  {/* Wind lines emitted to the left during suction */}
-                  <div className="cat-wind" aria-hidden="true">
-                    <span className="cat-wind__line cat-wind__line--1" />
-                    <span className="cat-wind__line cat-wind__line--2" />
-                    <span className="cat-wind__line cat-wind__line--3" />
-                  </div>
-                  {/* Fail pop spark burst */}
-                  <div className="cat-pop" aria-hidden="true">
-                    <span className="cat-pop__dot cat-pop__dot--1" />
-                    <span className="cat-pop__dot cat-pop__dot--2" />
-                    <span className="cat-pop__dot cat-pop__dot--3" />
-                    <span className="cat-pop__dot cat-pop__dot--4" />
-                  </div>
-                  <img
-                    src="/catlook.png"
-                    alt="Cat companion"
-                    className="user-section__cat-img"
-                  />
-                </div>
-              </div>
-            </div>
-
-          </div>
-
         </div>
-
       </div>
 
-      {/* Floating feedback when Email copied */}
+      {/* Toast Notification */}
       {copiedKey === 'gmail' && (
         <div className="card-copied-toast" role="status">
           Copied aswinbiju2004@gmail.com to clipboard! ✓

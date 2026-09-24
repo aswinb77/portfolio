@@ -134,6 +134,14 @@ export default function GallerySection() {
       role="region"
       aria-label="3D Album & Photo Gallery"
     >
+      {/* Top-Right Corner Title */}
+      <div className="gallery-section__corner-title">
+        <h2 className="gallery-section__corner-heading">
+          <span className="gallery-section__heading-line">When i touch</span>
+          <span className="gallery-section__heading-line">some Grass</span>
+        </h2>
+      </div>
+
       {/* Fullscreen 3D Isometric Viewport */}
       <div className="column-wrapper">
         <div className={`columns ${isPaused ? 'is-paused' : ''}`}>
