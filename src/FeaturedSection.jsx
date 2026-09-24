@@ -78,7 +78,7 @@ export default function FeaturedSection() {
       github: 'https://github.com/aswinb77/ev-sensor',
       themeColor: '#06b6d4',
       headerType: 'pmse',
-      video: '/ev_health_motion_promo.mp4',
+      video: '/evhealth.mp4',
       previewImg: '/pmse-app.jpg',
       previewTag: 'TINYML ON ESP32 + FLUTTER',
     },
