@@ -2,25 +2,246 @@
    TRIANGLE VETTU — PURE GAME BOARD
    Tactile 3D board, crisp white card, clean custom elements (keywords.png)
    ══════════════════════════════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800;900&family=Chilanka&display=swap');
 
 .duo-game-section {
   position: relative;
   z-index: 2;
   width: 100%;
-  min-height: 100vh;
   background-color: #f8fafc;
   background-image: 
     radial-gradient(circle at 20% 20%, rgba(88, 204, 2, 0.08) 0%, transparent 45%),
     radial-gradient(circle at 80% 80%, rgba(28, 176, 246, 0.08) 0%, transparent 45%),
     radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
   background-size: 100% 100%, 100% 100%, 28px 28px;
-  padding: 60px 24px 90px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  transition: min-height 0.35s ease, padding 0.35s ease;
+}
+
+.duo-game-section.is-collapsed {
+  min-height: auto;
+  padding: 0 24px 36px;
+  background-color: #060201;
+  background-image: radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: visible;
+  z-index: 15;
+}
+
+.duo-game-section.is-expanded {
+  min-height: 100vh;
+  padding: 50px 24px 80px;
+}
+
+/* ── Post-it Yellow Sticky Note with Metal Paperclip Clipped to Start ── */
+.duo-postit-stage {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: clamp(20px, 10vw, 140px);
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.duo-postit-note {
+  position: relative;
+  margin-top: -24px; /* Clamped directly onto the starting border! */
+  width: clamp(265px, 29vw, 315px);
+  min-height: clamp(255px, 28vw, 295px);
+  background: linear-gradient(160deg, #fffef5 0%, #fef08a 36%, #fde047 100%);
+  /* Cut clean diagonal line at bottom-left corner */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    38px 100%,
+    0 calc(100% - 38px)
+  );
+  padding: 34px 24px 26px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transform: rotate(-2.5deg);
+  /* Filter drop-shadow follows the polygon clip-path perfectly without clipping */
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.6)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  user-select: none;
+  z-index: 20;
+}
+
+.duo-postit-note:hover {
+  transform: rotate(-0.5deg) translateY(-4px) scale(1.02);
+  filter: drop-shadow(0 22px 42px rgba(0, 0, 0, 0.72)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+}
+
+.duo-postit-note:active {
+  transform: rotate(-1deg) translateY(-1px) scale(0.99);
+}
+
+/* Realistic Silver Paperclip on Top Right */
+.duo-paperclip {
+  position: absolute;
+  top: -24px;
+  right: 28px;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35));
+}
+
+/* Handwritten Content */
+.duo-postit-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.duo-postit-title {
+  font-family: 'Caveat', 'Reenie Beanie', cursive, -apple-system, sans-serif;
+  font-size: clamp(2.3rem, 3.8vw, 3rem);
+  font-weight: 700;
+  color: #18181b;
+  margin: 4px 0 2px;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.duo-postit-malayalam {
+  font-family: 'Chilanka', 'Caveat', cursive, -apple-system, sans-serif;
+  font-size: clamp(1.4rem, 2.2vw, 1.62rem);
+  font-weight: 400;
+  color: #dc2626;
+  margin: 0 0 10px;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  filter: drop-shadow(0 1px 1px rgba(220, 38, 38, 0.15));
+}
+
+/* ── Doodle Shapes: X, O, Triangle (Hand-drawn ink look) ── */
+.duo-postit-doodle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 15px;
+}
+
+.duo-doodle-icon {
+  display: block;
+  color: #292524;
+  opacity: 0.88;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.15));
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, color 0.2s ease;
+}
+
+.duo-postit-note:hover .duo-doodle-icon.duo-doodle-x {
+  transform: rotate(-8deg) scale(1.1);
+  color: #18181b;
+  opacity: 1;
+}
+
+.duo-postit-note:hover .duo-doodle-icon.duo-doodle-o {
+  transform: scale(1.12);
+  color: #18181b;
+  opacity: 1;
+}
+
+.duo-postit-note:hover .duo-doodle-icon.duo-doodle-tri {
+  transform: rotate(8deg) scale(1.1);
+  color: #18181b;
+  opacity: 1;
+}
+
+.duo-postit-action {
+  font-family: 'Caveat', cursive, sans-serif;
+  font-size: 1.32rem;
+  font-weight: 600;
+  color: #44403c;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 4px 14px;
+  border-radius: 9999px;
+  border: 1.5px dashed rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.duo-postit-note:hover .duo-postit-action {
+  background: rgba(0, 0, 0, 0.09);
+  color: #0f172a;
+  border-color: rgba(0, 0, 0, 0.4);
+  transform: scale(1.05);
+}
+
+/* Curled Bottom-Left Corner with authentic 3D peel */
+.duo-postit-curl {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 38px;
+  height: 38px;
+  pointer-events: none;
+  z-index: 5;
+  transition: transform 0.25s ease;
+}
+
+.duo-postit-curl-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.duo-postit-note:hover .duo-postit-curl {
+  transform: scale(1.05);
+}
+
+/* ── Expanded Wrapper & Collapse Bar ── */
+.duo-expanded-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.duo-collapse-bar {
+  width: 100%;
+  max-width: 1040px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
+.duo-collapse-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 9999px;
+  padding: 7px 18px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.duo-collapse-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
 }
 
 .duo-game-container {
@@ -311,6 +532,18 @@
   }
 }
 
+@media (max-width: 640px) {
+  .duo-postit-stage {
+    justify-content: center;
+    padding-left: 0;
+  }
+  .duo-postit-note {
+    margin-top: -18px;
+    width: 270px;
+    min-height: 250px;
+  }
+}
+
 @media (max-width: 500px) {
   .duo-game-section {
     padding: 40px 12px 60px;
@@ -328,93 +561,6 @@
   }
 }
 
-/* ══════════════════════════════════════════════════════════════════
-   ASWIN DUOLINGO CHARACTER & MINECRAFT AFFECTION HEARTS
-   Desktop Only, completely static subject, floating hearts
-   ══════════════════════════════════════════════════════════════════ */
-.duo-aswin-wrap {
-  position: absolute;
-  bottom: 0;
-  right: clamp(20px, 4vw, 80px);
-  z-index: 15;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  user-select: none;
-  pointer-events: none;
-  cursor: default;
-  transform: none !important;
-}
-
-.duo-aswin-img {
-  width: auto;
-  height: clamp(230px, 28vh, 340px);
-  max-width: 290px;
-  object-fit: contain;
-  display: block;
-  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.08));
-  pointer-events: none;
-  transform: none !important;
-}
-
-/* ── Minecraft Affection Hearts Emitter ── */
-.duo-hearts-emitter {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: visible;
-  z-index: 25;
-}
-
-.minecraft-heart {
-  position: absolute;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-  pointer-events: none;
-  user-select: none;
-  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25));
-  animation: minecraftHeartRise var(--dur, 1.8s) cubic-bezier(0.25, 0.8, 0.45, 1) var(--delay, 0s) forwards;
-}
-
-@keyframes minecraftHeartRise {
-  0% {
-    transform: translate3d(0, 0, 0) scale(0) rotate(0deg);
-    opacity: 0;
-  }
-  14% {
-    transform: translate3d(calc(var(--drift) * 0.18), -18px, 0) scale(1.18) rotate(calc(var(--drift) * 0.08deg));
-    opacity: 1;
-  }
-  38% {
-    transform: translate3d(calc(var(--drift) * 0.48), -52px, 0) scale(1.0) rotate(calc(var(--drift) * -0.06deg));
-    opacity: 1;
-  }
-  72% {
-    transform: translate3d(calc(var(--drift) * 0.8), -92px, 0) scale(0.96) rotate(calc(var(--drift) * 0.04deg));
-    opacity: 0.95;
-  }
-  100% {
-    transform: translate3d(var(--drift), calc(-1 * var(--rise)), 0) scale(0.55) rotate(0deg);
-    opacity: 0;
-  }
-}
-
-/* ── Responsive: Desktop only (hide completely on tablet / mobile <= 900px) ── */
-@media (max-width: 1200px) {
-  .duo-aswin-wrap {
-    right: 18px;
-  }
-  .duo-aswin-img {
-    height: clamp(190px, 24vh, 260px);
-    max-width: 230px;
-  }
-}
-
-@media (max-width: 900px) {
-  .duo-aswin-wrap {
-    display: none !important;
-  }
-}
 
 
 

@@ -1,5 +1,5 @@
 import { getMedia } from './assets/media'
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import './CreativeSection.css'
 
 // ── Game Constants ──
@@ -227,8 +227,8 @@ export default function CreativeSection() {
   const [curPlayer, setCurPlayer] = useState(0) // 0: You (Red), 1: Computer (Blue)
   const [scores, setScores] = useState([0, 0])
   const [filledCount, setFilledCount] = useState(0)
-  const [vsAi, setVsAi] = useState(true) // Player 2 is Computer by default!
-  const [soundEnabled, setSoundEnabled] = useState(true)
+  const [vsAi, _setVsAi] = useState(true) // Player 2 is Computer by default!
+  const [soundEnabled, _setSoundEnabled] = useState(true)
   const [lastUserMove, setLastUserMove] = useState(null)
   const [hoveredDot, setHoveredDot] = useState(null)
 
@@ -364,61 +364,167 @@ export default function CreativeSection() {
     return () => clearTimeout(restartTimer)
   }, [filledCount, resetGame])
 
-  // ── Minecraft Love Hearts Emitter for Aswin Duolingo Character ──
-  const [hearts, setHearts] = useState([])
 
-  const removeHeart = useCallback((id) => {
-    setHearts((prev) => prev.filter((h) => h.id !== id))
-  }, [])
+  const [isExpanded, setIsExpanded] = useState(false)
 
-  const spawnHearts = useCallback((count = 3) => {
-    const newHearts = Array.from({ length: count }).map(() => ({
-      id: Math.random().toString(36).slice(2, 9) + Date.now(),
-      left: 18 + Math.random() * 58, // spawn around torso & upper body
-      bottom: 52 + Math.random() * 28,
-      size: 24 + Math.floor(Math.random() * 16), // 24px to 40px
-      drift: (Math.random() - 0.5) * 60, // -30px to +30px horizontal sway
-      rise: 85 + Math.random() * 75, // 85px to 160px float up
-      duration: 1.6 + Math.random() * 0.7, // 1.6s to 2.3s float
-      delay: Math.random() * 0.3, // 0 to 300ms stagger
-    }))
-
-    setHearts((prev) => [...prev.slice(-20), ...newHearts])
-  }, [])
-
-  // Random regular intervals: randomly triggers bursts of 3 or 4 loves
+  // Auto-expand if user navigates to #creative directly
   useEffect(() => {
-    let timeoutId
-    let isMounted = true
-
-    const scheduleNextBurst = () => {
-      const delay = 2400 + Math.random() * 2600 // 2.4s to 5.0s random interval
-      timeoutId = setTimeout(() => {
-        if (!isMounted) return
-        // Exactly 3 or 4 loves
-        const count = Math.random() < 0.5 ? 3 : 4
-        spawnHearts(count)
-        scheduleNextBurst()
-      }, delay)
+    const handleHash = () => {
+      if (window.location.hash === '#creative') {
+        setIsExpanded(true)
+      }
     }
+    handleHash()
+    window.addEventListener('hashchange', handleHash)
+    return () => window.removeEventListener('hashchange', handleHash)
+  }, [])
 
-    scheduleNextBurst()
-
-    return () => {
-      isMounted = false
-      clearTimeout(timeoutId)
-    }
-  }, [spawnHearts])
-
-  // Status Pill Message
   return (
-    <section className="duo-game-section" id="creative" aria-label="Game">
-      <div className="duo-game-container">
+    <section
+      className={`duo-game-section ${isExpanded ? 'is-expanded' : 'is-collapsed'}`}
+      id="creative"
+      data-nav-theme={isExpanded ? 'light' : 'dark'}
+      aria-label="Game"
+    >
+      {!isExpanded ? (
+        <div className="duo-postit-stage">
+          <div
+            className="duo-postit-note"
+            onClick={() => setIsExpanded(true)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setIsExpanded(true)}
+            aria-label="Poojyam Vett kalikkunno - Click to expand game"
+          >
+            {/* Realistic Silver Metal Paperclip Pinned on Top Right */}
+            <div className="duo-paperclip" aria-hidden="true">
+              <svg viewBox="0 0 28 68" width="24" height="58" fill="none">
+                <defs>
+                  <linearGradient id="clip-steel" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#cbd5e1" />
+                    <stop offset="35%" stopColor="#ffffff" />
+                    <stop offset="65%" stopColor="#94a3b8" />
+                    <stop offset="100%" stopColor="#cbd5e1" />
+                  </linearGradient>
+                </defs>
+                {/* Paperclip drop shadow on paper */}
+                <path
+                  d="M9 16v34a5 5 0 0 0 10 0V12a8 8 0 0 0-16 0v40a10 10 0 0 0 20 0V18"
+                  stroke="rgba(0, 0, 0, 0.3)"
+                  strokeWidth="2.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  transform="translate(1.5, 2)"
+                />
+                {/* Metallic wire body */}
+                <path
+                  d="M9 16v34a5 5 0 0 0 10 0V12a8 8 0 0 0-16 0v40a10 10 0 0 0 20 0V18"
+                  stroke="url(#clip-steel)"
+                  strokeWidth="2.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                {/* Specular highlight */}
+                <path
+                  d="M9 16v34a5 5 0 0 0 10 0V12a8 8 0 0 0-16 0v40a10 10 0 0 0 20 0V18"
+                  stroke="#ffffff"
+                  strokeWidth="0.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  opacity="0.85"
+                />
+              </svg>
+            </div>
+
+            {/* Handwritten Note Body */}
+            <div className="duo-postit-content">
+              <h3 className="duo-postit-title">Poojyam Vett</h3>
+              <p className="duo-postit-malayalam">കളിക്കുന്നോ ?</p>
+
+              <div className="duo-postit-doodle" aria-hidden="true">
+                {/* Hand-drawn style Cross (X) */}
+                <svg
+                  className="duo-doodle-icon duo-doodle-x"
+                  viewBox="0 0 28 28"
+                  width="26"
+                  height="26"
+                  fill="none"
+                >
+                  <line x1="6.5" y1="6.5" x2="21.5" y2="21.5" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
+                  <line x1="21.5" y1="6.5" x2="6.5" y2="21.5" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
+                </svg>
+
+                {/* Hand-drawn style Circle (O) */}
+                <svg
+                  className="duo-doodle-icon duo-doodle-o"
+                  viewBox="0 0 28 28"
+                  width="26"
+                  height="26"
+                  fill="none"
+                >
+                  <circle cx="14" cy="14" r="8.5" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
+                </svg>
+
+                {/* Hand-drawn style Triangle */}
+                <svg
+                  className="duo-doodle-icon duo-doodle-tri"
+                  viewBox="0 0 28 28"
+                  width="26"
+                  height="26"
+                  fill="none"
+                >
+                  <path
+                    d="M14 5.6 L22.8 21.6 C23.2 22.3 22.7 23 21.9 23 L6.1 23 C5.3 23 4.8 22.3 5.2 21.6 Z"
+                    stroke="currentColor"
+                    strokeWidth="3.2"
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+
+              <span className="duo-postit-action">click to expand ! 🎮</span>
+            </div>
+
+            {/* Curled Bottom-Left Corner with Authentic 3D Peel */}
+            <div className="duo-postit-curl" aria-hidden="true">
+              <svg viewBox="0 0 38 38" width="38" height="38" className="duo-postit-curl-svg">
+                <defs>
+                  <filter id="postit-flap-shadow" x="-30%" y="-30%" width="170%" height="170%">
+                    <feDropShadow dx="2" dy="-2" stdDeviation="2.5" floodColor="rgba(0, 0, 0, 0.28)" />
+                  </filter>
+                  <linearGradient id="postit-flap-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#eab308" />
+                    <stop offset="35%" stopColor="#fde047" />
+                    <stop offset="70%" stopColor="#fef08a" />
+                    <stop offset="100%" stopColor="#fffdf0" />
+                  </linearGradient>
+                </defs>
+                <polygon points="0,0 38,0 38,38" fill="url(#postit-flap-grad)" filter="url(#postit-flap-shadow)" />
+                <line x1="0" y1="0" x2="38" y2="38" stroke="rgba(0, 0, 0, 0.12)" strokeWidth="0.8" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="duo-expanded-wrap">
+          <div className="duo-collapse-bar">
+            <button
+              type="button"
+              className="duo-collapse-btn"
+              onClick={() => setIsExpanded(false)}
+              aria-label="Minimize Game"
+            >
+              <span>Minimize Game ▴</span>
+            </button>
+          </div>
+
+          <div className="duo-game-container">
         {/* Left Side: Playful Matching Heading */}
         <div className="duo-heading-side">
           <h2 className="duo-game-heading">
-            lets play<br />
-            <span className="duo-heading-accent">poojyam vett !</span>
+            Poojyam Vett<br />
+            <span className="duo-heading-accent">കളിക്കുന്നോ ?</span>
           </h2>
         </div>
 
@@ -554,39 +660,8 @@ export default function CreativeSection() {
           )}
         </div>
       </div>
-
-      {/* ── Aswin Duolingo Character in Right Corner (Desktop Only) ── */}
-      <div className="duo-aswin-wrap" aria-hidden="true">
-        {/* Minecraft Love Hearts Emitter */}
-        <div className="duo-hearts-emitter">
-          {hearts.map((h) => (
-            <img
-              key={h.id}
-              src={getMedia('/minecraft-heart.svg')}
-              alt=""
-              className="minecraft-heart"
-              style={{
-                left: `${h.left}%`,
-                bottom: `${h.bottom}%`,
-                width: `${h.size}px`,
-                height: `${Math.round(h.size * 0.888)}px`,
-                '--drift': `${h.drift}px`,
-                '--rise': `${h.rise}px`,
-                '--dur': `${h.duration}s`,
-                '--delay': `${h.delay}s`,
-              }}
-              onAnimationEnd={() => removeHeart(h.id)}
-            />
-          ))}
-        </div>
-
-        <img
-          src={getMedia('/aswin-duo.png')}
-          alt="Aswin"
-          className="duo-aswin-img"
-          draggable="false"
-        />
-      </div>
-    </section>
+    </div>
+  )}
+</section>
   )
 }

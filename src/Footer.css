@@ -1,387 +1,398 @@
-/* ══════════════════════════════════════════════════
-   ATMOSPHERIC FOOTER — "Something Worth Building? Let's Build."
-   Inspired by screenshot with footer.jpg scenic background & fireflies
-   ══════════════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,700&family=Rubik:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap');
+/* ═════════════════════════════════════════════════════════════
+   MINIMAL EDITORIAL FOOTER (Matched to Reference Screenshot)
+   • Line 1: "Lets [create / design / connect / build]" (White, Bold Italic)
+   • Line 2: "incredible work together." (Muted Gray, Bold)
+   • Email & Circular White Social Badges (LinkedIn, Instagram, Telegram, GitHub)
+   • Clean divider rule and subtle meta info
+   ═════════════════════════════════════════════════════════════ */
 
-/* ── 1. Reveal Container (Fixed Curtain Effect) ── */
-.footer-reveal-container {
+.img-footer {
   position: relative;
-  height: 100vh;
-  height: 100dvh;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  z-index: 1;
-}
-
-/* ── 2. Fixed Footer Panel Underneath ── */
-.footer.reveal {
-  position: fixed;
-  inset: auto 0 0 0;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  z-index: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  overflow: hidden;
-  box-sizing: border-box;
-  color: #fff;
-  user-select: none;
-}
-
-/* ── 3. Background Artwork & Scrim ── */
-.f-bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* footer.jpg background */
-.f-bg__img {
-  position: absolute;
-  inset: 0;
-  background: url('./assets/media/ddd.jpg') center 40% / cover no-repeat;
-  transform: scale(1.03);
-  animation: fBgDrift 20s ease-in-out infinite alternate;
-}
-
-@keyframes fBgDrift {
-  from {
-    transform: scale(1.03) translateY(0);
-  }
-
-  to {
-    transform: scale(1.06) translateY(-1.5%);
-  }
-}
-
-/* Gradient scrim — allows scenic image to breathe while giving perfect text readability */
-.f-bg__scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom,
-      rgba(15, 23, 42, 0.2) 0%,
-      rgba(15, 23, 42, 0.32) 30%,
-      rgba(15, 23, 42, 0.58) 60%,
-      rgba(15, 23, 42, 0.85) 85%,
-      rgba(15, 23, 42, 0.96) 100%);
-}
-
-/* Firefly canvas — floating over artwork */
-.f-firefly-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* ── 4. Hero Content Block — Centered Vertically ── */
-.f-hero {
-  position: relative;
-  z-index: 2;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0 24px;
-}
-
-.f-hero__line1 {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(1.6rem, 3.4vw, 2.9rem);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1.15;
-  color: rgba(255, 255, 255, 0.88);
-  margin: 0 0 6px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
-}
-
-.f-hero__line2 {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(3.2rem, 8.5vw, 7.8rem);
-  font-weight: 700;
-  font-style: italic;
-  letter-spacing: -0.015em;
-  line-height: 1.05;
-  margin: 0 0 36px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  background-color: #0b0b0b;
   color: #ffffff;
-  text-shadow:
-    0 2px 30px rgba(0, 0, 0, 0.7),
-    0 0 70px rgba(255, 255, 255, 0.25);
+  padding: 100px 36px 44px;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 10;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Per-character entrance */
-@keyframes fCharIn {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-    filter: blur(5px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-.f-cta-char {
-  display: inline-block;
-  opacity: 0;
-  animation: fCharIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-/* ── Actions Row / Glassmorphic Email Pill ── */
-.f-hero__actions {
+.img-footer__container {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: center;
-  pointer-events: auto;
+  flex-direction: column;
 }
 
-.f-email-pill {
+/* ── 1. Headline: "Lets create \n incredible work together." & Character ── */
+.img-footer__hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: 56px;
+  position: relative;
+}
+
+.img-footer__hero-text {
+  flex: 1;
+}
+
+/* Aswin Duolingo Character & Minecraft Hearts (Desktop Only) */
+.img-footer__character-wrap {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  pointer-events: none;
+  align-self: flex-end;
+  margin-bottom: -10px;
+}
+
+.img-footer__character-img {
+  width: auto;
+  height: clamp(170px, 20vw, 260px);
+  max-width: 240px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.5));
+  pointer-events: none;
+  user-select: none;
+  transform: none !important;
+}
+
+/* Minecraft Affection Hearts Emitter */
+.img-footer__hearts-emitter {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 20;
+}
+
+.img-footer__minecraft-heart {
+  position: absolute;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.45));
+  animation: footerHeartRise var(--dur, 1.8s) cubic-bezier(0.25, 0.8, 0.45, 1) var(--delay, 0s) forwards;
+}
+
+@keyframes footerHeartRise {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  14% {
+    transform: translate3d(calc(var(--drift) * 0.18), -18px, 0) scale(1.18) rotate(calc(var(--drift) * 0.08deg));
+    opacity: 1;
+  }
+  38% {
+    transform: translate3d(calc(var(--drift) * 0.48), -52px, 0) scale(1.0) rotate(calc(var(--drift) * -0.06deg));
+    opacity: 1;
+  }
+  72% {
+    transform: translate3d(calc(var(--drift) * 0.8), -92px, 0) scale(0.96) rotate(calc(var(--drift) * 0.04deg));
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate3d(var(--drift), calc(-1 * var(--rise)), 0) scale(0.55) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+.img-footer__title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+/* Line 1: Bright White, Bold, Italic */
+.img-footer__line1 {
+  display: inline-flex;
+  align-items: baseline;
+  color: #ffffff;
+  font-weight: 800;
+  font-style: italic;
+  font-size: clamp(2.4rem, 6.4vw, 4.75rem);
+  white-space: nowrap;
+}
+
+/* Vertical Word Flip Slot */
+.img-footer__word-slot {
+  display: inline-flex;
+  vertical-align: baseline;
+  overflow: hidden;
+  height: 1.15em;
+  margin-left: 0.28em;
+}
+
+.img-footer__word {
+  display: inline-block;
+  will-change: transform, opacity;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.38s ease;
+}
+
+.img-footer__word.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.img-footer__word.slide-up-out {
+  transform: translateY(-115%);
+  opacity: 0;
+}
+
+.img-footer__word.slide-up-in {
+  transform: translateY(115%);
+  opacity: 0;
+  transition: none !important;
+}
+
+/* Line 2: Muted Gray, Bold, Normal Style */
+.img-footer__line2 {
+  color: #71717a;
+  font-weight: 800;
+  font-style: normal;
+  font-size: clamp(2.4rem, 6.4vw, 4.75rem);
+  margin-top: 4px;
+}
+
+/* ── 2. Middle Row: Email (Left) & Social (Right) ── */
+.img-footer__info-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.img-footer__label {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 400;
+  color: #8e8e93;
+  margin-bottom: 8px;
+}
+
+/* Email Column */
+.img-footer__col-email {
+  display: flex;
+  flex-direction: column;
+}
+
+.img-footer__email-wrap {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 24px;
-  border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.95);
-  font-family: 'Space Mono', monospace, sans-serif;
-  font-size: 0.82rem;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  outline: none;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-.f-email-pill:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.6);
+.img-footer__email-link {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-weight: 500;
   color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
 }
 
-.f-email-pill:active {
-  transform: translateY(0) scale(0.98);
+.img-footer__email-link:hover {
+  color: #d1d5db;
 }
 
-.f-email-pill.is-copied {
-  border-color: rgba(74, 222, 128, 0.65);
-  background: rgba(74, 222, 128, 0.18);
+.img-footer__copy-pill {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.78);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.img-footer__copy-pill:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.img-footer__copy-pill.is-copied {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.5);
   color: #86efac;
 }
 
-.f-email-pill__addr {
-  font-weight: 500;
+/* Social Column */
+.img-footer__col-social {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-.f-email-pill__badge {
-  font-size: 0.9rem;
-  opacity: 0.8;
+.img-footer__social-list {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Circular White Pill Button Matching Reference Image */
+.img-footer__social-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #0b0b0b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.22s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.img-footer__social-circle:hover {
+  background-color: #e5e5e5;
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.18);
+}
+
+.img-footer__social-circle:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.img-footer__resume-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #ffffff;
+  color: #0b0b0b;
+  border: none;
+  border-radius: 9999px;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.22s ease;
+  margin-left: 4px;
+}
+
+.img-footer__resume-pill:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.22);
+}
+
+.img-footer__resume-pill:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ── 3. Bottom Divider Rule & Meta ── */
+.img-footer__bottom-line {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.14);
+  margin: 36px 0 24px;
+}
+
+.img-footer__meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.img-footer__copyright {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.78rem;
+  color: #71717a;
+}
+
+.img-footer__back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #8e8e93;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 6px;
+  transition: color 0.2s ease;
+}
+
+.img-footer__back-to-top:hover {
+  color: #ffffff;
+}
+
+.img-footer__arrow {
   transition: transform 0.2s ease;
 }
 
-.f-email-pill:hover .f-email-pill__badge {
-  transform: translateX(3px);
-}
-
-.f-email-pill.is-copied .f-email-pill__badge {
-  transform: none;
-}
-
-/* ── 5. Floating Bottom Navigation Island (Image 2 style) ── */
-.f-bottom-area {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 0 24px 24px;
-  pointer-events: auto;
-}
-
-.f-floating-pill {
-  display: inline-flex;
-  align-items: center;
-  background: rgba(18, 20, 26, 0.76);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 9999px;
-  padding: 6px 10px 6px 16px;
-  box-shadow:
-    0 16px 38px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-.f-floating-pill:hover {
+.img-footer__back-to-top:hover .img-footer__arrow {
   transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow:
-    0 20px 44px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-.f-pill-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  text-decoration: none;
-  color: #ffffff;
-  padding: 4px 6px;
-  border-radius: 9999px;
-  transition: opacity 0.2s ease;
+/* ── 4. Mobile Responsiveness ── */
+@media (max-width: 860px) {
+  .img-footer__character-wrap {
+    display: none !important;
+  }
 }
 
-.f-pill-brand:hover {
-  opacity: 0.88;
-}
-
-.f-pill-icon {
-  color: #ffffff;
-  flex-shrink: 0;
-  opacity: 0.95;
-}
-
-.f-pill-name {
-  font-family: 'Rubik', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 0.88rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: #ffffff;
-  white-space: nowrap;
-}
-
-.f-pill-divider {
-  width: 1px;
-  height: 18px;
-  background: rgba(255, 255, 255, 0.18);
-  margin: 0 10px;
-  flex-shrink: 0;
-}
-
-.f-pill-nav,
-.f-pill-socials {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-}
-
-.f-pill-link {
-  font-family: 'Rubik', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 0.8rem;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  color: rgba(255, 255, 255, 0.72);
-  text-decoration: none;
-  padding: 6px 12px;
-  border-radius: 9999px;
-  transition: color 0.18s ease, background 0.18s ease;
-  white-space: nowrap;
-}
-
-.f-pill-link:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.f-meta-bar {
-  font-family: 'Rubik', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 0.65rem;
-  font-weight: 400;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.38);
-  text-align: center;
-  user-select: none;
-}
-
-/* ── 6. Mobile Responsiveness ── */
 @media (max-width: 768px) {
-  .footer-reveal-container {
-    height: auto;
-    min-height: 100dvh;
-    clip-path: none;
+  .img-footer {
+    padding: 72px 24px 36px;
   }
 
-  .footer.reveal {
-    position: relative;
-    height: auto;
-    min-height: 100dvh;
+  .img-footer__hero {
+    margin-bottom: 44px;
   }
 
-  .f-hero {
-    padding: 80px 20px 48px;
+  .img-footer__info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
   }
 
-  .f-floating-pill {
+  .img-footer__col-social {
+    align-items: flex-start;
+  }
+
+  .img-footer__email-wrap {
     flex-wrap: wrap;
-    justify-content: center;
-    border-radius: 24px;
-    padding: 10px 14px;
-    gap: 6px;
-    max-width: 95vw;
+    gap: 8px;
   }
 
-  .f-pill-divider {
-    display: none;
+  .img-footer__bottom-line {
+    margin: 32px 0 20px;
   }
 
-  .f-pill-brand {
-    width: 100%;
-    justify-content: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding-bottom: 6px;
-    margin-bottom: 2px;
-  }
-
-  .f-meta-bar {
-    font-size: 0.6rem;
-    padding: 0 12px;
+  .img-footer__meta-row {
+    flex-direction: column-reverse;
+    gap: 16px;
+    align-items: flex-start;
   }
 }
 
 @media (max-width: 480px) {
-  .f-hero__line1 {
-    font-size: 1.35rem;
-  }
-
-  .f-hero__line2 {
-    font-size: 2.8rem;
-    margin-bottom: 28px;
-  }
-
-  .f-email-pill {
-    padding: 10px 18px;
-    font-size: 0.74rem;
-  }
-
-  .f-pill-link {
-    font-size: 0.74rem;
-    padding: 5px 8px;
+  .img-footer__line1,
+  .img-footer__line2 {
+    font-size: clamp(2rem, 9.5vw, 2.75rem);
   }
 }

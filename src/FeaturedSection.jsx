@@ -21,7 +21,7 @@ export default function FeaturedSection() {
     }
   }, [])
 
-  // Explicit user order: Finmate, Movie.cc, PMSE, Merchant Wallet
+  // Projects list: Finmate, Movie.cc, PMSE, Web Wallet
   const projects = [
     {
       id: 'finmate',
@@ -48,31 +48,31 @@ export default function FeaturedSection() {
       client: 'Movie.cc',
       title: 'Movie.cc',
       subtitle: 'Discover every frame with real-time cinema intelligence and live chat.',
-      description: 'A global movie discovery platform powered by real-time web scraping, refreshed every 6 hours. Hosts a clustered live chatroom.',
+      description: 'A global movie discovery platform powered by automated 6-hour web scraping pipelines maintaining 500+ records, with serverless NLP moderation and clustered live chat.',
       bullets: [
-        '6h auto-scraping cycle across global movie feeds',
+        'Automated pipeline maintaining 500+ movie records with zero manual updates',
+        'Cross-platform Flutter/Dart app with Firestore sync & Provider',
         'Clustered live chatroom with active viewer rooms',
-        '100% real-time streaming link & trailer updates',
       ],
-      category: 'Full-Stack · Real-time Platform',
+      category: 'Full-Stack · Flutter · Real-time',
       link: '#',
-      github: 'https://github.com/aswinb77/Anapp',
+      github: 'https://github.com/aswinb77/moviecc',
       themeColor: '#e11d48',
       headerType: 'moviecc',
       video: getMedia('/moviecc_intro.mp4'),
       previewImg: getMedia('/moviecc-feed.jpg'),
-      previewTag: 'REAL-TIME SCRAPER & LIVE CHAT',
+      previewTag: 'FLUTTER & DATA PIPELINE',
     },
     {
       id: 'pmse',
       client: 'PMSE',
       title: 'PMSE',
       subtitle: 'Predictive EV maintenance on-device before mechanical failure occurs.',
-      description: 'On-device TinyML inference on ESP32 paired with a cross-platform Flutter app to predict EV motor faults and anomalies in real time.',
+      description: 'Edge ML predictive maintenance sensor for EVs using TinyML inference on embedded hardware — real-time anomaly detection without cloud dependency.',
       bullets: [
-        'On-device TinyML inference running on ESP32',
-        '60FPS native Flutter dashboard telemetry',
-        'Real-time fault anomaly detection & alerts',
+        'On-device TinyML inference running on ESP32 microcontroller',
+        '60FPS native Flutter companion telemetry suite across 6 platforms',
+        'Real-time anomaly detection for vibration, temperature & current',
       ],
       category: 'Embedded AI · Mobile',
       link: '#',
@@ -85,14 +85,14 @@ export default function FeaturedSection() {
     },
     {
       id: 'merchant-wallet',
-      client: 'Merchant Wallet',
-      title: 'Merchant Wallet',
-      subtitle: 'Dual-panel mobile e-wallet engineered for high-volume transactions.',
-      description: 'A dual-panel mobile-web e-wallet with user wallet & merchant dashboard, AJAX-powered transactions, and Telegram-bot payout approvals.',
+      client: 'Web Wallet',
+      title: 'Web Wallet',
+      subtitle: 'Dual-panel digital wallet with user transfers & merchant flows.',
+      description: 'Full-stack digital wallet with user authentication, fund transfers, and balance management with SQL-powered persistent transaction records.',
       bullets: [
-        'Instant merchant payout workflows & balance ledger',
-        'Automated Telegram bot approval & notification pipeline',
-        'Dual-role security architecture with audit trails',
+        'Full-stack digital wallet with user authentication & fund transfers',
+        'PHP backend with SQL-powered persistent transaction records',
+        'Telegram bot human-in-the-loop manual payout approval flow',
       ],
       category: 'Full-Stack · Mobile Web',
       link: '#',
@@ -164,7 +164,7 @@ export default function FeaturedSection() {
     : null
 
   return (
-    <section className="featured-section" id="work">
+    <section className="featured-section" id="work" data-nav-theme="light">
       {/* ── Realistic Ripped Paper Top Edge Transition from Dark Hero ──── */}
       <div className="ripped-paper-edge" aria-hidden="true">
         <svg

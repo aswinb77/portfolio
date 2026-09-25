@@ -396,7 +396,7 @@ export default function UserSectionV2({ thanosState = 'idle', onTriggerSnap }) {
       target.removeEventListener('pointercancel', onPointerUp)
       try {
         target.releasePointerCapture(upEvent.pointerId)
-      } catch (err) {}
+      } catch {}
 
       setDraggingId(null)
       setProximityColor(null)
@@ -458,7 +458,7 @@ export default function UserSectionV2({ thanosState = 'idle', onTriggerSnap }) {
   }
 
   return (
-    <section className="user-v2-section" id="developer-v2" ref={sectionRef}>
+    <section className="user-v2-section" id="developer-v2" data-nav-theme="light" ref={sectionRef}>
       <div className="user-v2__container">
         
         {/* Heading (Text removed completely as requested) */}

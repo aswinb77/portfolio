@@ -54,36 +54,25 @@
 }
 
 .stack-section--1 {
-  z-index: 1;
+  z-index: 10;
 }
 
 .stack-section--2 {
-  z-index: 2;
-  box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+  box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.45);
 }
 
 .stack-section--3 {
-  z-index: 3;
+  z-index: 30;
   box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.5);
 }
 
 .stack-section--4 {
-  z-index: 4;
-  box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.35);
-}
-
-.stack-section--5 {
-  z-index: 5;
-  box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.45);
-}
-
-.stack-section--6 {
-  z-index: 6;
+  z-index: 40;
   box-shadow: 0 -16px 36px rgba(0, 0, 0, 0.35);
 }
 
 .thanos-section-wrap {
-  position: relative;
   will-change: transform, opacity, filter;
 }
 

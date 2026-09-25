@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import './App.css'
@@ -12,6 +12,7 @@ import GallerySection from './GallerySection'
 import CreativeSection from './CreativeSection'
 import Footer from './Footer'
 import ThanosDustOverlay from './ThanosDustOverlay'
+import ResumeModal from './ResumeModal'
 
 gsap.registerPlugin(ScrollToPlugin)
 
@@ -19,6 +20,33 @@ function App() {
   const [isSplineReady, setIsSplineReady] = useState(false)
   const [thanosState, setThanosState] = useState('idle') // 'idle' | 'snapping' | 'dusting' | 'restoring'
   const [dustedSections, setDustedSections] = useState(() => new Set())
+  const [isResumeOpen, setIsResumeOpen] = useState(false)
+
+  // Listen to #resume URL hash and global open-resume events
+  useEffect(() => {
+    const handleHash = () => {
+      if (typeof window !== 'undefined' && window.location.hash === '#resume') {
+        setIsResumeOpen(true)
+      }
+    }
+    const handleOpenResume = () => setIsResumeOpen(true)
+
+    handleHash()
+    window.addEventListener('hashchange', handleHash)
+    window.addEventListener('open-resume', handleOpenResume)
+
+    return () => {
+      window.removeEventListener('hashchange', handleHash)
+      window.removeEventListener('open-resume', handleOpenResume)
+    }
+  }, [])
+
+  const handleCloseResume = () => {
+    setIsResumeOpen(false)
+    if (typeof window !== 'undefined' && window.location.hash === '#resume') {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search)
+    }
+  }
 
   // Automatic Thanos Snap Sequence:
   // 1. Instant white glow
@@ -139,65 +167,61 @@ function App() {
       {/* Mobile Sticky Navigation Header */}
       <StickyNav />
 
-      {/* Pure CSS Stacking Card Sections */}
+      {/* Upper Sections: Hero & Selected Work (Scroll Normally) */}
+      <div
+        className={`thanos-section-wrap ${
+          dustedSections.has('hero')
+            ? 'is-dusted'
+            : thanosState === 'restoring'
+            ? 'is-restoring'
+            : ''
+        }`}
+      >
+        <Hero onSplineReady={() => setIsSplineReady(true)} />
+      </div>
+
+      <div
+        className={`thanos-section-wrap ${
+          dustedSections.has('featured')
+            ? 'is-dusted'
+            : thanosState === 'restoring'
+            ? 'is-restoring'
+            : ''
+        }`}
+      >
+        <FeaturedSection />
+      </div>
+
+      {/* Pure CSS Stacking Card Sections — Starts directly from About Section! */}
       <div className="stack">
-        {/* Sequential Disintegration Sections (Above UserSectionV2) */}
-        <div className="thanos-upper-sections">
-          {/* Section 1: Hero */}
-          <div
-            className={`thanos-section-wrap stack-section stack-section--1 ${
-              dustedSections.has('hero')
-                ? 'is-dusted'
-                : thanosState === 'restoring'
-                ? 'is-restoring'
-                : ''
-            }`}
-          >
-            <Hero onSplineReady={() => setIsSplineReady(true)} />
-          </div>
-
-          {/* Section 2: FeaturedSection */}
-          <div
-            className={`thanos-section-wrap stack-section stack-section--2 ${
-              dustedSections.has('featured')
-                ? 'is-dusted'
-                : thanosState === 'restoring'
-                ? 'is-restoring'
-                : ''
-            }`}
-          >
-            <FeaturedSection />
-          </div>
-
-          {/* Section 3: UserSection */}
-          <div
-            className={`thanos-section-wrap stack-section stack-section--3 ${
-              dustedSections.has('user')
-                ? 'is-dusted'
-                : thanosState === 'restoring'
-                ? 'is-restoring'
-                : ''
-            }`}
-          >
-            <UserSection />
-          </div>
+        {/* Section 1 in Stack: UserSection (About) */}
+        <div
+          className={`thanos-section-wrap stack-section stack-section--1 ${
+            dustedSections.has('user')
+              ? 'is-dusted'
+              : thanosState === 'restoring'
+              ? 'is-restoring'
+              : ''
+          }`}
+        >
+          <UserSection />
         </div>
 
-        {/* Section 4: UserSectionV2 */}
-        <div className="stack-section stack-section--4">
+        {/* Section 2 in Stack: UserSectionV2 (Wardrobe) */}
+        <div className="stack-section stack-section--2">
           <UserSectionV2
             thanosState={thanosState}
             onTriggerSnap={triggerThanosSnapSequence}
           />
         </div>
 
-        {/* Section 5: GallerySection */}
-        <div className="stack-section stack-section--5">
+        {/* Section 3 in Stack: GallerySection (Obsessions) */}
+        <div className="stack-section stack-section--3">
           <GallerySection />
         </div>
 
-        {/* Section 6: CreativeSection */}
-        <div className="stack-section stack-section--6">
+        {/* Section 4 in Stack: CreativeSection (Interactive Game) */}
+        <div className="stack-section stack-section--4">
           <CreativeSection />
         </div>
       </div>
@@ -205,6 +229,9 @@ function App() {
       <Loader isSplineReady={isSplineReady} />
 
       <Footer />
+
+      {/* Interactive Resume View & Print Document */}
+      <ResumeModal isOpen={isResumeOpen} onClose={handleCloseResume} />
     </div>
   )
 }

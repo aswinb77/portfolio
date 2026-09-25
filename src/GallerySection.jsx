@@ -130,6 +130,7 @@ export default function GallerySection() {
     <section
       className="gallery-section"
       id="gallery"
+      data-nav-theme="dark"
       onClick={handleTogglePause}
       role="region"
       aria-label="3D Album & Photo Gallery"

@@ -43,7 +43,7 @@ export default function Hero({ onSplineReady }) {
   const scrollToSection = (e, id) => {
     e.preventDefault()
     setMenuOpen(false)
-    const el = document.getElementById(id)
+    const el = document.getElementById(id) || (id === 'works' ? document.getElementById('work') : null)
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' })
     }
@@ -57,9 +57,9 @@ export default function Hero({ onSplineReady }) {
   }
 
   return (
-    <div className="hero-container">
+    <div className="hero-container" data-nav-theme="dark">
       {/* ── Widescreen Hero Banner ── */}
-      <section className="hero" id="hero">
+      <section className="hero" id="hero" data-nav-theme="dark">
         {/* Spline Video Background */}
         <div className="hero__video-wrap">
           <video
@@ -104,6 +104,16 @@ export default function Hero({ onSplineReady }) {
               <a href="#contact" className="hero__nav-link" onClick={(e) => scrollToSection(e, 'contact')}>
                 Contact
               </a>
+              <a
+                href="#resume"
+                className="hero__nav-link hero__nav-link--resume"
+                onClick={(e) => {
+                  e.preventDefault()
+                  window.dispatchEvent(new CustomEvent('open-resume'))
+                }}
+              >
+                Resume 📄
+              </a>
             </nav>
 
             {/* Mobile Hamburger Toggle Button */}
@@ -136,6 +146,17 @@ export default function Hero({ onSplineReady }) {
             </a>
             <a href="#contact" className="hero__mobile-link" onClick={(e) => scrollToSection(e, 'contact')}>
               Contact
+            </a>
+            <a
+              href="#resume"
+              className="hero__mobile-link hero__mobile-link--resume"
+              onClick={(e) => {
+                e.preventDefault()
+                setMenuOpen(false)
+                window.dispatchEvent(new CustomEvent('open-resume'))
+              }}
+            >
+              Resume / CV 📄
             </a>
           </nav>
 
@@ -182,6 +203,35 @@ export default function Hero({ onSplineReady }) {
                       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                     </svg>
                   </a>
+                  <button
+                    type="button"
+                    className="hero__social-btn hero__cv-btn"
+                    onClick={() => window.dispatchEvent(new CustomEvent('open-resume'))}
+                    aria-label="View Resume & CV"
+                    title="View Resume / CV"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.15)',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      color: '#ffffff',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '0 10px',
+                      cursor: 'pointer',
+                      borderRadius: '8px',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      letterSpacing: '0.05em',
+                    }}
+                  >
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
+                      <line x1="16" y1="13" x2="8" y2="13" />
+                      <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg>
+                    <span>CV</span>
+                  </button>
                 </div>
               </div>
               <p className="hero__role">SOFTWARE ENGINEER &amp; CREATIVE DEVELOPER</p>

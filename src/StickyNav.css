@@ -1,5 +1,6 @@
 /* ═════════════════════════════════════════════════════════════
    STICKY NAV — "Aswin Biju" Editorial Header
+   Dynamic matching section background (light & dark themes)
    ═════════════════════════════════════════════════════════════ */
 
 /* Hide completely on desktop screens (> 768px) */
@@ -16,22 +17,55 @@
   left: 0;
   right: 0;
   height: 64px;
-  background: rgba(247, 245, 238, 0.94);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   z-index: 9999;
   display: flex;
   align-items: center;
   transform: translateY(-100%);
   opacity: 0;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease,
+    background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
   user-select: none;
 }
 
 .stickynav.is-visible {
   transform: translateY(0);
   opacity: 1;
+}
+
+/* ── Light Theme (Matches #f7f5ee: Featured / Work & Skills) ── */
+.stickynav.theme-light {
+  background-color: rgba(247, 245, 238, 0.92);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.stickynav.theme-light .stickynav__logo {
+  color: #111111;
+}
+
+.stickynav.theme-light .stickynav__bar {
+  background-color: #111111;
+}
+
+/* ── Dark Theme (Matches #060201: Gallery "When i touch some grass", About, Footer) ── */
+.stickynav.theme-dark {
+  background-color: rgba(6, 2, 1, 0.90);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+}
+
+.stickynav.theme-dark .stickynav__logo {
+  color: #f5e8d8;
+}
+
+.stickynav.theme-dark .stickynav__bar {
+  background-color: #f5e8d8;
 }
 
 .stickynav__container {
@@ -49,10 +83,9 @@
   font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(20px, 2.6vw, 25px);
   font-weight: 500;
-  color: #111111;
   letter-spacing: -0.015em;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: color 0.35s ease, opacity 0.2s ease;
 }
 
 .stickynav__logo:hover {
@@ -79,9 +112,12 @@
 .stickynav__bar {
   display: block;
   height: 1.8px;
-  background-color: #111111;
   border-radius: 2px;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease, opacity 0.2s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    width 0.3s ease,
+    background-color 0.35s ease,
+    opacity 0.2s ease;
 }
 
 .stickynav__bar--1 {
@@ -110,13 +146,10 @@
 .stickynav__menu-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(18, 14, 11, 0.4);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   z-index: 9998;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, background-color 0.35s ease;
 }
 
 .stickynav__menu-backdrop.is-open {
@@ -124,21 +157,39 @@
   pointer-events: auto;
 }
 
+/* Light Backdrop */
+.stickynav__menu-backdrop.theme-light {
+  background: rgba(18, 14, 11, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Dark Backdrop */
+.stickynav__menu-backdrop.theme-dark {
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
 .stickynav__menu-panel {
   position: absolute;
   top: 64px;
   left: 0;
   right: 0;
-  background: #ffffff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
   padding: 24px 32px 32px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   transform: translateY(-10px);
   opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease,
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 .stickynav__menu-backdrop.is-open .stickynav__menu-panel {
@@ -146,18 +197,46 @@
   opacity: 1;
 }
 
+/* Light Menu Panel */
+.stickynav__menu-backdrop.theme-light .stickynav__menu-panel {
+  background: rgba(251, 250, 246, 0.98);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.stickynav__menu-backdrop.theme-light .stickynav__menu-link {
+  color: #1a1a1a;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.stickynav__menu-backdrop.theme-light .stickynav__menu-link:hover {
+  color: #ff8a4c;
+  transform: translateX(4px);
+}
+
+/* Dark Menu Panel */
+.stickynav__menu-backdrop.theme-dark .stickynav__menu-panel {
+  background: rgba(10, 6, 4, 0.98);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+.stickynav__menu-backdrop.theme-dark .stickynav__menu-link {
+  color: #f5e8d8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stickynav__menu-backdrop.theme-dark .stickynav__menu-link:hover {
+  color: #ff8a4c;
+  transform: translateX(4px);
+}
+
 .stickynav__menu-link {
   font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   font-size: 22px;
   font-weight: 500;
-  color: #1a1a1a;
   text-decoration: none;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease, border-color 0.35s ease;
 }
 
-.stickynav__menu-link:hover {
-  color: #ff8a4c;
-  transform: translateX(4px);
-}

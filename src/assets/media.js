@@ -1,5 +1,6 @@
 // Auto-generated bundled asset registry for high-performance hashed obfuscation
 import antigravitysvg from './media/antigravity.svg'
+import aswinAvatarpng from './media/aswin-avatar.png'
 import aswinDuopng from './media/aswin-duo.png'
 import avwalletDashboardpng from './media/avwallet-dashboard.png'
 import avwalletMerchantpng from './media/avwallet-merchant.png'
@@ -12,7 +13,6 @@ import characterThanospng from './media/character-thanos.png'
 import characterThanoswebp from './media/character-thanos.webp'
 import chessavif from './media/chess.avif'
 import claudepng from './media/claude.png'
-import dddjpg from './media/ddd.jpg'
 import duodeadavif from './media/duodead.avif'
 import duolingoFiresvg from './media/duolingo-fire.svg'
 import evhealthmp4 from './media/evhealth.mp4'
@@ -23,9 +23,9 @@ import finnyProductVideomp4 from './media/finny_product_video.mp4'
 import firesvg from './media/fire.svg'
 import fluttersvg from './media/flutter.svg'
 import footballongraspng from './media/footballongras.png'
-import footerjpg from './media/footer.jpg'
 import gitsvg from './media/git.svg'
 import githubsvg from './media/github.svg'
+import jobseekPreviewJpg from './media/jobseek-preview.jpg'
 import kalavastaMobilepng from './media/kalavasta-mobile.png'
 import kalavastaScreenpng from './media/kalavasta-screen.png'
 import keywordspng from './media/keywords.png'
@@ -54,6 +54,10 @@ import vettuSlotEmptypng from './media/vettu-slot-empty.png'
 import vettuSlotFilledpng from './media/vettu-slot-filled.png'
 import vettuXBluepng from './media/vettu-x-blue.png'
 import vettuXRedpng from './media/vettu-x-red.png'
+import shieldCertpng from './media/shield-cert.png'
+import shieldCodeBluepng from './media/shield-code-blue.png'
+import shieldCodeOrangepng from './media/shield-code-orange.png'
+import shieldEdupng from './media/shield-edu.png'
 
 
 export {
@@ -70,7 +74,6 @@ export {
   characterThanoswebp,
   chessavif,
   claudepng,
-  dddjpg,
   duodeadavif,
   duolingoFiresvg,
   evhealthmp4,
@@ -81,9 +84,9 @@ export {
   firesvg,
   fluttersvg,
   footballongraspng,
-  footerjpg,
   gitsvg,
   githubsvg,
+  jobseekPreviewJpg,
   kalavastaMobilepng,
   kalavastaScreenpng,
   keywordspng,
@@ -111,13 +114,27 @@ export {
   vettuSlotEmptypng,
   vettuSlotFilledpng,
   vettuXBluepng,
-  vettuXRedpng
+  vettuXRedpng,
+  aswinAvatarpng,
+  shieldCertpng,
+  shieldCodeBluepng,
+  shieldCodeOrangepng,
+  shieldEdupng
 }
 
 // Map from legacy '/filename.ext' paths to hashed bundled URLs
 export const mediaMap = {
   '/antigravity.svg': antigravitysvg,
+  '/aswin-avatar.png': aswinAvatarpng,
   '/aswin-duo.png': aswinDuopng,
+  '/shield-cert.png': shieldCertpng,
+  '/resume-icons/shield-cert.png': shieldCertpng,
+  '/shield-code-blue.png': shieldCodeBluepng,
+  '/resume-icons/shield-code-blue.png': shieldCodeBluepng,
+  '/shield-code-orange.png': shieldCodeOrangepng,
+  '/resume-icons/shield-code-orange.png': shieldCodeOrangepng,
+  '/shield-edu.png': shieldEdupng,
+  '/resume-icons/shield-edu.png': shieldEdupng,
   '/avwallet-dashboard.png': avwalletDashboardpng,
   '/avwallet-merchant.png': avwalletMerchantpng,
   '/avwallet-recharge.png': avwalletRechargepng,
@@ -129,7 +146,6 @@ export const mediaMap = {
   '/character-thanos.webp': characterThanoswebp,
   '/chess.avif': chessavif,
   '/claude.png': claudepng,
-  '/ddd.jpg': dddjpg,
   '/duodead.avif': duodeadavif,
   '/duolingo-fire.svg': duolingoFiresvg,
   '/evhealth.mp4': evhealthmp4,
@@ -140,9 +156,9 @@ export const mediaMap = {
   '/fire.svg': firesvg,
   '/flutter.svg': fluttersvg,
   '/footballongras.png': footballongraspng,
-  '/footer.jpg': footerjpg,
   '/git.svg': gitsvg,
   '/github.svg': githubsvg,
+  '/jobseek-preview.jpg': jobseekPreviewJpg,
   '/kalavasta-mobile.png': kalavastaMobilepng,
   '/kalavasta-screen.png': kalavastaScreenpng,
   '/keywords.png': keywordspng,

@@ -130,6 +130,7 @@ export default function UserSection() {
     <section
       className="user-section"
       id="about"
+      data-nav-theme="dark"
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
